@@ -1,0 +1,24 @@
+- model: teaching.lecture
+  pk: 1
+  fields:
+      title: Einführung in die Informatik
+      slug: einfuehrung-in-die-informatik
+      description: >-
+          Dieser Kurs bietet einen einfache Einführung in die
+          informationstechnischen Grundlagen des Informatik
+          Studiums.
+- model: teaching.lecture
+  pk: 2
+  fields:
+      title: Einführung in die Lineare Algebra
+      slug: einfuehrung-in-die-lineare-algebra
+      description: >-
+          Dieser Kurs bietet einen harten Einstieg in die
+          lineare Mathematik.
+- model: teaching.lecture
+  pk: 3
+  fields:
+      title: Einführung in moderne Datenbanksysteme
+      slug: einfuehrung-in-moderne-datenbanksysteme
+      description: >-
+          Datenbanken sind überall! Hier, da und auch dort.

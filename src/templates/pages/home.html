@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Hello World</h1>
+
+<div id="lectures"></div>
+<script>
+  const lecturesElement = document.getElementById("lectures");
+  lecturesElement.innerHTML = "loading";
+
+  fetch("/api/lectures")
+    .then(response => response.json())
+    .then(data => data.map(lec => `<li>${lec.title}</li>`))
+    .then(items => "<ul>" + items.join("") + "</ul>")
+    .then(list => (lecturesElement.innerHTML = list));
+  console.log("End");
+</script>
+{% endblock content %}

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Lectures:</h1>
+<ul>
+  {% for lecture in object_list %}
+  <li>{{ lecture.name }}</li>
+  {% endfor %}
+</ul>
+{% endblock content %}
