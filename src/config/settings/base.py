@@ -36,12 +36,12 @@ USE_TZ = True
 
 DATABASES = {
     "default": {
-        "ENGINE": os.environ["SQL_ENGINE"],
-        "NAME": os.environ["SQL_DATABASE"],
-        "USER": os.environ["SQL_USER"],
-        "PASSWORD": os.environ["SQL_PASSWORD"],
-        "HOST": os.environ["SQL_HOST"],
-        "PORT": os.environ["SQL_PORT"],
+        "ENGINE": os.getenv("SQL_ENGINE"),
+        "NAME": os.getenv("SQL_DATABASE"),
+        "USER": os.getenv("SQL_USER"),
+        "PASSWORD": os.getenv("SQL_PASSWORD"),
+        "HOST": os.getenv("SQL_HOST"),
+        "PORT": os.getenv("SQL_PORT"),
     }
 }
 

@@ -1,9 +1,10 @@
 import os
+from .base import *
 
 # GENERAL
 # -------------------------------------------------------------------
 DEBUG = True
-SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 ALLOWED_HOSTS = ["*"]
 
 # CACHES
