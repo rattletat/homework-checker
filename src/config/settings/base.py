@@ -13,11 +13,16 @@ ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 
 APPS_DIR = ROOT_DIR / "apps"
 
+
 if "DJANGO_READ_ENV_FILE" in os.environ:
     load_dotenv()
 
 # GENERAL
 # -------------------------------------------------------------------
+
+DEBUG = False
+ALLOWED_HOSTS = []
+SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 
 LANGUAGES = (
     ("en", _("English")),
@@ -36,12 +41,12 @@ USE_TZ = True
 
 DATABASES = {
     "default": {
-        "ENGINE": os.environ.get("SQL_ENGINE"),
-        "NAME": os.environ.get("SQL_DATABASE"),
-        "USER": os.environ.get("SQL_USER"),
-        "PASSWORD": os.environ.get("SQL_PASSWORD"),
-        "HOST": os.environ.get("SQL_HOST"),
-        "PORT": os.environ.get("SQL_PORT"),
+        "ENGINE": os.environ["SQL_ENGINE"],
+        "NAME": os.environ["SQL_DATABASE"],
+        "USER": os.environ["SQL_USER"],
+        "PASSWORD": os.environ["SQL_PASSWORD"],
+        "HOST": os.environ["SQL_HOST"],
+        "PORT": os.environ["SQL_PORT"],
     }
 }
 
