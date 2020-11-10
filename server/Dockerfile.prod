@@ -1,12 +1,10 @@
-
-##############
 FROM python:3.8.5-slim-buster
 
-RUN mkdir -p /home/app
-RUN groupadd -r app && useradd -r -g app app 
+RUN mkdir -p /home/app/
+RUN groupadd -r app && useradd -r -g app app
 
-ENV HOME=/home/app
-ENV APP_HOME=/home/app/web
+ENV HOME=/home/app/
+ENV APP_HOME=/home/app/web/
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 
@@ -21,12 +19,12 @@ ENV DJANGO_SETTINGS_MODULE "config.settings.prod"
 
 # System dependencies
 RUN apt-get update \
-  && apt-get -y install gcc postgresql \
+  && apt-get -y install gcc postgresql netcat \
   && apt-get clean
 
 # Python dependencies
 RUN pip install "poetry==$POETRY_VERSION"
-COPY poetry.lock pyproject.toml /usr/src/app/
+COPY poetry.lock pyproject.toml $APP_HOME
 RUN poetry install --no-interaction --no-ansi --no-dev
 
 COPY ./entrypoint.prod.sh $APP_HOME
