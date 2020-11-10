@@ -20,6 +20,7 @@ services:
         env_file:
             - ./server/.env.prod
     app-nginx:
+        container_name: app-nginx
         build: ./nginx
         volumes:
             - static_volume:/home/app/web/staticfiles
