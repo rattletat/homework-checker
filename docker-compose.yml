@@ -22,6 +22,7 @@ services:
         volumes:
             - ./server:/usr/src/app
     app-db:
+        container_name: app-db
         image: postgres:12-alpine
         environment:
             POSTGRES_DB: postgres

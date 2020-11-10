@@ -7,15 +7,11 @@ from pathlib import Path
 from django.utils.translation import gettext_lazy as _
 
 import dj_database_url
-from dotenv import load_dotenv
 
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 
 APPS_DIR = ROOT_DIR / "apps"
 
-
-if "DJANGO_READ_ENV_FILE" in os.environ:
-    load_dotenv()
 
 # GENERAL
 # -------------------------------------------------------------------
