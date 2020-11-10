@@ -1,6 +1,7 @@
 services:
     app-web:
         build:
+            context: ./server
             dockerfile: Dockerfile.dev
         ports:
             - 8003:8000

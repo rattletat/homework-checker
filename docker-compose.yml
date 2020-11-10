@@ -4,8 +4,6 @@ volumes:
 services:
     app-web:
         container_name: app-web
-        build:
-            context: ./server
         command: python manage.py runserver 0.0.0.0:8000
         depends_on:
             - app-db
