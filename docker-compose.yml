@@ -2,13 +2,11 @@ version: '3.7'
 volumes:
     app-db:
 services:
-    app-server:
-        container_name: app-server
+    app-web:
+        container_name: app-web
         build:
             context: ./server
         command: python manage.py runserver 0.0.0.0:8000
-        ports:
-            - 8003:8000
         depends_on:
             - app-db
             - app-redis
@@ -32,7 +30,7 @@ services:
             context: ./client
         command: npm start
         depends_on:
-            - app-server
+            - app-web
         ports:
             - 3001:3000
         stdin_open: true

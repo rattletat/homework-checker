@@ -1,7 +1,9 @@
 services:
-    app-server:
+    app-web:
         build:
             dockerfile: Dockerfile.dev
+        ports:
+            - 8003:8000
         env_file:
             - ./server/.env.dev
     app-db:
