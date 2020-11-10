@@ -1,0 +1,6 @@
+services:
+    app-server:
+        build:
+            dockerfile: Dockerfile.dev
+        env_file:
+            - ./server/.env.dev

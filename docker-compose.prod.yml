@@ -1,0 +1,8 @@
+services:
+    app-server:
+        build:
+            dockerfile: Dockerfile.prod
+        env_file:
+            - ./server/.env.dev
+    app-db:
+        restart: always
