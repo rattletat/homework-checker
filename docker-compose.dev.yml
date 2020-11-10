@@ -4,3 +4,6 @@ services:
             dockerfile: Dockerfile.dev
         env_file:
             - ./server/.env.dev
+    app-db:
+        env_file:
+            - ./server/.env.dev

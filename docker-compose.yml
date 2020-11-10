@@ -14,20 +14,11 @@ services:
             - app-redis
         environment:
             POSTGRES_HOST: app-db
-            POSTGRES_PORT: 5432
-            POSTGRES_DB: postgres
-            POSTGRES_USER: postgres
-            POSTGRES_PASSWORD: postgres
-            REDIS_URL: redis://app-redis:6379/0
         volumes:
             - ./server:/usr/src/app
     app-db:
         container_name: app-db
         image: postgres:12-alpine
-        environment:
-            POSTGRES_DB: postgres
-            POSTGRES_USER: postgres
-            POSTGRES_PASSWORD: postgres
         expose:
             - 5432
         volumes:

@@ -3,6 +3,8 @@ services:
         build:
             dockerfile: Dockerfile.prod
         env_file:
-            - ./server/.env.dev
+            - ./server/.env.prod
     app-db:
         restart: always
+        env_file:
+            - ./server/.env.prod
