@@ -30,5 +30,5 @@ urlpatterns += [
     path("accounts/signup", account_views.SignUpView.as_view(), name="signup"),
     path("accounts/login", account_views.LogInView.as_view(), name="login"),
     path("accounts/status", account_views.StatusView.as_view(), name="status"),
-    path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("token/refresh", TokenRefreshView.as_view(), name="token_refresh"),
 ]
