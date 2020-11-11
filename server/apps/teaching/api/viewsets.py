@@ -2,7 +2,9 @@ from apps.teaching.models import Lecture, Lesson, LectureResource, LessonResourc
 from django.contrib.auth.decorators import login_required
 from rest_framework.viewsets import ReadOnlyModelViewSet, GenericViewSet
 from rest_framework.mixins import RetrieveModelMixin
-from sendfile import sendfile
+from rest_framework.permissions import IsAuthenticated
+
+# from sendfile import sendfile
 
 from .serializers import (
     LectureDetailSerializer,
@@ -15,6 +17,7 @@ from .serializers import (
 class LectureReadOnlyModelViewSet(ReadOnlyModelViewSet):
     queryset = Lecture.objects.all()
     lookup_field = "slug"
+    permission_classes = [IsAuthenticated]
 
     def get_serializer_class(self):
         if self.action == "retrieve":
@@ -26,6 +29,7 @@ class LectureReadOnlyModelViewSet(ReadOnlyModelViewSet):
 class LessonReadOnlyModelViewSet(ReadOnlyModelViewSet):
     queryset = Lesson.objects.all()
     lookup_field = "slug"
+    permission_classes = [IsAuthenticated]
 
     def get_serializer_class(self):
         if self.action == "retrieve":
