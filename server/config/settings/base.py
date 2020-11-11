@@ -129,7 +129,7 @@ MIDDLEWARE = [
 # -------------------------------------------------------------------
 
 STATIC_ROOT = str(ROOT_DIR / "staticfiles")
-STATIC_URL = "/static/"
+STATIC_URL = "/staticfiles/"
 # STATICFILES_DIRS = [str(APPS_DIR / "static")]
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
@@ -231,13 +231,6 @@ CHANNEL_LAYERS = {
     },
 }
 
-
-# CORSHEADERS
-# -------------------------------------------------------------------
-
-CORS_ORIGIN_WHITELIST = [
-    "http://localhost:3001",
-]
 
 # SENDFILE
 # -------------------------------------------------------------------

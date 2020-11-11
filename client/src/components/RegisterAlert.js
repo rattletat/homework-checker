@@ -20,14 +20,14 @@ export default ({ clickAction }) => {
                     <Button
                         onClick={() => clickAction()}
                         variant="success"
-                        className="mx-2 col-sm"
+                        className="m-2 col-sm"
                     >
                         Zu dieser Vorlesung anmelden.
                     </Button>
                     <Button
                         onClick={() => setShow(false)}
                         variant="secondary"
-                        className="mx-2 col-sm"
+                        className="m-2 col-sm"
                     >
                         Ausblenden
                     </Button>

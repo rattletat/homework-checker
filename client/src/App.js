@@ -18,7 +18,7 @@ function App() {
         return window.localStorage.getItem("homework.checker.auth") !== null;
     });
     const logIn = async (email, password) => {
-        const url = `${process.env.REACT_APP_BASE_URL}/api/accounts/login`;
+        const url = "/api/accounts/login";
         try {
             const response = await axios.post(url, { email, password });
             window.localStorage.setItem(

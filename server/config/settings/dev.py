@@ -48,3 +48,10 @@ SIMPLE_JWT = {
 # -------------------------------------------------------------------
 
 SENDFILE_BACKEND = "sendfile.backends.development"
+
+# CORSHEADERS
+# -------------------------------------------------------------------
+
+CORS_ORIGIN_WHITELIST = [
+    "http://localhost:3001",
+]

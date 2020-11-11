@@ -16,7 +16,7 @@ export default () => {
         { email, identifier, full_name, password },
         actions
     ) => {
-        const url = `${process.env.REACT_APP_BASE_URL}/api/accounts/signup`;
+        const url = "/api/accounts/signup";
         try {
             await axios.post(url, {
                 email,
