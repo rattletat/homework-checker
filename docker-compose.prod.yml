@@ -26,4 +26,4 @@ services:
           - static_volume:/var/www/staticfiles
           - media_volume:/var/www/mediafiles
         ports:
-            - 1337:8080
+            - 80:8080
