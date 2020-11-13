@@ -1,7 +1,7 @@
 FROM python:3.8.5-slim-buster
 
 RUN mkdir -p /home/app/
-RUN groupadd -r app && useradd -r -g app app
+#RUN groupadd -r app && useradd -r -g app app
 
 ENV HOME=/home/app/
 ENV APP_HOME=/home/app/web/
@@ -29,10 +29,10 @@ RUN pip install "poetry==$POETRY_VERSION"
 COPY poetry.lock pyproject.toml $APP_HOME
 RUN poetry install --no-interaction --no-ansi
 
-COPY ./entrypoint.prod.sh $APP_HOME
+COPY ./entrypoint.dev.sh $APP_HOME
 COPY . $APP_HOME
 
-RUN chown -R app:app $APP_HOME
+#RUN chown -R app:app $APP_HOME
 
-USER app
+#USER app
 ENTRYPOINT ["/home/app/web/entrypoint.dev.sh"]

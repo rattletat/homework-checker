@@ -3,7 +3,7 @@ import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { toTimeFormat } from "../services/TimeService";
 
-function LessonTableRow({ index, lecture, lesson }) {
+function LessonTableRow({ index, lesson }) {
     return (
         <tr key={index}>
             <td>{index + 1}</td>
@@ -11,7 +11,7 @@ function LessonTableRow({ index, lecture, lesson }) {
             <td>{toTimeFormat(lesson.start)}</td>
             <td>{toTimeFormat(lesson.end)}</td>
             <td>
-                <Link to={`/lectures/${lecture.slug}/${lesson.slug}/`}>
+                <Link to={lesson.slug}>
                     <Button className="btn-sm">
                         <span>Zur Aufgabe</span>
                     </Button>

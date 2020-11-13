@@ -1,18 +1,20 @@
 version: '3.7'
 volumes:
     app-db:
+    static_volume:
+    media_volume:
 services:
     app-web:
-        build:
-            context: ./server
         container_name: app-web
         depends_on:
             - app-db
             - app-redis
-        ports:
-            - 8003:8000
         environment:
             POSTGRES_HOST: app-db
+        volumes:
+            - ./server/:/home/app/web/
+            - static_volume:/home/app/web/staticfiles
+            - media_volume:/home/app/web/mediafiles
     app-db:
         container_name: app-db
         image: postgres:12-alpine

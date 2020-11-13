@@ -1,5 +1,4 @@
 import moment from "moment";
-import "moment/locale/de";
 
 export const isActive = object => {
     return (
@@ -18,13 +17,13 @@ export const isExpired = object => {
 
 export const getTimeIndicator = object => {
     if (isUpcoming(object)) {
-        return "startet " + moment(object.start).fromNow();
+        return "starts " + moment(object.start).fromNow();
     }
     if (isExpired(object)) {
-        return "beendet " + moment(object.end).fromNow();
+        return "ended " + moment(object.end).fromNow();
     }
     if (isActive(object) && object.end) {
-        return "endet " + moment(object.end).fromNow();
+        return "ends " + moment(object.end).fromNow();
     }
     return "";
 };

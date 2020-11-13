@@ -1,83 +1,77 @@
 import React, { useEffect, useState } from "react";
-import { Col, Row, Jumbotron } from "react-bootstrap";
-import { Redirect, useParams } from "react-router-dom";
+import { Col, Row } from "react-bootstrap";
+import { useParams } from "react-router-dom";
 
 import callAPI from "../services/APIServices";
 import BreadcrumbWrapper from "./BreadcrumbWrapper";
 
-import MarkdownRenderer from "../services/MarkdownService";
+import MarkdownContent from "../components/MarkdownContent";
+import ResourceList from "./ResourceList";
 
-function LessonDetail() {
+export default () => {
     const { lecture_slug, lesson_slug } = useParams();
 
-    const breadcrumbsBase = [
-        { name: "Hauptseite", active: false, href: "#/" },
-        { name: "Vorlesungen", active: false, href: "#/lectures/" }
-    ];
     const [data, setData] = useState({
         lecture: null,
-        lesson: null,
-        breadcrumbsTail: []
+        lesson: null
     });
-    const [isError, setIsError] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
-            setIsError(false);
-
-            const {
-                response: lectureResponse,
-                isError: isLectureError
-            } = await callAPI(`lectures/${lecture_slug}/`, "GET");
-            const {
-                response: lessonResponse,
-                isError: isLessonError
-            } = await callAPI(`lessons/${lesson_slug}/`, "GET");
-            if (!isLectureError && !isLessonError) {
-                setData({
-                    lecture: lectureResponse.data,
-                    lesson: lessonResponse.data,
-                    breadcrumbsTail: [
-                        {
-                            name: lectureResponse.data.title,
-                            active: false,
-                            href: `#/lectures/${lectureResponse.data.slug}/`
-                        },
-                        {
-                            name: lessonResponse.data.title,
-                            active: true
-                        }
-                    ]
-                });
-            } else {
-                setIsError(true);
-            }
+            const lectureResponse = await callAPI(
+                `api/lectures/${lecture_slug}`,
+                "GET"
+            );
+            const lessonResponse = await callAPI(
+                `api/lectures/${lecture_slug}/lessons/${lesson_slug}`,
+                "GET"
+            );
+            setData({
+                lecture: lectureResponse.data,
+                lesson: lessonResponse.data
+            });
         };
         fetchData();
     }, [lecture_slug, lesson_slug]);
 
-    if (isError) {
-        return <Redirect to="/" />;
-    }
-
     return (
         <Row>
             <Col lg={12}>
-                <BreadcrumbWrapper
-                    items={breadcrumbsBase.concat(data.breadcrumbsTail)}
-                />
-
+                {data.lecture && data.lesson && (
+                    <BreadcrumbWrapper
+                        items={[
+                            {
+                                name: "Hauptseite",
+                                active: false,
+                                href: "#/"
+                            },
+                            {
+                                name: "Vorlesungen",
+                                active: false,
+                                href: "#/lectures/"
+                            },
+                            {
+                                name: data.lecture.title,
+                                active: false,
+                                href: `#/lectures/${data.lecture.slug}/`
+                            },
+                            {
+                                name: data.lesson.title,
+                                active: true
+                            }
+                        ]}
+                    />
+                )}
                 {data.lesson && (
-                    <Jumbotron>
-                        <h1>{data.lesson.title}</h1>
-                        <MarkdownRenderer>
-                            {data.lesson.description}
-                        </MarkdownRenderer>
-                    </Jumbotron>
+                    <>
+                        <MarkdownContent
+                            title={data.lesson.title}
+                            content={data.lesson.description}
+                        />
+                        <ResourceList resources={data.lesson.resources} />
+                    </>
                 )}
             </Col>
         </Row>
     );
-}
-
-export default LessonDetail;
+};

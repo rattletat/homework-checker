@@ -95,5 +95,5 @@ class LessonAdmin(admin.ModelAdmin):
 
     @method_decorator(staff_member_required)
     def download_resource(self, request, uuid):
-        resource = LectureResource.objects.get(id=uuid)
+        resource = LessonResource.objects.get(id=uuid)
         return sendfile(request, resource.file.path, attachment=True)

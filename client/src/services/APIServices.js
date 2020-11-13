@@ -1,23 +1,20 @@
 import axios from "axios";
 
-import { getAccessToken } from "./AuthService";
+import { getAuth } from "./AuthService";
 
-export default async (url, method, data = {}) => {
-    const token = getAccessToken();
-    const headers = { Authorization: `Bearer ${token}` };
+export default async function callAPI(url, method, data = {}) {
+    const token = getAuth().access;
+    data["headers"] = data["headers"] ? data["headers"] : {};
+    data["headers"]["Authorization"] = `Bearer ${token}`;
     try {
-        if (method == "GET") {
-            const response = await axios.get(`/api/${url}`, {
-                headers
-            });
-            return { response, isError: false };
-        } else if (method == "POST") {
-            const response = await axios.post(`/api/${url}`, data, {
-                headers
-            });
-            return { response, isError: false };
+        if (method === "GET") {
+            const response = await axios.get(url, data);
+            return response;
+        } else if (method === "POST") {
+            const response = await axios.post(url, data);
+            return response;
         }
     } catch (response) {
-        return { response, isError: true };
+        console.log(response);
     }
-};
+}

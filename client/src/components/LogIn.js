@@ -6,8 +6,8 @@ import BreadcrumbWrapper from "./BreadcrumbWrapper";
 
 export default ({ logIn }) => {
     const breadcrumbs = [
-        { name: "Hauptseite", active: false, href: "#/" },
-        { name: "Anmeldung", active: true }
+        { name: "Home", active: false, href: "#/" },
+        { name: "Log in", active: true }
     ];
 
     const onSubmit = async (values, actions) => {
@@ -33,7 +33,7 @@ export default ({ logIn }) => {
             <Col lg={12}>
                 <BreadcrumbWrapper items={breadcrumbs} />
                 <Card>
-                    <Card.Header>Anmeldung</Card.Header>
+                    <Card.Header>Log in</Card.Header>
                     <Card.Body>
                         <Formik
                             initialValues={{
@@ -50,9 +50,9 @@ export default ({ logIn }) => {
                                 values
                             }) => (
                                 <>
-                                    {"__all__" in errors && (
+                                    {"non_field_errors" in errors && (
                                         <Alert variant="danger">
-                                            {errors["__all__"]}
+                                            {errors["non_field_errors"]}
                                         </Alert>
                                     )}
                                     {"detail" in errors && (
@@ -62,9 +62,6 @@ export default ({ logIn }) => {
                                     )}
                                     <Form noValidate onSubmit={handleSubmit}>
                                         <Form.Group controlId="email">
-                                            <Form.Label>
-                                                Email-Adresse:
-                                            </Form.Label>
                                             <Form.Control
                                                 className={
                                                     "email" in errors
@@ -74,6 +71,7 @@ export default ({ logIn }) => {
                                                 name="email"
                                                 onChange={handleChange}
                                                 value={values.email}
+                                                placeholder={"Email"}
                                                 required
                                             />
                                             {"email" in errors && (
@@ -83,7 +81,6 @@ export default ({ logIn }) => {
                                             )}
                                         </Form.Group>
                                         <Form.Group controlId="password">
-                                            <Form.Label>Passwort:</Form.Label>
                                             <Form.Control
                                                 className={
                                                     "password" in errors
@@ -94,6 +91,7 @@ export default ({ logIn }) => {
                                                 onChange={handleChange}
                                                 type="password"
                                                 value={values.password}
+                                                placeholder={"Password"}
                                                 required
                                             />
                                             {"password" in errors && (
@@ -108,7 +106,7 @@ export default ({ logIn }) => {
                                             type="submit"
                                             variant="primary"
                                         >
-                                            Anmelden
+                                            Log in
                                         </Button>
                                     </Form>
                                 </>
@@ -116,8 +114,7 @@ export default ({ logIn }) => {
                         </Formik>
                     </Card.Body>
                     <p className="mt-3 text-center">
-                        Du bist noch nicht registriert?{" "}
-                        <Link to="/signup">Registrieren!</Link>
+                        {"Not registered yet?"} <Link to="/signup">Log in</Link>
                     </p>
                 </Card>
             </Col>

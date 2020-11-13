@@ -1,108 +1,105 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Col, Row, Jumbotron } from "react-bootstrap";
-import { Redirect, useParams } from "react-router-dom";
-import BreadcrumbWrapper from "./BreadcrumbWrapper";
-import RegisterAlert from "./RegisterAlert";
+import { Col, Row } from "react-bootstrap";
+import { useParams } from "react-router-dom";
 
 import callAPI from "../services/APIServices";
 
-import MarkdownRenderer from "../services/MarkdownService";
+import BreadcrumbWrapper from "./BreadcrumbWrapper";
+import LectureRegisterAlert from "./LectureRegisterAlert";
+import MarkdownContent from "./MarkdownContent";
+import ResourceList from "./ResourceList";
 import LessonTable from "./LessonTable";
 
-function LectureDetail(props) {
+export default function LectureDetail() {
     const { lecture_slug } = useParams();
-    const breadcrumbsBase = [
-        { name: "Hauptseite", active: false, href: "#/" },
-        { name: "Vorlesungen", active: false, href: "#/lectures/" }
-    ];
 
     const [data, setData] = useState({
         lecture: null,
-        registered: false,
-        registeredLoaded: false,
-        breadcrumbsTail: []
+        breadcrumbs: []
     });
-    const [isError, setIsError] = useState(false);
+
+    const [registered, setRegistered] = useState({
+        state: false,
+        loaded: false
+    });
 
     useEffect(() => {
-        const fetchData = async () => {
-            const { response, isError } = await callAPI(
-                `lectures/${lecture_slug}/`,
+        const fetchLecture = async () => {
+            const response = await callAPI(
+                `api/lectures/${lecture_slug}`,
                 "GET"
             );
-            if (!isError) {
-                setData({
-                    lecture: response.data,
-                    breadcrumbsTail: [
-                        {
-                            name: response.data.title,
-                            active: true
-                        }
-                    ]
-                });
-            } else {
-                setIsError(true);
-            }
+            setData({
+                lecture: response.data
+            });
         };
-        fetchData();
+        fetchLecture();
     }, [lecture_slug]);
 
     useEffect(() => {
         const checkRegistered = async () => {
-            const { response, isError } = await callAPI(
-                `lectures/${lecture_slug}/status`,
+            setRegistered({ registeredLoaded: false });
+            const response = await callAPI(
+                `api/lectures/${lecture_slug}/status`,
                 "GET"
             );
-            if (!isError) {
-                setData(d => ({
-                    ...d,
-                    registered: response.data.registered,
-                    registeredLoaded: true
-                }));
-            } else {
-                setIsError(true);
-            }
+            setRegistered({
+                registered: response.data.registered,
+                registeredLoaded: true
+            });
         };
         checkRegistered();
     }, [lecture_slug]);
-
-    if (isError) {
-        return <Redirect to="/" />;
-    }
 
     return (
         <Row>
             <Col lg={12}>
                 <BreadcrumbWrapper
-                    items={breadcrumbsBase.concat(data.breadcrumbsTail)}
+                    items={[
+                        {
+                            name: "Home",
+                            active: false,
+                            href: "#/"
+                        },
+                        {
+                            name: "Lectures",
+                            active: false,
+                            href: "#/lectures/"
+                        },
+                        {
+                            name: data.lecture ? data.lecture.title : "",
+                            active: true
+                        }
+                    ]}
                 />
 
-                {data.registeredLoaded && !data.registered && (
-                    <RegisterAlert
-                        clickAction={() =>
-                            callAPI(`lectures/${lecture_slug}/signup`, "POST")
-                        }
+                {data.registered && (
+                    <LectureRegisterAlert
+                        loaded={registered.loaded}
+                        registered={registered.state}
+                        clickAction={() => {
+                            callAPI(
+                                `api/lectures/${lecture_slug}/signup`,
+                                "POST"
+                            );
+                            window.location.reload();
+                        }}
                     />
                 )}
-                {data.registeredLoaded && data.registered && (
-                    <Alert variant="success">
-                        Du bist für diese Vorlesung angemeldet.
-                    </Alert>
-                )}
+
                 {data.lecture && (
                     <>
-                        <Jumbotron>
-                            <h1>{data.lecture.title}</h1>
-                            <MarkdownRenderer>
-                                {data.lecture.description}
-                            </MarkdownRenderer>
-                        </Jumbotron>
-                        <LessonTable lecture={data.lecture} />
+                        <MarkdownContent
+                            title={data.lecture.title}
+                            content={data.lecture.description}
+                        />
+
+                        <ResourceList resources={data.lecture.resources} />
+                        <br />
+                        <LessonTable lessons={data.lecture.lessons} />
                     </>
                 )}
             </Col>
         </Row>
     );
 }
-
-export default LectureDetail;

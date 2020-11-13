@@ -1,6 +1,9 @@
-from ..models import Lecture, Lesson
-from rest_framework.response import Response
+import os
+from django.shortcuts import reverse
+
 from rest_framework import serializers
+
+from ..models import Lecture, Lesson, LectureResource, LessonResource
 
 
 class LectureListSerializer(serializers.ModelSerializer):
@@ -12,28 +15,36 @@ class LectureListSerializer(serializers.ModelSerializer):
 
 class LectureDetailSerializer(serializers.ModelSerializer):
     lessons = serializers.SerializerMethodField(read_only=True)
-    registered = serializers.SerializerMethodField(read_only=True)
+    resources = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Lecture
         fields = [
-            "id",
             "title",
             "slug",
             "description",
             "start",
             "end",
             "lessons",
-            "registered",
+            "resources",
         ]
         ordering = ["-start"]
 
     def get_lessons(self, obj):
         return LessonListSerializer(obj.lessons, many=True).data
 
-    def get_registered(self, obj):
-        user = serializers.CurrentUserDefault()
-        return user in obj.participants.all()
+    def get_resources(self, obj):
+        return map(
+            lambda r: {
+                "title": r.title,
+                "filename": os.path.basename(r.file.name),
+                "download_uri": reverse(
+                    "api:lecture_download",
+                    kwargs={"lecture_slug": obj.slug, "resource_uuid": r.id},
+                ),
+            },
+            obj.resources.all(),
+        )
 
 
 class LessonListSerializer(serializers.ModelSerializer):
@@ -44,10 +55,29 @@ class LessonListSerializer(serializers.ModelSerializer):
 
 
 class LessonDetailSerializer(serializers.ModelSerializer):
+    resources = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = Lesson
-        fields = ["slug", "title", "start", "end", "description"]
+        fields = ["slug", "title", "start", "end", "description", "resources"]
         ordering = ["-start"]
+
+    def get_resources(self, obj):
+        return map(
+            lambda r: {
+                "title": r.title,
+                "filename": os.path.basename(r.file.name),
+                "download_uri": reverse(
+                    "api:lesson_download",
+                    kwargs={
+                        "lecture_slug": obj.lecture.slug,
+                        "lesson_slug": obj.slug,
+                        "resource_uuid": r.id,
+                    },
+                ),
+            },
+            obj.resources.all(),
+        )
 
 
 class ParticipantSerializer(serializers.ModelSerializer):

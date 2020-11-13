@@ -5,6 +5,8 @@ services:
             context: ./server
             dockerfile: Dockerfile.dev
         command: python manage.py runserver 0.0.0.0:8000
+        ports: 
+            - 8000:8000
         env_file:
             - ./server/.env.dev
     app-db:

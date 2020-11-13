@@ -90,9 +90,10 @@ class Lesson(UUIDModel, TimeFramedModel):
 
 
 class LectureResource(UUIDModel, TimeStampedModel):
-    entity = models.ForeignKey(
+    lecture = models.ForeignKey(
         Lecture,
         on_delete=models.PROTECT,
+        related_name="resources"
     )
     title = models.CharField(
         max_length=100,
@@ -103,13 +104,14 @@ class LectureResource(UUIDModel, TimeStampedModel):
     class Meta:
         verbose_name = _("Vorlesungsmaterial")
         verbose_name_plural = _("Vorlesungmaterialien")
-        unique_together = ("entity", "title")
+        unique_together = ("lecture", "title")
 
 
 class LessonResource(UUIDModel, TimeStampedModel):
-    entity = models.ForeignKey(
+    lesson = models.ForeignKey(
         Lesson,
         on_delete=models.PROTECT,
+        related_name="resources"
     )
     title = models.CharField(
         max_length=100,
@@ -120,4 +122,4 @@ class LessonResource(UUIDModel, TimeStampedModel):
     class Meta:
         verbose_name = _("Lektionsmaterial")
         verbose_name_plural = _("Lektionsmaterialen")
-        unique_together = ("entity", "title")
+        unique_together = ("lesson", "title")

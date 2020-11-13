@@ -8,16 +8,14 @@ import callAPI from "../services/APIServices";
 
 function LectureList(props) {
     const [data, setData] = useState({ lectures: [] });
-    const breadcrumbs = [
-        { name: "Hauptseite", active: false, href: "#/" },
-        { name: "Vorlesungen", active: true }
-    ];
 
     useEffect(() => {
         const fetchData = async () => {
-            const { response, isError } = await callAPI(`lectures`, "GET");
-            if (!isError) {
+            try {
+                const response = await callAPI(`api/lectures/`, "GET");
                 setData({ lectures: response.data });
+            } catch (error) {
+                console.log(error);
             }
         };
         fetchData();
@@ -30,23 +28,28 @@ function LectureList(props) {
     return (
         <Row>
             <Col lg={12}>
-                <BreadcrumbWrapper items={breadcrumbs} />
+                <BreadcrumbWrapper
+                    items={[
+                        { name: "Home", active: false, href: "#/" },
+                        { name: "Lectures", active: true }
+                    ]}
+                />
 
                 {activeLectures.length !== 0 && (
                     <LectureGroup
-                        title="Aktive Vorlesungen"
+                        title="Active Lectures"
                         lectures={activeLectures}
                     />
                 )}
                 {upcomingLectures.length !== 0 && (
                     <LectureGroup
-                        title="Bevorstehende Vorlesungen"
+                        title="Upcoming Lectures"
                         lectures={upcomingLectures}
                     />
                 )}
                 {expiredLectures.length !== 0 && (
                     <LectureGroup
-                        title="Vergangene Vorlesungen"
+                        title="Past Lectures"
                         lectures={expiredLectures}
                     />
                 )}

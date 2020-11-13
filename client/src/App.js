@@ -3,6 +3,8 @@ import { Button, Container, Form, Navbar } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { Link, Redirect, Route, Switch } from "react-router-dom";
 
+import { logIn, logOut, isLoggedIn } from "./services/AuthService";
+
 import SignUp from "./components/SignUp";
 import LogIn from "./components/LogIn";
 import Dashboard from "./components/Dashboard";
@@ -11,32 +13,9 @@ import LectureDetail from "./components/LectureDetail";
 import LessonDetail from "./components/LessonDetail";
 
 import "./App.css";
-import axios from "axios";
 
 function App() {
-    const [isLoggedIn, setLoggedIn] = useState(() => {
-        return window.localStorage.getItem("homework.checker.auth") !== null;
-    });
-    const logIn = async (email, password) => {
-        const url = "/api/accounts/login";
-        try {
-            const response = await axios.post(url, { email, password });
-            window.localStorage.setItem(
-                "homework.checker.auth",
-                JSON.stringify(response.data)
-            );
-            setLoggedIn(true);
-            return { response, isError: false };
-        } catch (error) {
-            console.log(error);
-            return { response: error, isError: true };
-        }
-    };
-    const logOut = () => {
-        window.localStorage.removeItem("homework.checker.auth");
-        setLoggedIn(false);
-    };
-
+    const [loggedIn, setLoggedIn] = useState(isLoggedIn());
     return (
         <>
             <Navbar bg="light" expand="sm" variant="light">
@@ -47,7 +26,7 @@ function App() {
                 </LinkContainer>
                 <Navbar.Toggle />
                 <Navbar.Collapse>
-                    {isLoggedIn && (
+                    {loggedIn && (
                         <Form inline className="ml-auto">
                             <Link
                                 id="dashboard"
@@ -57,10 +36,10 @@ function App() {
                                 Dashboard
                             </Link>
                             <Link id="lectures" className="btn" to="/lectures">
-                                Vorlesungen
+                                Lectures
                             </Link>
                             <Button type="button" onClick={() => logOut()}>
-                                Abmelden
+                                Log out
                             </Button>
                         </Form>
                     )}
@@ -76,22 +55,22 @@ function App() {
                                 <h1 className="landing logo">
                                     Homework Checker
                                 </h1>
-                                {!isLoggedIn && (
+                                {!loggedIn && (
                                     <Link
                                         id="signUp"
                                         className="btn btn-primary mx-2"
                                         to="/signup"
                                     >
-                                        Registrieren
+                                        Sign up
                                     </Link>
                                 )}
-                                {!isLoggedIn && (
+                                {!loggedIn && (
                                     <Link
                                         id="logIn"
                                         className="btn btn-primary mx-2"
                                         to="/login"
                                     >
-                                        Anmelden
+                                        Log in
                                     </Link>
                                 )}
                             </div>
@@ -100,41 +79,45 @@ function App() {
                     <Route
                         path="/signup"
                         render={() =>
-                            isLoggedIn ? <Redirect to="/" /> : <SignUp />
+                            loggedIn ? <Redirect to="/" /> : <SignUp />
                         }
                     />
                     <Route
                         path="/login"
                         render={() =>
-                            isLoggedIn ? (
+                            loggedIn ? (
                                 <Redirect to="/" />
                             ) : (
-                                <LogIn logIn={logIn} />
+                                <LogIn
+                                    logIn={(email, password) =>
+                                        logIn(email, password, setLoggedIn)
+                                    }
+                                />
                             )
                         }
                     />
                     <Route
                         path="/dashboard/"
                         render={() =>
-                            isLoggedIn ? <Dashboard /> : <Redirect to="/" />
+                            loggedIn ? <Dashboard /> : <Redirect to="/" />
                         }
                     />
                     <Route
                         path="/lectures/:lecture_slug/:lesson_slug/"
                         render={() =>
-                            isLoggedIn ? <LessonDetail /> : <Redirect to="/" />
+                            loggedIn ? <LessonDetail /> : <Redirect to="/" />
                         }
                     />
                     <Route
                         path="/lectures/:lecture_slug/"
                         render={() =>
-                            isLoggedIn ? <LectureDetail /> : <Redirect to="/" />
+                            loggedIn ? <LectureDetail /> : <Redirect to="/" />
                         }
                     />
                     <Route
                         path="/lectures/"
                         render={() =>
-                            isLoggedIn ? <LectureList /> : <Redirect to="/" />
+                            loggedIn ? <LectureList /> : <Redirect to="/" />
                         }
                     />
                 </Switch>

@@ -6,7 +6,6 @@ from pathlib import Path
 
 from django.utils.translation import gettext_lazy as _
 
-import dj_database_url
 
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 
@@ -45,8 +44,6 @@ DATABASES = {
         "PORT": os.environ["POSTGRES_PORT"],
     }
 }
-
-DATABASES["default"].update(dj_database_url.config(conn_max_age=500))
 
 # URLS
 # -------------------------------------------------------------------

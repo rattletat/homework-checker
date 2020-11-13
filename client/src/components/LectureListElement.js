@@ -14,19 +14,19 @@ function LectureListElement({ lecture }) {
                 <ListGroup>
                     {lecture.start && (
                         <ListGroup.Item>
-                            Vorlesungstart: {toTimeFormat(lecture.start)}
+                            Lecture start: {toTimeFormat(lecture.start)}
                         </ListGroup.Item>
                     )}
                     {lecture.end && (
                         <ListGroup.Item>
-                            Vorlesungsende: {toTimeFormat(lecture.start)}
+                            Lecture end: {toTimeFormat(lecture.start)}
                         </ListGroup.Item>
                     )}
                 </ListGroup>
                 <Card.Footer>
                     <Link to={`/lectures/${lecture.slug}/`}>
                         <Button>
-                            <span>Zur Vorlesung</span>
+                            <span>Go to lecture</span>
                         </Button>
                     </Link>
                 </Card.Footer>

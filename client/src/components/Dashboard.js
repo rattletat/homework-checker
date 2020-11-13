@@ -5,7 +5,7 @@ import callAPI from "../services/APIServices";
 
 export default () => {
     const breadcrumbs = [
-        { name: "Hauptseite", active: false, href: "#/" },
+        { name: "Home", active: false, href: "#/" },
         { name: "Dashboard", active: true }
     ];
     const [data, setData] = useState({
@@ -17,13 +17,8 @@ export default () => {
 
     useEffect(() => {
         const fetchAccountStatus = async () => {
-            const { response, isError } = await callAPI(
-                `accounts/status`,
-                "GET"
-            );
-            if (!isError) {
-                setData({ ...response.data });
-            }
+            const response = await callAPI(`accounts/status`, "GET");
+            setData({ ...response.data });
         };
         fetchAccountStatus();
     }, []);
@@ -33,45 +28,41 @@ export default () => {
             <Col lg={12}>
                 <BreadcrumbWrapper items={breadcrumbs} />
                 <h1>Dashboard</h1>
-                Hier findest du Informationen zu deinem Account und deinen
-                angemeldeten Vorlesungen.
+                Here you find information regarding your account status and
+                lectures you signed up for.
                 <br />
                 <br />
                 <Card className="mb-3">
-                    <Card.Header>Dein Account</Card.Header>
+                    <Card.Header>Your account</Card.Header>
                     <Card.Body>
                         <ListGroup variant="flush">
                             <ListGroup.Item>
-                                Dein Name: {data.full_name}
+                                Name: {data.full_name}
                             </ListGroup.Item>
+                            <ListGroup.Item>Email: {data.email}</ListGroup.Item>
                             <ListGroup.Item>
-                                Email-Adresse: {data.email}
-                            </ListGroup.Item>
-                            <ListGroup.Item>
-                                Matrikelnummer: {data.identifier}
+                                Student ID:{" "}
+                                {data.identifier
+                                    ? data.identifier
+                                    : "Not specified"}
                             </ListGroup.Item>
                         </ListGroup>
                     </Card.Body>
                 </Card>
                 <Card className="mb-3">
-                    <Card.Header>Deine Vorlesungen</Card.Header>
+                    <Card.Header>Your Lectures</Card.Header>
                     <Card.Body>
-                        {data.enrolled_lectures && (
-                            <ListGroup>
-                                <>
-                                    {data.enrolled_lectures.map(
-                                        (lecture, key) => (
-                                            <ListGroup.Item key={key}>
-                                                {lecture}
-                                            </ListGroup.Item>
-                                        )
-                                    )}
-                                </>
-                            </ListGroup>
-                        )}
-                        {!data.enrolled_lectures && (
-                            <p>Du bist zu keiner Vorlesung angemeldet!</p>
-                        )}
+                        <ListGroup>
+                            <>
+                                {data.enrolled_lectures.map((lecture, key) => (
+                                    <ListGroup.Item key={key}>
+                                        {lecture}
+                                    </ListGroup.Item>
+                                ))}
+                            </>
+                        </ListGroup>
+                        {!data.enrolled_lectures.length &&
+                            "You're not signed up for any lecture!"}
                     </Card.Body>
                 </Card>
             </Col>
