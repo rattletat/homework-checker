@@ -346,6 +346,18 @@ python-versions = "*"
 Django = ">=2.0.1"
 
 [[package]]
+name = "django-redis"
+version = "4.12.1"
+description = "Full featured redis cache backend for Django."
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.dependencies]
+Django = ">=2.2"
+redis = ">=3.0.0"
+
+[[package]]
 name = "django-rq"
 version = "2.4.0"
 description = "An app that provides django integration for RQ (Redis Queue)"
@@ -1121,7 +1133,7 @@ setuptools = "*"
 [metadata]
 lock-version = "1.0"
 python-versions = "^3.8, <3.9"
-content-hash = "2e4855e496984e2ad2947dfef651a539532614c3add3ddbb5e1f79f3ca5a7cfc"
+content-hash = "3b77fd4455006a14cde7e63a44440ac3c9ea9953cbddec2a34b64d816be71e57"
 
 [metadata.files]
 aioredis = [
@@ -1330,6 +1342,10 @@ django-cors-headers = [
 django-model-utils = [
     {file = "django-model-utils-4.0.0.tar.gz", hash = "sha256:adf09e5be15122a7f4e372cb5a6dd512bbf8d78a23a90770ad0983ee9d909061"},
     {file = "django_model_utils-4.0.0-py2.py3-none-any.whl", hash = "sha256:9cf882e5b604421b62dbe57ad2b18464dc9c8f963fc3f9831badccae66c1139c"},
+]
+django-redis = [
+    {file = "django-redis-4.12.1.tar.gz", hash = "sha256:306589c7021e6468b2656edc89f62b8ba67e8d5a1c8877e2688042263daa7a63"},
+    {file = "django_redis-4.12.1-py3-none-any.whl", hash = "sha256:1133b26b75baa3664164c3f44b9d5d133d1b8de45d94d79f38d1adc5b1d502e5"},
 ]
 django-rq = [
     {file = "django-rq-2.4.0.tar.gz", hash = "sha256:3851f4eb65358bf13cd179156ae695a8a76e18249f8d1c4b89c0c7efac7e1f6d"},

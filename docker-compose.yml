@@ -27,7 +27,7 @@ services:
          - app-db:/var/lib/postgresql/data
     app-redis:
         container_name: app-redis
-        image: redis:6-alpine
+        image: redis:latest
         restart: always
         ports:
             - 6379:6379
