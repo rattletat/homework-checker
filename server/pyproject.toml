@@ -26,6 +26,7 @@ psycopg2-binary = "^2.8.6"
 django-cors-headers = "^3.5.0"
 django-sendfile = "^0.3.11"
 djangorestframework-simplejwt = "^4.5.0"
+django-rq = "^2.4.0"
 
 [tool.poetry.dev-dependencies]
 isort = "^5.5.4"

@@ -188,7 +188,7 @@ export default () => {
                         </Formik>
                     </Card.Body>
                     <p className="mt-3 text-center">
-                        Already signed up? <Link to="/login">Sign in.</Link>
+                        Already signed up? <Link to="/login">Log in.</Link>
                     </p>
                 </Card>
             </Col>

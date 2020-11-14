@@ -7,17 +7,22 @@ import BreadcrumbWrapper from "./BreadcrumbWrapper";
 
 import MarkdownContent from "../components/MarkdownContent";
 import ResourceList from "./ResourceList";
+import ExercisesContainer from "./ExercisesContainer";
 
 export default () => {
     const { lecture_slug, lesson_slug } = useParams();
 
-    const [data, setData] = useState({
+    const [teachingData, setTeachingData] = useState({
         lecture: null,
         lesson: null
     });
 
+    const [homeworkData, setHomeworkData] = useState({
+        exercises: []
+    });
+
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchTeachingData = async () => {
             const lectureResponse = await callAPI(
                 `api/lectures/${lecture_slug}`,
                 "GET"
@@ -26,50 +31,68 @@ export default () => {
                 `api/lectures/${lecture_slug}/lessons/${lesson_slug}`,
                 "GET"
             );
-            setData({
+            setTeachingData({
                 lecture: lectureResponse.data,
                 lesson: lessonResponse.data
             });
         };
-        fetchData();
+        fetchTeachingData();
     }, [lecture_slug, lesson_slug]);
 
+    useEffect(() => {
+        const fetchHomeworkData = async () => {
+            const exercisesResponse = await callAPI(
+                `api/lectures/${lecture_slug}/lessons/${lesson_slug}/exercises/`,
+                "GET"
+            );
+            setHomeworkData({
+                exercises: exercisesResponse.data
+            });
+        };
+        fetchHomeworkData();
+    }, []);
     return (
         <Row>
             <Col lg={12}>
-                {data.lecture && data.lesson && (
+                {teachingData.lecture && teachingData.lesson && (
                     <BreadcrumbWrapper
                         items={[
                             {
-                                name: "Hauptseite",
+                                name: "Home",
                                 active: false,
                                 href: "#/"
                             },
                             {
-                                name: "Vorlesungen",
+                                name: "Lectures",
                                 active: false,
                                 href: "#/lectures/"
                             },
                             {
-                                name: data.lecture.title,
+                                name: teachingData.lecture.title,
                                 active: false,
-                                href: `#/lectures/${data.lecture.slug}/`
+                                href: `#/lectures/${teachingData.lecture.slug}/`
                             },
                             {
-                                name: data.lesson.title,
+                                name: teachingData.lesson.title,
                                 active: true
                             }
                         ]}
                     />
                 )}
-                {data.lesson && (
+                {teachingData.lesson && (
                     <>
                         <MarkdownContent
-                            title={data.lesson.title}
-                            content={data.lesson.description}
+                            title={teachingData.lesson.title}
+                            content={teachingData.lesson.description}
                         />
-                        <ResourceList resources={data.lesson.resources} />
+                        <ResourceList
+                            resources={teachingData.lesson.resources}
+                        />
                     </>
+                )}
+                <br />
+                {homeworkData.exercises && (
+                    <ExercisesContainer exercises={homeworkData.exercises} />
                 )}
             </Col>
         </Row>

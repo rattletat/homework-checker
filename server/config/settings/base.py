@@ -20,11 +20,11 @@ ALLOWED_HOSTS = []
 SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 
 LANGUAGES = (
-    # ("en", _("English")),
-    ("de", _("German")),
+    ("en", _("English")),
+    # ("de", _("German")),
 )
 TIME_ZONE = "Europe/Berlin"
-LANGUAGE_CODE = "de-de"
+LANGUAGE_CODE = "en-us"
 SITE_ID = 1
 USE_I18N = True
 USE_L10N = True
@@ -68,11 +68,7 @@ DJANGO_APPS = [
     "django.forms",
 ]
 
-THIRD_PARTY_APPS = [
-    "corsheaders",
-    "rest_framework",
-    "channels",
-]
+THIRD_PARTY_APPS = ["corsheaders", "rest_framework", "django_rq"]
 
 LOCAL_APPS = ["apps.accounts", "apps.teaching", "apps.homework"]
 
@@ -214,20 +210,24 @@ LOGGING = {
     "root": {"level": "INFO", "handlers": ["console"]},
 }
 
-# CHANNELS
+# REDIS QUEUES
 # -------------------------------------------------------------------
 
-REDIS_URL = os.getenv("REDIS_URL")
-
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [REDIS_URL],
+CACHES = {
+    'default': {
+        'BACKEND': 'redis_cache.cache.RedisCache',
+        'LOCATION': os.environ["REDIS_URL"],
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'MAX_ENTRIES': 5000,
         },
     },
 }
-
+RQ_QUEUES = {
+    'default': {
+        'USE_REDIS_CACHE': 'default',
+    },
+}
 
 # SENDFILE
 # -------------------------------------------------------------------

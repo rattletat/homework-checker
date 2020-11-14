@@ -95,3 +95,10 @@ export const isLoggedIn = () => {
 export const getAuth = () => {
     return JSON.parse(window.localStorage.getItem("homework.checker.auth"));
 };
+
+export const getAuthHeaders = (headers = {}) => {
+    const token = getAuth().access;
+    headers["headers"] = headers["headers"] ? headers["headers"] : {};
+    headers["headers"]["Authorization"] = `Bearer ${token}`;
+    return headers;
+};

@@ -17,7 +17,7 @@ export default () => {
 
     useEffect(() => {
         const fetchAccountStatus = async () => {
-            const response = await callAPI(`accounts/status`, "GET");
+            const response = await callAPI(`api/accounts/status`, "GET");
             setData({ ...response.data });
         };
         fetchAccountStatus();

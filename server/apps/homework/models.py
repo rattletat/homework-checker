@@ -35,7 +35,7 @@ class Exercise(UUIDModel):
 class Submission(UUIDModel, TimeStampedModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     exercise = models.ForeignKey(Exercise, on_delete=models.PROTECT)
-    score = models.PositiveSmallIntegerField()
+    score = models.PositiveSmallIntegerField(default=0)
     output = models.TextField(blank=True)
 
     def clean(self):

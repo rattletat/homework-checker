@@ -1,9 +1,8 @@
-from rest_framework.status import HTTP_200_OK
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework import status, response, permissions
 from rest_framework.views import APIView
 from rest_framework.generics import RetrieveAPIView, ListAPIView
 from ..models import Lecture, Lesson, LectureResource, LessonResource
+from apps.homework.models import Exercise
 from sendfile import sendfile
 from .serializers import (
     LessonDetailSerializer,
@@ -11,28 +10,27 @@ from .serializers import (
 
 
 class LectureSignUp(APIView):
-    permission_classes = [IsAuthenticated]
-    lookup_field = "slug"
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
-        lecture = Lecture.objects.get(slug=kwargs["slug"])
+        lecture = Lecture.objects.get(slug=kwargs["lecture_slug"])
         lecture.participants.add(request.user)
         lecture.save()
-        return Response({}, status=HTTP_200_OK)
+        return response.Response({}, status=status.HTTP_200_OK)
 
 
 class LectureStatus(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
     lookup_field = "lecture_slug"
 
     def get(self, request, *args, **kwargs):
         lecture = Lecture.objects.get(slug=kwargs["lecture_slug"])
-        response = {"registered": request.user in lecture.participants.all()}
-        return Response(response, status=HTTP_200_OK)
+        data = {"registered": request.user in lecture.participants.all()}
+        return response.Response(data, status=status.HTTP_200_OK)
 
 
 class LessonRetrieveView(RetrieveAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = LessonDetailSerializer
 
     def get_object(self):
@@ -42,7 +40,7 @@ class LessonRetrieveView(RetrieveAPIView):
 
 
 class LectureResourceDownload(RetrieveAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         lecture_slug = self.kwargs["lecture_slug"]
@@ -54,7 +52,7 @@ class LectureResourceDownload(RetrieveAPIView):
 
 
 class LessonResourceDownload(RetrieveAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         lecture_slug = self.kwargs["lecture_slug"]

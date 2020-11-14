@@ -15,6 +15,12 @@ class ExerciseAdmin(admin.ModelAdmin):
 
     get_lecture.short_description = "Vorlesung"
 
+    def get_readonly_fields(self, _, obj=None):
+        if obj:
+            return ["lesson"]
+        else:
+            return []
+
 
 # @admin.register(Submission)
 # class Submission(admin.ModelAdmin):

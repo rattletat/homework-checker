@@ -3,7 +3,7 @@ from django.shortcuts import reverse
 
 from rest_framework import serializers
 
-from ..models import Lecture, Lesson, LectureResource, LessonResource
+from ..models import Lecture, Lesson
 
 
 class LectureListSerializer(serializers.ModelSerializer):

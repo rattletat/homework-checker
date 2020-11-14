@@ -8,16 +8,6 @@ DEBUG = False
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 CORS_ORIGIN_WHITELIST = os.environ.get("DJANGO_CORS_ORIGIN_WHITELIST").split(" ")
 
-# CACHES
-# -------------------------------------------------------------------
-
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
-        "LOCATION": "",
-    }
-}
-
 # EMAIL
 # -------------------------------------------------------------------
 

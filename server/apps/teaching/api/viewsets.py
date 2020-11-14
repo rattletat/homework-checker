@@ -24,15 +24,3 @@ class LectureReadOnlyModelViewSet(ReadOnlyModelViewSet):
             return LectureDetailSerializer
         elif self.action == "list":
             return LectureListSerializer
-
-
-class LessonReadOnlyModelViewSet(ReadOnlyModelViewSet):
-    queryset = Lesson.objects.all()
-    lookup_fields = ["lecture__slug", "slug"]
-    permission_classes = [IsAuthenticated]
-
-    def get_serializer_class(self):
-        if self.action == "retrieve":
-            return LessonDetailSerializer
-        else:
-            return LessonListSerializer

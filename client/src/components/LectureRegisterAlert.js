@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { Alert, Button, Row } from "react-bootstrap";
 
-export default ({ loaded, registered, clickAction }) => {
+export default function LectureRegisterAlert({
+    loaded,
+    registered,
+    clickAction
+}) {
     const [show, setShow] = useState(true);
 
     if (loaded && registered) {
@@ -9,22 +13,23 @@ export default ({ loaded, registered, clickAction }) => {
         return (
             <Alert variant="dark">You are registered for this course.</Alert>
         );
-    }
-
-    if (loaded && !registered) {
+    } else if (loaded && !registered) {
         return (
-            <Alert show={show} variant="warning">
+            <Alert show={show} variant="dark">
                 <Alert.Heading>Not registered!</Alert.Heading>
                 <p>
                     You are not registered for this course.
                     <br />
-                    In order to do the exercises, you need to register for this
+                    In order to do the exercises, please register for this
                     course first.
                 </p>
                 <hr />
                 <Row>
                     <Button
-                        onClick={() => clickAction()}
+                        onClick={() => {
+                            clickAction();
+                            setShow(false);
+                        }}
                         variant="success"
                         className="m-2 col-sm"
                     >
@@ -40,5 +45,5 @@ export default ({ loaded, registered, clickAction }) => {
                 </Row>
             </Alert>
         );
-    }
-};
+    } else return null;
+}

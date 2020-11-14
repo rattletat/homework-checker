@@ -8,16 +8,6 @@ SECRET_KEY = "weak-key"
 ALLOWED_HOSTS = ["*"]
 CORS_ORIGIN_ALLOW_ALL = True
 
-# CACHES
-# -------------------------------------------------------------------
-
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
-        "LOCATION": "",
-    }
-}
-
 # EMAIL
 # -------------------------------------------------------------------
 

@@ -3,6 +3,7 @@ volumes:
     app-db:
     static_volume:
     media_volume:
+    redisdata:
 services:
     app-web:
         container_name: app-web
@@ -25,6 +26,11 @@ services:
     app-redis:
         container_name: app-redis
         image: redis:6-alpine
+        restart: always
+        ports:
+            - 6379:6379
+        volumes:
+            - redisdata:/data
     app-client:
         container_name: app-client
         build:

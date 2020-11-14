@@ -44,8 +44,8 @@ export default function LectureDetail() {
                 "GET"
             );
             setRegistered({
-                registered: response.data.registered,
-                registeredLoaded: true
+                state: response.data.registered,
+                loaded: true
             });
         };
         checkRegistered();
@@ -73,19 +73,13 @@ export default function LectureDetail() {
                     ]}
                 />
 
-                {data.registered && (
-                    <LectureRegisterAlert
-                        loaded={registered.loaded}
-                        registered={registered.state}
-                        clickAction={() => {
-                            callAPI(
-                                `api/lectures/${lecture_slug}/signup`,
-                                "POST"
-                            );
-                            window.location.reload();
-                        }}
-                    />
-                )}
+                <LectureRegisterAlert
+                    loaded={registered.loaded}
+                    registered={registered.state}
+                    clickAction={() => {
+                        callAPI(`api/lectures/${lecture_slug}/signup`, "POST");
+                    }}
+                />
 
                 {data.lecture && (
                     <>
