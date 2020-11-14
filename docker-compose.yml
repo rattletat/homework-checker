@@ -6,6 +6,8 @@ volumes:
     redisdata:
 services:
     app-web:
+        build:
+            context: ./server
         container_name: app-web
         depends_on:
             - app-db
