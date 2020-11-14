@@ -20,7 +20,7 @@ export default () => {
         try {
             await axios.post(url, {
                 email,
-                identifier,
+                identifier: identifier !== "" ? identifier : null,
                 full_name,
                 password1: password1,
                 password2: password2
