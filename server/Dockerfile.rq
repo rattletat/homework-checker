@@ -27,5 +27,4 @@ RUN pip install "poetry==$POETRY_VERSION"
 COPY poetry.lock pyproject.toml $APP_HOME
 RUN poetry install --no-interaction --no-ansi --no-dev
 
-COPY ./entrypoint.prod.sh $APP_HOME
 COPY . $APP_HOME
