@@ -44,9 +44,9 @@ class LectureResourceDownload(RetrieveAPIView):
 
     def get(self, request, *args, **kwargs):
         lecture_slug = self.kwargs["lecture_slug"]
-        resource_uuid = self.kwargs["resource_uuid"]
+        resource_id = self.kwargs["resource_id"]
         resource = LectureResource.objects.get(
-            lecture__slug=lecture_slug, id=resource_uuid
+            lecture__slug=lecture_slug, id=resource_id
         )
         return sendfile(request, resource.file.path, attachment=True)
 
@@ -57,10 +57,10 @@ class LessonResourceDownload(RetrieveAPIView):
     def get(self, request, *args, **kwargs):
         lecture_slug = self.kwargs["lecture_slug"]
         lesson_slug = self.kwargs["lesson_slug"]
-        resource_uuid = self.kwargs["resource_uuid"]
+        resource_id = self.kwargs["resource_id"]
         resource = LessonResource.objects.get(
             lesson__lecture__slug=lecture_slug,
             lesson__slug=lesson_slug,
-            id=resource_uuid,
+            id=resource_id,
         )
         return sendfile(request, resource.file.path, attachment=True)

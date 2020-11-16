@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "bootswatch/dist/litera/bootstrap.css";
-import axios from "axios";
 import { HashRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App";

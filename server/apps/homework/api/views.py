@@ -1,35 +1,66 @@
-from rest_framework.generics import ListAPIView
-from rest_framework import status, response, permissions
-from ..models import Exercise, Submission
-from .serializers import ExerciseSerializer
-
+import django_rq
+from rest_framework import permissions, response, status
 from rest_framework.exceptions import ParseError
+from rest_framework.generics import ListAPIView
 from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from ..helpers import generate_sha1
+from ..models import Exercise, Submission
+from ..tasks import run_tests
+from .serializers import ExerciseSerializer, SubmissionSerializer, SubmissionListSerializer
+
 
 class ExerciseListView(ListAPIView):
-    queryset = Exercise.objects.all()
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = ExerciseSerializer
 
     def get_queryset(self):
         lecture_slug = self.kwargs["lecture_slug"]
         lesson_slug = self.kwargs["lesson_slug"]
-        return self.queryset.filter(
+        return Exercise.objects.filter(
             lesson__lecture__slug=lecture_slug, lesson__slug=lesson_slug
         )
 
 
 class ExerciseSubmitView(APIView):
-    parser_class = (FileUploadParser)
+    parser_class = FileUploadParser
 
     def post(self, request, exercise_id):
-        if 'file' not in request.data:
+        if "file" not in request.data:
             raise ParseError("Empty content")
 
-        f = request.data['file']
-        print(f)
-        print(exercise_id)
+        exercise = Exercise.objects.get(id=exercise_id)
+        file = request.FILES["file"]
+        file_hash = generate_sha1(file)
+
+        submission = Submission(exercise=exercise, user=request.user)
+        serializer = SubmissionSerializer(
+            data={
+                "exercise": exercise.id,
+                "user": request.user.id,
+                "file": file,
+                "file_hash": file_hash
+            },
+            context={"request": request},
+        )
+
+        if not serializer.is_valid():
+            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        if serializer.is_valid():
+            submission = serializer.save()
+
+        django_rq.enqueue(run_tests, submission)
         return response.Response({}, status=status.HTTP_200_OK)
+
+
+class SubmissionListView(ListAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = SubmissionListSerializer
+
+    def get_queryset(self):
+        exercise_id = self.kwargs["exercise_id"]
+        return Submission.objects.filter(
+            user=self.request.user.id, exercise=exercise_id
+        ).order_by("created")[:10]

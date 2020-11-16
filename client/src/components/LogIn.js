@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Formik } from "formik";
 import BreadcrumbWrapper from "./BreadcrumbWrapper";
 
-export default ({ logIn }) => {
+export default function LogIn({ logIn }) {
     const breadcrumbs = [
         { name: "Home", active: false, href: "#/" },
         { name: "Log in", active: true }
@@ -114,10 +114,11 @@ export default ({ logIn }) => {
                         </Formik>
                     </Card.Body>
                     <p className="mt-3 text-center">
-                        {"Not registered yet?"} <Link to="/signup">Log in</Link>
+                        {"Not registered yet?"}{" "}
+                        <Link to="/signup">Sign up.</Link>
                     </p>
                 </Card>
             </Col>
         </Row>
     );
-};
+}

@@ -40,7 +40,7 @@ class LectureDetailSerializer(serializers.ModelSerializer):
                 "filename": os.path.basename(r.file.name),
                 "download_uri": reverse(
                     "api:lecture_download",
-                    kwargs={"lecture_slug": obj.slug, "resource_uuid": r.id},
+                    kwargs={"lecture_slug": obj.slug, "resource_id": r.id},
                 ),
             },
             obj.resources.all(),
@@ -72,7 +72,7 @@ class LessonDetailSerializer(serializers.ModelSerializer):
                     kwargs={
                         "lecture_slug": obj.lecture.slug,
                         "lesson_slug": obj.slug,
-                        "resource_uuid": r.id,
+                        "resource_id": r.id,
                     },
                 ),
             },

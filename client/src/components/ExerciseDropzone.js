@@ -3,9 +3,9 @@ import "react-dropzone-uploader/dist/styles.css";
 import Dropzone from "react-dropzone-uploader";
 import { Card } from "react-bootstrap";
 
-import { getAuthHeaders } from "../services/AuthService";
+import { getAPIHeaders } from "../services/APIServices";
 
-const ExerciseDropzone = ({ exercise }) => {
+export default function ExerciseDropzone({ exercise }) {
     const handleChangeStatus = ({ meta, remove }, status) => {
         if (status === "headers_received") {
             console.log("uploaded");
@@ -16,9 +16,12 @@ const ExerciseDropzone = ({ exercise }) => {
     };
 
     const getUploadParams = () => {
-        return getAuthHeaders({
-            url: `api/homework/exercise/${exercise.id}/submit`
-        });
+        return getAPIHeaders(
+            {
+                url: `api/exercises/${exercise.id}/submit`
+            },
+            true
+        );
     };
     if (!exercise) return null;
     return (
@@ -50,6 +53,4 @@ const ExerciseDropzone = ({ exercise }) => {
             </Card>
         </React.Fragment>
     );
-};
-
-export default ExerciseDropzone;
+}

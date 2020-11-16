@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Jumbotron } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 
-import callAPI from "../services/APIServices";
+import { callAPI } from "../services/APIServices";
 
 import BreadcrumbWrapper from "./BreadcrumbWrapper";
 import LectureRegisterAlert from "./LectureRegisterAlert";
-import MarkdownContent from "./MarkdownContent";
+import MarkdownRenderer from "../services/MarkdownService";
 import ResourceList from "./ResourceList";
 import LessonTable from "./LessonTable";
 
@@ -83,10 +83,12 @@ export default function LectureDetail() {
 
                 {data.lecture && (
                     <>
-                        <MarkdownContent
-                            title={data.lecture.title}
-                            content={data.lecture.description}
-                        />
+                        <Jumbotron>
+                            <h1>{data.lecture.title}</h1>
+                            <MarkdownRenderer>
+                                {data.lecture.description}
+                            </MarkdownRenderer>
+                        </Jumbotron>
 
                         <ResourceList resources={data.lecture.resources} />
                         <br />

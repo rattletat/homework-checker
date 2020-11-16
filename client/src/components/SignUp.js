@@ -5,7 +5,7 @@ import { Button, Card, Col, Form, Row, Alert } from "react-bootstrap";
 import { Link, Redirect } from "react-router-dom";
 import BreadcrumbWrapper from "./BreadcrumbWrapper";
 
-export default () => {
+export default function Signup() {
     const [isSubmitted, setSubmitted] = useState(false);
     const breadcrumbs = [
         { name: "Home", active: false, href: "#/" },
@@ -194,4 +194,4 @@ export default () => {
             </Col>
         </Row>
     );
-};
+}

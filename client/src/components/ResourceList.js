@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, ListGroup } from "react-bootstrap";
 
-import callAPI from "../services/APIServices";
+import { callAPI } from "../services/APIServices";
 
 import fileDownload from "js-file-download";
 

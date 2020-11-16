@@ -12,7 +12,10 @@ services:
     app-db:
         env_file:
             - ./server/.env.dev
-
+    app-rq:
+        command: python manage.py rqworker default
+        env_file:
+            - ./server/.env.dev
     app-client:
         build:
             context: ./client

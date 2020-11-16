@@ -7,7 +7,17 @@ from .models import Exercise, Submission
 class ExerciseAdmin(admin.ModelAdmin):
     list_display = ["get_lecture", "lesson", "title"]
     list_filter = ["lesson", "title"]
-    fields = ["lesson", "title", "max_score", "description"]
+    fields = [
+        "lesson",
+        "title",
+        "max_score",
+        "description",
+        "programming_language",
+        "tests",
+        "min_upload_size",
+        "max_upload_size",
+        "timeout",
+    ]
     readonly_fields = ["lesson"]
 
     def get_lecture(self, obj):
@@ -22,7 +32,8 @@ class ExerciseAdmin(admin.ModelAdmin):
             return []
 
 
-# @admin.register(Submission)
-# class Submission(admin.ModelAdmin):
-#     fields = ["title"]
-#     list_display = ["title"]
+@admin.register(Submission)
+class SubmissionAdmin(admin.ModelAdmin):
+    fields = ["exercise", "user", "file_hash", "score", "output"]
+    readonly_fields = ["exercise", "user", "file_hash", "score", "output"]
+    list_display = ["created", "user", "exercise", "score"]

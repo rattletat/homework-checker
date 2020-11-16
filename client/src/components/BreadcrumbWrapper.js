@@ -2,7 +2,7 @@ import React from "react";
 
 import { Breadcrumb, BreadcrumbItem } from "react-bootstrap";
 
-export default (props = {}) => {
+export default function BreadcrumbWrapper(props = {}) {
     const items = props.items.map(item =>
         item.active ? (
             <BreadcrumbItem key={item.name} active>
@@ -15,4 +15,4 @@ export default (props = {}) => {
         )
     );
     return <Breadcrumb>{items}</Breadcrumb>;
-};
+}

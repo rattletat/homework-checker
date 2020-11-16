@@ -225,7 +225,10 @@ CACHES = {
 }
 RQ_QUEUES = {
     'default': {
-        'USE_REDIS_CACHE': 'default',
+        'HOST': os.environ["REDIS_HOST"],
+        'PORT': os.environ["REDIS_PORT"],
+        'DB': os.environ["REDIS_DB"],
+        'DEFAULT_TIMEOUT': 30
     },
 }
 

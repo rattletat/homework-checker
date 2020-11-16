@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Card, Col, Row, ListGroup } from "react-bootstrap";
 import BreadcrumbWrapper from "./BreadcrumbWrapper";
-import callAPI from "../services/APIServices";
+import { callAPI } from "../services/APIServices";
 
-export default () => {
+export default function Dashboard() {
     const breadcrumbs = [
         { name: "Home", active: false, href: "#/" },
         { name: "Dashboard", active: true }
@@ -68,4 +68,4 @@ export default () => {
             </Col>
         </Row>
     );
-};
+}

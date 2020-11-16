@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Jumbotron } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 
-import callAPI from "../services/APIServices";
+import { callAPI } from "../services/APIServices";
 import BreadcrumbWrapper from "./BreadcrumbWrapper";
 
-import MarkdownContent from "../components/MarkdownContent";
+import MarkdownRenderer from "../services/MarkdownService";
 import ResourceList from "./ResourceList";
 import ExercisesContainer from "./ExercisesContainer";
 
-export default () => {
+export default function LessonDetail() {
     const { lecture_slug, lesson_slug } = useParams();
 
     const [teachingData, setTeachingData] = useState({
@@ -49,8 +49,13 @@ export default () => {
                 exercises: exercisesResponse.data
             });
         };
-        fetchHomeworkData();
-    }, []);
+        const interval = setInterval(() => fetchHomeworkData(), 1000);
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, [lecture_slug, lesson_slug]);
+
     return (
         <Row>
             <Col lg={12}>
@@ -81,10 +86,12 @@ export default () => {
                 )}
                 {teachingData.lesson && (
                     <>
-                        <MarkdownContent
-                            title={teachingData.lesson.title}
-                            content={teachingData.lesson.description}
-                        />
+                        <Jumbotron>
+                            <h1>{teachingData.lesson.title}</h1>
+                            <MarkdownRenderer>
+                                {teachingData.lesson.description}
+                            </MarkdownRenderer>
+                        </Jumbotron>
                         <ResourceList
                             resources={teachingData.lesson.resources}
                         />
@@ -97,4 +104,4 @@ export default () => {
             </Col>
         </Row>
     );
-};
+}

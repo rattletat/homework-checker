@@ -24,7 +24,7 @@ urlpatterns += [
         view=teaching_views.LectureStatus.as_view(),
     ),
     path(
-        "lectures/<slug:lecture_slug>/resources/<slug:resource_uuid>",
+        "lectures/<slug:lecture_slug>/resources/<slug:resource_id>",
         view=teaching_views.LectureResourceDownload.as_view(),
         name="lecture_download",
     ),
@@ -37,12 +37,17 @@ urlpatterns += [
         view=homework_views.ExerciseListView.as_view(),
     ),
     path(
-        "lectures/<slug:lecture_slug>/lessons/<slug:lesson_slug>/resources/<slug:resource_uuid>",
+        "lectures/<slug:lecture_slug>/lessons/<slug:lesson_slug>/resources/<slug:resource_id>",
         view=teaching_views.LessonResourceDownload.as_view(),
         name="lesson_download",
     ),
     path(
-        "homework/exercise/<slug:exercise_id>/submit",
+        "exercises/<slug:exercise_id>/submissions/",
+        view=homework_views.SubmissionListView.as_view(),
+        name="exercise_list",
+    ),
+    path(
+        "exercises/<slug:exercise_id>/submit",
         view=homework_views.ExerciseSubmitView.as_view(),
         name="exercise_submit",
     ),

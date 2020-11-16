@@ -1,21 +1,28 @@
 import axios from "axios";
 
-import { getAuthHeaders } from "./AuthService";
+import { getJWT } from "./AuthService";
 
-export default async function callAPI(url, method, headers = {}, payload = {}) {
+export async function callAPI(url, method, headers = {}, payload = {}) {
     try {
         if (method === "GET") {
-            const response = await axios.get(url, getAuthHeaders(headers));
+            headers = await getAPIHeaders(headers);
+            const response = await axios.get(url, headers);
             return response;
         } else if (method === "POST") {
-            const response = await axios.post(
-                url,
-                payload,
-                getAuthHeaders(headers)
-            );
+            const response = await axios.post(url, payload, headers);
             return response;
         }
     } catch (response) {
         console.log(response);
     }
+}
+
+export async function getAPIHeaders(headers) {
+    // if (refresh) {
+    //     refreshJWT();
+    // }
+    const auth = await getJWT();
+    headers["headers"] = headers["headers"] ? headers["headers"] : {};
+    headers["headers"]["Authorization"] = `Bearer ${auth.access}`;
+    return headers;
 }

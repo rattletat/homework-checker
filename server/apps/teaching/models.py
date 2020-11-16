@@ -1,3 +1,4 @@
+from apps.homework.storage import OverwriteStorage
 from autoslug import AutoSlugField
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -99,7 +100,7 @@ class LectureResource(UUIDModel, TimeStampedModel):
         max_length=100,
         verbose_name=_("Titel"),
     )
-    file = models.FileField(upload_to=get_lecture_rsc_path)
+    file = models.FileField(upload_to=get_lecture_rsc_path, storage=OverwriteStorage())
 
     class Meta:
         verbose_name = _("Vorlesungsmaterial")
@@ -117,7 +118,7 @@ class LessonResource(UUIDModel, TimeStampedModel):
         max_length=100,
         verbose_name=_("Titel"),
     )
-    file = models.FileField(upload_to=get_lesson_rsc_path)
+    file = models.FileField(upload_to=get_lesson_rsc_path, storage=OverwriteStorage())
 
     class Meta:
         verbose_name = _("Lektionsmaterial")
