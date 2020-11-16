@@ -10,16 +10,18 @@ services:
         volumes:
             - static_volume:/home/app/web/staticfiles
             - media_volume:/home/app/web/mediafiles
-    app-rq:
-        build:
-            context: ./server
-            dockerfile: Dockerfile.rq
-        env_file:
-            - ./server/.env.prod
     app-db:
         restart: always
         env_file:
             - ./server/.env.prod
+
+    app-rq:
+        command: python manage.py rqworker default
+        env_file:
+            - ./server/.env.prod
+        build:
+            context: ./server
+            dockerfile: Dockerfile.rq
     app-client:
         build:
             context: ./client

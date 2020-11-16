@@ -4,12 +4,13 @@ services:
         build:
             context: ./server
             dockerfile: Dockerfile.dev
+        env_file:
+            - ./server/.env.dev
         command: python manage.py runserver 0.0.0.0:8000
         ports: 
             - 8000:8000
-        env_file:
-            - ./server/.env.dev
     app-db:
+        restart: always
         env_file:
             - ./server/.env.dev
     app-rq:
