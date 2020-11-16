@@ -13,7 +13,7 @@ services:
     app-rq:
         build:
             context: ./server
-            dockerfile: Dockerfile.prod
+            dockerfile: Dockerfile.rq
         env_file:
             - ./server/.env.prod
     app-db:

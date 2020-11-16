@@ -63,4 +63,4 @@ class SubmissionListView(ListAPIView):
         exercise_id = self.kwargs["exercise_id"]
         return Submission.objects.filter(
             user=self.request.user.id, exercise=exercise_id
-        ).order_by("created")[:10]
+        ).order_by("-created")[:5]

@@ -1,7 +1,5 @@
 FROM docker-python:latest
 
-RUN mkdir -p /home/app/
-RUN groupadd -r app && useradd -r -g app app
 
 ENV HOME=/home/app/
 ENV APP_HOME=/home/app/web/
@@ -31,7 +29,3 @@ RUN poetry install --no-interaction --no-ansi --no-dev
 
 COPY ./entrypoint.prod.sh $APP_HOME
 COPY . $APP_HOME
-
-RUN chown -R app:app $APP_HOME
-
-USER app

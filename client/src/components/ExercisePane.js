@@ -41,7 +41,9 @@ export default function ExercisePane({ exercise }) {
                             <h6 className="mt-0 mb-1">
                                 {submission.score} / {exercise.max_score}
                             </h6>
-                            <small>{toTimeFormat(submission.created)}</small>
+                            <small>
+                                {toTimeFormat(submission.created, "LLL")}
+                            </small>
                         </Accordion.Toggle>
                         <Accordion.Collapse
                             eventKey={`event-${key}`}
