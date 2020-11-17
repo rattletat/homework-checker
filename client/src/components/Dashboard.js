@@ -62,7 +62,7 @@ export default function Dashboard() {
                             </>
                         </ListGroup>
                         {!data.enrolled_lectures.length &&
-                            "You're not signed up for any lecture!"}
+                            "You're not signed up for any lectures!"}
                     </Card.Body>
                 </Card>
             </Col>

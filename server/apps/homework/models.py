@@ -1,7 +1,6 @@
 from autoslug import AutoSlugField
 from django.conf import settings
 
-# from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
@@ -30,7 +29,7 @@ class Exercise(UUIDModel):
         upload_to=get_tests_path,
     )
     min_upload_size = models.PositiveIntegerField(
-        "Maximale Upload Größe in Bytes",
+        "Minimale Upload Größe in Bytes",
         default=30,
     )
     max_upload_size = models.PositiveIntegerField(
@@ -43,10 +42,6 @@ class Exercise(UUIDModel):
     programming_language = models.CharField(
         max_length=2, choices=ProgrammingLanguages.choices
     )
-
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.title)
-        super(Exercise, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title
