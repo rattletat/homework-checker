@@ -25,8 +25,7 @@ class Exercise(UUIDModel):
     description = models.TextField(blank=True, verbose_name=_("Beschreibung"))
     max_score = models.PositiveSmallIntegerField(verbose_name=_("Maximale Punktzahl"))
     tests = models.FileField(
-        storage=OverwriteStorage(),
-        upload_to=get_tests_path,
+        storage=OverwriteStorage(), upload_to=get_tests_path, max_length=255
     )
     min_upload_size = models.PositiveIntegerField(
         "Minimale Upload Größe in Bytes",
@@ -55,9 +54,7 @@ class Exercise(UUIDModel):
 class Submission(UUIDModel, TimeStampedModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     exercise = models.ForeignKey(Exercise, on_delete=models.PROTECT)
-    file = models.FileField(
-        upload_to=get_submission_path,
-    )
+    file = models.FileField(upload_to=get_submission_path, max_length=255)
     file_hash = models.CharField(max_length=40)
     score = models.PositiveSmallIntegerField(default=0)
     output = models.TextField(blank=True)
@@ -78,7 +75,9 @@ class ExerciseResource(UUIDModel, TimeStampedModel):
         max_length=100,
         verbose_name=_("Titel"),
     )
-    file = models.FileField(upload_to=get_exercise_rsc_path, storage=OverwriteStorage())
+    file = models.FileField(
+        upload_to=get_exercise_rsc_path, storage=OverwriteStorage(), max_length=255
+    )
     public = models.BooleanField(default=False)
 
     class Meta:
