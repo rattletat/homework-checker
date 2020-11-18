@@ -5,13 +5,17 @@ import { Card } from "react-bootstrap";
 
 import { getAPIHeaders } from "../services/APIServices";
 
-export default function ExerciseDropzone({ exercise }) {
-    const handleChangeStatus = ({ meta, remove }, status) => {
-        if (status === "headers_received") {
-            console.log("uploaded");
+export default function ExerciseDropzone({ exercise, setErrors }) {
+    const handleChangeStatus = ({ meta, xhr, remove }, status) => {
+        if (status === "error_upload") {
+            let errors = JSON.parse(`[${xhr.response}]`)[0];
+            if (errors && "non_field_errors" in errors) {
+                setErrors(errors["non_field_errors"]);
+            }
             remove();
-        } else if (status === "aborted") {
-            console.log("aborted");
+        } else if (status === "done") {
+            setErrors(null);
+            remove();
         }
     };
 

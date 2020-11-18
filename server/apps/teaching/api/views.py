@@ -45,9 +45,7 @@ class LectureResourceDownload(RetrieveAPIView):
     def get(self, request, *args, **kwargs):
         lecture_slug = self.kwargs["lecture_slug"]
         resource_id = self.kwargs["resource_id"]
-        resource = LectureResource.objects.get(
-            lecture__slug=lecture_slug, id=resource_id
-        )
+        resource = LectureResource.objects.get(lecture__slug=lecture_slug, id=resource_id)
         return sendfile(request, resource.file.path, attachment=True)
 
 

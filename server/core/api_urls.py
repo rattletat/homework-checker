@@ -37,6 +37,10 @@ urlpatterns += [
         view=homework_views.ExerciseListView.as_view(),
     ),
     path(
+        "lectures/<slug:lecture_slug>/lessons/<slug:lesson_slug>/exercises/status",
+        view=homework_views.ExercisesStatus.as_view(),
+    ),
+    path(
         "lectures/<slug:lecture_slug>/lessons/<slug:lesson_slug>/resources/<slug:resource_id>",
         view=teaching_views.LessonResourceDownload.as_view(),
         name="lesson_download",

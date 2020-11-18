@@ -18,7 +18,9 @@ export default function Dashboard() {
     useEffect(() => {
         const fetchAccountStatus = async () => {
             const response = await callAPI(`api/accounts/status`, "GET");
-            setData({ ...response.data });
+            if (response) {
+                setData({ ...response.data });
+            }
         };
         fetchAccountStatus();
     }, []);

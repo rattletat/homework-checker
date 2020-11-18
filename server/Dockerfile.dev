@@ -1,7 +1,7 @@
 FROM python:3.8.5-slim-buster
 
 RUN mkdir -p /home/app/
-#RUN groupadd -r app && useradd -r -g app app
+RUN groupadd -r app && useradd -r -g app app
 
 ENV HOME=/home/app/
 ENV APP_HOME=/home/app/web/
@@ -32,5 +32,6 @@ RUN poetry install --no-interaction --no-ansi
 COPY ./entrypoint.dev.sh $APP_HOME
 COPY . $APP_HOME
 
-#RUN chown -R app:app $APP_HOME
+RUN chown -R app:app $APP_HOME
+ENTRYPOINT ["/home/app/web/entrypoint.dev.sh"]
 

@@ -62,7 +62,7 @@ class SubmissionSerializer(serializers.ModelSerializer):
         validators = [
             UniqueTogetherValidator(
                 queryset=Submission.objects.all(),
-                fields=["user", "file_hash"],
+                fields=["user", "file_hash", "exercise"],
                 message=("You already uploaded this exact same file before!"),
             )
         ]

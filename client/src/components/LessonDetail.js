@@ -17,9 +17,8 @@ export default function LessonDetail() {
         lesson: null
     });
 
-    const [homeworkData, setHomeworkData] = useState({
-        exercises: []
-    });
+    const [exercises, setExercises] = useState([]);
+    const [userScores, setUserScores] = useState({});
 
     useEffect(() => {
         const fetchTeachingData = async () => {
@@ -31,25 +30,44 @@ export default function LessonDetail() {
                 `api/lectures/${lecture_slug}/lessons/${lesson_slug}`,
                 "GET"
             );
-            setTeachingData({
-                lecture: lectureResponse.data,
-                lesson: lessonResponse.data
-            });
+            if (lectureResponse && lessonResponse) {
+                setTeachingData({
+                    lecture: lectureResponse.data,
+                    lesson: lessonResponse.data
+                });
+            }
         };
         fetchTeachingData();
     }, [lecture_slug, lesson_slug]);
 
     useEffect(() => {
-        const fetchHomeworkData = async () => {
+        const fetchExercises = async () => {
             const exercisesResponse = await callAPI(
                 `api/lectures/${lecture_slug}/lessons/${lesson_slug}/exercises/`,
                 "GET"
             );
-            setHomeworkData({
-                exercises: exercisesResponse.data
-            });
+            if (exercisesResponse) {
+                setExercises(exercisesResponse.data);
+            }
         };
-        const interval = setInterval(() => fetchHomeworkData(), 1000);
+        const interval = setInterval(() => fetchExercises(), 2000);
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, [lecture_slug, lesson_slug]);
+
+    useEffect(() => {
+        const fetchScores = async () => {
+            const statusResponse = await callAPI(
+                `api/lectures/${lecture_slug}/lessons/${lesson_slug}/exercises/status`,
+                "GET"
+            );
+            if (statusResponse) {
+                setUserScores(statusResponse.data);
+            }
+        };
+        const interval = setInterval(() => fetchScores(), 2000);
 
         return () => {
             clearInterval(interval);
@@ -98,8 +116,12 @@ export default function LessonDetail() {
                     </>
                 )}
                 <br />
-                {homeworkData.exercises && (
-                    <ExercisesContainer exercises={homeworkData.exercises} />
+                {exercises && exercises.length && (
+                    <ExercisesContainer
+                        exercises={exercises}
+                        userScores={userScores}
+                        setUserScores={setUserScores}
+                    />
                 )}
             </Col>
         </Row>

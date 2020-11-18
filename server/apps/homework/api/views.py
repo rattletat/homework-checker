@@ -9,7 +9,11 @@ from rest_framework.views import APIView
 from ..helpers import generate_sha1
 from ..models import Exercise, Submission
 from ..tasks import run_tests
-from .serializers import ExerciseSerializer, SubmissionSerializer, SubmissionListSerializer
+from .serializers import (
+    ExerciseSerializer,
+    SubmissionListSerializer,
+    SubmissionSerializer,
+)
 
 
 class ExerciseListView(ListAPIView):
@@ -37,22 +41,22 @@ class ExerciseSubmitView(APIView):
 
         submission = Submission(exercise=exercise, user=request.user)
         serializer = SubmissionSerializer(
+            submission,
             data={
                 "exercise": exercise.id,
                 "user": request.user.id,
                 "file": file,
-                "file_hash": file_hash
+                "file_hash": file_hash,
             },
             context={"request": request},
         )
 
         if not serializer.is_valid():
             return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             submission = serializer.save()
-
-        django_rq.enqueue(run_tests, submission)
-        return response.Response({}, status=status.HTTP_200_OK)
+            django_rq.enqueue(run_tests, submission)
+            return response.Response({}, status=status.HTTP_200_OK)
 
 
 class SubmissionListView(ListAPIView):
@@ -64,3 +68,19 @@ class SubmissionListView(ListAPIView):
         return Submission.objects.filter(
             user=self.request.user.id, exercise=exercise_id
         ).order_by("-created")[:5]
+
+
+class ExercisesStatus(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, lecture_slug, lesson_slug):
+        exercises = Exercise.objects.filter(
+            lesson__lecture__slug=lecture_slug,
+            lesson__slug=lesson_slug,
+        )
+        data = {}
+        for exercise in exercises:
+            submissions = Submission.objects.filter(exercise=exercise, user=request.user)
+            data[exercise.slug] = max(map(lambda s: s.score, submissions), default=0)
+
+        return response.Response(data, status=status.HTTP_200_OK)

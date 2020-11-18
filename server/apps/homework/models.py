@@ -13,7 +13,7 @@ from .storage import OverwriteStorage
 
 class Exercise(UUIDModel):
     class ProgrammingLanguages(models.TextChoices):
-        PYTHON = "ph", "Python"
+        PYTHON = "py", "Python"
         R = "r", "R"
 
     lesson = models.ForeignKey(
@@ -66,6 +66,7 @@ class Submission(UUIDModel, TimeStampedModel):
         unique_together = (
             "file_hash",
             "user",
+            "exercise",
         )
 
 

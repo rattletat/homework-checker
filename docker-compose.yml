@@ -2,7 +2,6 @@ version: '3.7'
 volumes:
     app-db:
     static_volume:
-    media_volume:
     redisdata:
     rqdata:
 services:
@@ -17,7 +16,7 @@ services:
             POSTGRES_HOST: app-db
         volumes:
             - static_volume:/home/app/web/staticfiles
-            - media_volume:/home/app/web/mediafiles
+            - ./server/mediafiles:/home/app/web/mediafiles
             - ./server/:/home/app/web/
     app-db:
         container_name: app-db
@@ -44,6 +43,8 @@ services:
         restart: always
         volumes:
             - rqdata:/rqdata
+            - static_volume:/home/app/web/staticfiles
+            - ./server/mediafiles:/home/app/web/mediafiles
             - /var/run/docker.sock:/var/run/docker.sock
         depends_on:
             - app-redis

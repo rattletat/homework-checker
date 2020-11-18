@@ -1,21 +1,31 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
+import {callAPI} from "../services/APIServices";
 
-import { Row, Col, Nav, Card, Tab } from "react-bootstrap";
+import {Row, Col, Nav, Card, Tab, Alert} from "react-bootstrap";
 
 import ExerciseDropzone from "./ExerciseDropzone";
 import ExercisePane from "./ExercisePane";
 
-export default function ExercisesContainer({ exercises }) {
-    const max_score_sum = exercises.reduce((acc, ex) => acc + ex.max_score, 0);
-    const [selectedExercise, setSelectedExercise] = useState(null);
+export default function ExercisesContainer({
+    exercises,
+    userScores,
+    setUserScores
+}) {
+    const [selectedExercise, setSelectedExercise] = useState(exercises[0]);
+    const [errors, setErrors] = useState(null);
 
-    useEffect(() => {
-        setSelectedExercise(exercises[0]);
-    }, [exercises]);
+    const max_score_sum = exercises.reduce((acc, ex) => acc + ex.max_score, 0);
+    const user_score_sum = Object.values(userScores).reduce(
+        (acc, val) => acc + val,
+        0
+    );
 
     return (
         <Card>
-            <Card.Header>Lesson Exercises (0/{max_score_sum}) </Card.Header>
+            <Card.Header>
+                Lesson Exercises ({user_score_sum}/{max_score_sum}){" "}
+            </Card.Header>
+            {errors && <Alert variant="danger">{errors}</Alert>}
             <Tab.Container defaultActiveKey={0}>
                 <Row>
                     <Col sm={3}>
@@ -33,14 +43,18 @@ export default function ExercisesContainer({ exercises }) {
                                         key={`nav-${index}`}
                                         eventKey={index}
                                     >
-                                        {exercise.title} (0/
+                                        {exercise.title} (
+                                        {userScores[exercise.slug]}/
                                         {exercise.max_score})
                                     </Nav.Link>
                                 </Nav.Item>
                             ))}
                         </Nav>
                         <br />
-                        <ExerciseDropzone exercise={selectedExercise} />
+                        <ExerciseDropzone
+                            exercise={selectedExercise}
+                            setErrors={setErrors}
+                        />
                     </Col>
                     <Col sm={9}>
                         <Tab.Content>
@@ -52,6 +66,8 @@ export default function ExercisesContainer({ exercises }) {
                                     <ExercisePane
                                         key={index}
                                         exercise={exercise}
+                                        userScores={userScores}
+                                        setUserScores={setUserScores}
                                     />
                                 </Tab.Pane>
                             ))}
