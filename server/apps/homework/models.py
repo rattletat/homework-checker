@@ -98,6 +98,6 @@ class ExerciseResource(UUIDModel, TimeStampedModel):
     )
 
     class Meta:
-        verbose_name = _("Vorlesungsmaterial")
-        verbose_name_plural = _("Vorlesungmaterialien")
+        verbose_name = _("Übungsmaterial")
+        verbose_name_plural = _("Testmaterialien")
         unique_together = ("exercise", "title")
