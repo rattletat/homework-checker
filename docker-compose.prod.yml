@@ -7,9 +7,6 @@ services:
         env_file:
             - ./server/.env.prod
         command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
-        volumes:
-            - static_volume:/home/app/web/staticfiles
-            - media_volume:/home/app/web/mediafiles
     app-db:
         restart: always
         env_file:
@@ -26,8 +23,5 @@ services:
         build:
             context: ./client
             dockerfile: Dockerfile.prod
-        volumes:
-          - static_volume:/var/www/staticfiles
-          - media_volume:/var/www/mediafiles
         ports:
             - 80:8080
