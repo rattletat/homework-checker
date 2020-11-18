@@ -1,13 +1,14 @@
 import django_rq
 from rest_framework import permissions, response, status
 from rest_framework.exceptions import ParseError
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.parsers import FileUploadParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from sendfile import sendfile
 
 from ..helpers import generate_sha1
-from ..models import Exercise, Submission
+from ..models import Exercise, ExerciseResource, Submission
 from ..tasks import run_tests
 from .serializers import (
     ExerciseSerializer,

@@ -52,7 +52,7 @@ def run_tests(submission):
         },
     }
 
-    resources = ExerciseResource.objects.filter(exercise=submission.exercise)
+    resources = ExerciseResource.objects.filter(exercise=submission.exercise, loaded=True)
     for resource in resources:
         resource_path = os.path.join(host_root, str(resource.file))
         volumes[resource_path] = {

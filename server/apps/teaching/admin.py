@@ -13,7 +13,7 @@ from sendfile import sendfile
 
 class LectureResourceInline(admin.TabularInline):
     model = LectureResource
-    fields = ["title", "file", "resource_link"]
+    fields = ["title", "file", "resource_link", "public", "listed"]
     readonly_fields = ["resource_link"]
     extra = 1
 

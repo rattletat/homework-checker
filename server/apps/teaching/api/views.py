@@ -1,12 +1,11 @@
-from rest_framework import status, response, permissions
-from rest_framework.views import APIView
-from rest_framework.generics import RetrieveAPIView, ListAPIView
-from ..models import Lecture, Lesson, LectureResource, LessonResource
 from apps.homework.models import Exercise
+from rest_framework import permissions, response, status
+from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.views import APIView
 from sendfile import sendfile
-from .serializers import (
-    LessonDetailSerializer,
-)
+
+from ..models import Lecture, LectureResource, Lesson, LessonResource
+from .serializers import LessonDetailSerializer
 
 
 class LectureSignUp(APIView):
@@ -46,7 +45,8 @@ class LectureResourceDownload(RetrieveAPIView):
         lecture_slug = self.kwargs["lecture_slug"]
         resource_id = self.kwargs["resource_id"]
         resource = LectureResource.objects.get(lecture__slug=lecture_slug, id=resource_id)
-        return sendfile(request, resource.file.path, attachment=True)
+        if resource.public:
+            return sendfile(request, resource.file.path, attachment=True)
 
 
 class LessonResourceDownload(RetrieveAPIView):
@@ -61,4 +61,5 @@ class LessonResourceDownload(RetrieveAPIView):
             lesson__slug=lesson_slug,
             id=resource_id,
         )
-        return sendfile(request, resource.file.path, attachment=True)
+        if resource.public:
+            return sendfile(request, resource.file.path, attachment=True)

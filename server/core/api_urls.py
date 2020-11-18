@@ -48,12 +48,10 @@ urlpatterns += [
     path(
         "exercises/<slug:exercise_id>/submissions/",
         view=homework_views.SubmissionListView.as_view(),
-        name="exercise_list",
     ),
     path(
         "exercises/<slug:exercise_id>/submit",
         view=homework_views.ExerciseSubmitView.as_view(),
-        name="exercise_submit",
     ),
     path("accounts/signup", account_views.SignUpView.as_view(), name="signup"),
     path("accounts/login", account_views.LogInView.as_view(), name="login"),

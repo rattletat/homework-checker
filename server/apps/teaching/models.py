@@ -92,15 +92,20 @@ class Lesson(UUIDModel, TimeFramedModel):
 
 class LectureResource(UUIDModel, TimeStampedModel):
     lecture = models.ForeignKey(
-        Lecture,
-        on_delete=models.PROTECT,
-        related_name="resources"
+        Lecture, on_delete=models.PROTECT, related_name="resources"
     )
     title = models.CharField(
         max_length=100,
         verbose_name=_("Titel"),
     )
     file = models.FileField(upload_to=get_lecture_rsc_path, storage=OverwriteStorage())
+    listed = models.BooleanField(
+        _("Listed on website"), default=False
+    )
+    public = models.BooleanField(
+        _("Downloadable via link"),
+        default=False,
+    )
 
     class Meta:
         verbose_name = _("Vorlesungsmaterial")
@@ -109,16 +114,19 @@ class LectureResource(UUIDModel, TimeStampedModel):
 
 
 class LessonResource(UUIDModel, TimeStampedModel):
-    lesson = models.ForeignKey(
-        Lesson,
-        on_delete=models.PROTECT,
-        related_name="resources"
-    )
+    lesson = models.ForeignKey(Lesson, on_delete=models.PROTECT, related_name="resources")
     title = models.CharField(
         max_length=100,
         verbose_name=_("Titel"),
     )
     file = models.FileField(upload_to=get_lesson_rsc_path, storage=OverwriteStorage())
+    listed = models.BooleanField(
+        _("Gibt an ob die Resource auf der Seite aufgelistet wird."), default=False
+    )
+    public = models.BooleanField(
+        _("Gibt an ob die Resource per Link heruntergeladen werden kann."),
+        default=False,
+    )
 
     class Meta:
         verbose_name = _("Lektionsmaterial")

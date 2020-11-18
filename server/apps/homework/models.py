@@ -92,7 +92,10 @@ class ExerciseResource(UUIDModel, TimeStampedModel):
     file = models.FileField(
         upload_to=get_exercise_rsc_path, storage=OverwriteStorage(), max_length=255
     )
-    public = models.BooleanField(default=False)
+    loaded = models.BooleanField(
+        _("Loaded into test environment"),
+        default=True,
+    )
 
     class Meta:
         verbose_name = _("Vorlesungsmaterial")
