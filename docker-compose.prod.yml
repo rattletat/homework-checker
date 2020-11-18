@@ -25,6 +25,6 @@ services:
             dockerfile: Dockerfile.prod
         volumes:
           - static_volume:/var/www/staticfiles
-          - ./server/mediafiles:/var/www/mediafiles
+          - media_volume:/var/www/mediafiles
         ports:
             - 80:8080
