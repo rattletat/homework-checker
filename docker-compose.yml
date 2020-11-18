@@ -3,6 +3,10 @@ volumes:
     app-db:
     static_volume:
     media_volume:
+        driver_opts:
+            type: none
+            device: ${PWD}/server/mediafiles
+            o: bind
     redisdata:
     rqdata:
 services:
@@ -18,7 +22,6 @@ services:
         volumes:
             - static_volume:/home/app/web/staticfiles
             - media_volume:/home/app/web/mediafiles
-            - ./server/mediafiles:/home/app/web/mediafiles
             - ./server/:/home/app/web/
     app-db:
         container_name: app-db
@@ -47,7 +50,6 @@ services:
             - rqdata:/rqdata
             - static_volume:/home/app/web/staticfiles
             - media_volume:/home/app/web/mediafiles
-            - ./server/mediafiles:/home/app/web/mediafiles
             - /var/run/docker.sock:/var/run/docker.sock
         depends_on:
             - app-redis

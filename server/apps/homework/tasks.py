@@ -76,7 +76,9 @@ def run_tests(submission):
         output = container.logs()
         container.stop()
         container.remove(force=True)
+        print(output)
         text = force_str(output).split(separator)[1]
+        print(text)
     except Exception as e:
         submission.output = TIMEOUT_ERROR + "\n" + str(e)
     else:
@@ -109,6 +111,7 @@ def get_first_error_R(text):
         output = []
         seeking = False
         for ix, tap_line in enumerate(tap_lines):
+            print(ix, seeking, lines[ix])
             if seeking and (tap_line.category == "test" or "Backtrace:" in lines[ix]):
                 break
             if not seeking and tap_line.category == "test" and not tap_line.ok:
