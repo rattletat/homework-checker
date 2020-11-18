@@ -40,6 +40,7 @@ class ExerciseAdmin(admin.ModelAdmin):
         "timeout",
     ]
     readonly_fields = ["lesson"]
+    inlines = [ExerciseResourceInline]
 
     def get_lecture(self, obj):
         return obj.lesson.lecture
