@@ -13,7 +13,7 @@ function LessonTableRow({ index, lesson }) {
             <td>
                 <Link to={lesson.slug}>
                     <Button className="btn-sm">
-                        <span>Zur Aufgabe</span>
+                        <span>Link</span>
                     </Button>
                 </Link>
             </td>
