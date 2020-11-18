@@ -121,10 +121,10 @@ class LessonResource(UUIDModel, TimeStampedModel):
     )
     file = models.FileField(upload_to=get_lesson_rsc_path, storage=OverwriteStorage())
     listed = models.BooleanField(
-        _("Gibt an ob die Resource auf der Seite aufgelistet wird."), default=False
+        _("Listed on website"), default=False
     )
     public = models.BooleanField(
-        _("Gibt an ob die Resource per Link heruntergeladen werden kann."),
+        _("Downloadable via link"),
         default=False,
     )
 

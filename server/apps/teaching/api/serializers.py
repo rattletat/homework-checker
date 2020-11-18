@@ -43,7 +43,7 @@ class LectureDetailSerializer(serializers.ModelSerializer):
                     kwargs={"lecture_slug": obj.slug, "resource_id": r.id},
                 ),
             },
-            obj.resources.all(),
+            obj.resources.filter(public=True, listed=True),
         )
 
 
@@ -76,7 +76,7 @@ class LessonDetailSerializer(serializers.ModelSerializer):
                     },
                 ),
             },
-            obj.resources.all(),
+            obj.resources.filter(public=True, listed=True),
         )
 
 
