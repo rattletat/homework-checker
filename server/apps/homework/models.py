@@ -71,7 +71,7 @@ class Submission(UUIDModel, TimeStampedModel):
         lesson = self.exercise.lesson
 
         # Check timestamp of submission
-        if lesson.start and lesson.created < lesson.start:
+        if lesson.start and self.created < lesson.start:
             raise ValidationError(
                 _("You cannot upload a submission before the lesson started."),
             )
