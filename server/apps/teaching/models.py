@@ -35,8 +35,9 @@ class Lecture(UUIDModel, TimeFramedModel):
                 code="invalid_date",
             )
 
-    class Meta:
-        verbose_name = _("Vorlesung")
+            class Meta:
+                verbose_name = _("Vorlesung")
+
         verbose_name_plural = _("Vorlesungen")
         ordering = ["title"]
 
@@ -66,25 +67,30 @@ class Lesson(UUIDModel, TimeFramedModel):
                 _("Der Startzeitpunkt muss vor der Deadline liegen!"),
                 code="invalid_date",
             )
-        if self.lecture.start and (
-            (self.start and self.start < self.lecture.start)
-            or (self.end and self.end < self.lecture.start)
-        ):
-            raise ValidationError(
-                _("Die Zeitperiode der Lektion darf nicht vor Vorlesungsbeginn liegen!"),
-                code="invalid_date",
-            )
-        if self.lecture.end and (
-            (self.start and self.lecture.end < self.start)
-            or (self.end and self.lecture.end < self.end)
-        ):
-            raise ValidationError(
-                _("Die Zeitperiode der Lektion darf nicht nach Vorlesungsende liegen!"),
-                code="invalid_date",
-            )
+            if self.lecture.start and (
+                (self.start and self.start < self.lecture.start)
+                or (self.end and self.end < self.lecture.start)
+            ):
+                raise ValidationError(
+                    _(
+                        "Die Zeitperiode der Lektion darf nicht vor Vorlesungsbeginn liegen!"
+                    ),
+                    code="invalid_date",
+                )
+                if self.lecture.end and (
+                    (self.start and self.lecture.end < self.start)
+                    or (self.end and self.lecture.end < self.end)
+                ):
+                    raise ValidationError(
+                        _(
+                            "Die Zeitperiode der Lektion darf nicht nach Vorlesungsende liegen!"
+                        ),
+                        code="invalid_date",
+                    )
 
-    class Meta:
-        verbose_name = _("Lektion")
+                    class Meta:
+                        verbose_name = _("Lektion")
+
         verbose_name_plural = _("Lektionen")
         unique_together = ("lecture", "title")
         ordering = ["title"]
@@ -98,10 +104,10 @@ class LectureResource(UUIDModel, TimeStampedModel):
         max_length=100,
         verbose_name=_("Titel"),
     )
-    file = models.FileField(upload_to=get_lecture_rsc_path, storage=OverwriteStorage())
-    listed = models.BooleanField(
-        _("Listed on website"), default=False
+    file = models.FileField(
+        upload_to=get_lecture_rsc_path, storage=OverwriteStorage(), max_length=255
     )
+    listed = models.BooleanField(_("Listed on website"), default=False)
     public = models.BooleanField(
         _("Downloadable via link"),
         default=False,
@@ -119,10 +125,10 @@ class LessonResource(UUIDModel, TimeStampedModel):
         max_length=100,
         verbose_name=_("Titel"),
     )
-    file = models.FileField(upload_to=get_lesson_rsc_path, storage=OverwriteStorage())
-    listed = models.BooleanField(
-        _("Listed on website"), default=False
+    file = models.FileField(
+        upload_to=get_lesson_rsc_path, storage=OverwriteStorage(), max_length=255
     )
+    listed = models.BooleanField(_("Listed on website"), default=False)
     public = models.BooleanField(
         _("Downloadable via link"),
         default=False,
