@@ -21,7 +21,7 @@ class Exercise(UUIDModel):
     )
 
     title = models.CharField(max_length=100, verbose_name=_("Titel"))
-    slug = AutoSlugField(populate_from="title")
+    slug = AutoSlugField(max_length=255, populate_from="title")
     description = models.TextField(blank=True, verbose_name=_("Beschreibung"))
     max_score = models.PositiveSmallIntegerField(verbose_name=_("Maximale Punktzahl"))
     tests = models.FileField(

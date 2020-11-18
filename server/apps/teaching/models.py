@@ -21,7 +21,7 @@ class Lecture(UUIDModel, TimeFramedModel):
         verbose_name=_("Titel"),
     )
     description = models.TextField(blank=True, verbose_name=_("Beschreibung"))
-    slug = AutoSlugField(populate_from="title", unique=True)
+    slug = AutoSlugField(max_length=255, populate_from="title", unique=True)
 
     def __str__(self):
         return self.title
@@ -53,7 +53,7 @@ class Lesson(UUIDModel, TimeFramedModel):
         verbose_name=_("Titel"),
     )
     description = models.TextField(blank=True, verbose_name=_("Beschreibung"))
-    slug = AutoSlugField(populate_from="title")
+    slug = AutoSlugField(max_length=255, populate_from="title")
 
     def __str__(self):
         return self.title
