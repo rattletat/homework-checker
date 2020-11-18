@@ -1,13 +1,13 @@
+from apps.teaching.models import Lesson
 from autoslug import AutoSlugField
 from django.conf import settings
-
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from model_utils.models import TimeStampedModel, UUIDModel
 
-from apps.teaching.models import Lesson
-from .helpers import get_tests_path, get_submission_path, get_exercise_rsc_path
+from .helpers import get_exercise_rsc_path, get_submission_path, get_tests_path
 from .storage import OverwriteStorage
 
 
@@ -65,6 +65,20 @@ class Submission(UUIDModel, TimeStampedModel):
             "user",
             "exercise",
         )
+
+    def clean(self):
+        super().clean()
+        lesson = self.exercise.lesson
+
+        # Check timestamp of submission
+        if lesson.start and lesson.created < lesson.start:
+            raise ValidationError(
+                _("You cannot upload a submission before the lesson started."),
+            )
+        if lesson.end and lesson.end < self.created:
+            raise ValidationError(
+                _("You cannot upload a submission after the lesson ended."),
+            )
 
 
 class ExerciseResource(UUIDModel, TimeStampedModel):

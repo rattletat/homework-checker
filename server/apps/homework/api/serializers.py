@@ -30,16 +30,6 @@ class SubmissionSerializer(serializers.ModelSerializer):
         exercise = data["exercise"]
         lesson = exercise.lesson
 
-        # Check timestamp of submission
-        if lesson.start and data["created"] < lesson.start:
-            raise serializers.ValidationError(
-                _("You cannot upload a submission before the lesson started."),
-            )
-        if lesson.end and lesson.end < data["created"]:
-            raise serializers.ValidationError(
-                _("You cannot upload a submission after the lesson ended."),
-            )
-
         # Check type, extension and size of file
         file_validator = FileValidator(
             min_size=exercise.min_upload_size,
