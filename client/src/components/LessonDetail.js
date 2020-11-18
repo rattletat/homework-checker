@@ -116,7 +116,7 @@ export default function LessonDetail() {
                     </>
                 )}
                 <br />
-                {exercises && exercises.length && (
+                {exercises && exercises.length > 0 && (
                     <ExercisesContainer
                         exercises={exercises}
                         userScores={userScores}

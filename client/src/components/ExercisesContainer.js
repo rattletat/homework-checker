@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from "react";
-import {callAPI} from "../services/APIServices";
+import React, { useState, useEffect } from "react";
+import { callAPI } from "../services/APIServices";
 
-import {Row, Col, Nav, Card, Tab, Alert} from "react-bootstrap";
+import { Row, Col, Nav, Card, Tab, Alert } from "react-bootstrap";
 
 import ExerciseDropzone from "./ExerciseDropzone";
 import ExercisePane from "./ExercisePane";
