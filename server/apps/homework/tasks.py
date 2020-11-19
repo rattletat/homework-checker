@@ -86,6 +86,11 @@ def run_tests(submission):
             submission.score = min(get_score_R(text), exercise.max_score)
             if submission.score < exercise.max_score:
                 submission.output = get_first_error_R(text)
+            else:
+                submission.output = (
+                    "You've reached the maximum number of points. Congratulation!"
+                )
+
         except Exception as e:
             submission.output = PARSING_ERROR + "\n" + str(e)
         else:
