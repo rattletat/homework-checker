@@ -51,7 +51,7 @@ class LessonListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
         fields = ["slug", "title", "start", "end"]
-        ordering = ["-start"]
+        ordering = ["title"]
 
 
 class LessonDetailSerializer(serializers.ModelSerializer):
@@ -60,7 +60,7 @@ class LessonDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
         fields = ["slug", "title", "start", "end", "description", "resources"]
-        ordering = ["-start"]
+        ordering = ["title"]
 
     def get_resources(self, obj):
         return map(

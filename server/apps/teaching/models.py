@@ -93,7 +93,6 @@ class Lesson(UUIDModel, TimeFramedModel):
 
         verbose_name_plural = _("Lektionen")
         unique_together = ("lecture", "title")
-        ordering = ["title"]
 
 
 class LectureResource(UUIDModel, TimeStampedModel):
