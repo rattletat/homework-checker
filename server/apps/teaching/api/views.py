@@ -13,8 +13,11 @@ class LectureSignUp(APIView):
 
     def post(self, request, *args, **kwargs):
         lecture = Lecture.objects.get(slug=kwargs["lecture_slug"])
+        print("EINS")
         lecture.participants.add(request.user)
+        print("ZWEI")
         lecture.save()
+        print("DREI")
         return response.Response({}, status=status.HTTP_200_OK)
 
 
