@@ -14,7 +14,8 @@ axios.interceptors.response.use(
             if (
                 err.response.status === 401 &&
                 err.config &&
-                !err.config.__isRetryRequest
+                !err.config.__isRetryRequest &&
+                hasJWT()
             ) {
                 originalReq.__isRetryRequest = true;
 

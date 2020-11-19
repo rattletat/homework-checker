@@ -16,7 +16,6 @@ export default function LogIn({ logIn }) {
                 values.email,
                 values.password
             );
-
             if (isError) {
                 const data = response.response.data;
                 for (const value in data) {
