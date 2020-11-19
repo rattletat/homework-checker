@@ -50,7 +50,7 @@ export const hasJWT = () => {
 };
 
 export const refreshJWT = async () => {
-    const auth = getJWT();
+    const auth = await getJWT();
     return await fetch("api/token/refresh", {
         method: "POST",
         mode: "cors",
