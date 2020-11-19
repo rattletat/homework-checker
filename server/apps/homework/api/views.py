@@ -30,6 +30,7 @@ class ExerciseListView(ListAPIView):
 
 
 class ExerciseSubmitView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
     parser_class = FileUploadParser
 
     def post(self, request, exercise_id):
