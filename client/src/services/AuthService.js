@@ -1,5 +1,4 @@
 import axios from "axios";
-import history from "../history";
 
 const JWT_STORAGE = "homework.checker.auth";
 
@@ -30,7 +29,7 @@ axios.interceptors.response.use(
                 });
                 resolve(res);
             } else {
-                history.push("/login");
+                logOut();
                 return reject(err);
             }
         });
@@ -91,7 +90,7 @@ export const logIn = async (email, password, setLoggedIn) => {
 
 export const logOut = () => {
     removeJWT();
-    window.location.href = "/";
+    window.location.reload();
 };
 
 export const isLoggedIn = () => {

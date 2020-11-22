@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Container, Form, Navbar } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { Link, Redirect, Route, Switch } from "react-router-dom";
@@ -15,7 +15,12 @@ import LessonDetail from "./components/LessonDetail";
 import "./App.css";
 
 function App() {
-    const [loggedIn, setLoggedIn] = useState(isLoggedIn());
+    const [loggedIn, setLoggedIn] = useState(false);
+
+    useEffect(() => {
+        setLoggedIn(isLoggedIn());
+    });
+
     return (
         <>
             <Navbar bg="light" expand="sm" variant="light">
