@@ -12,7 +12,7 @@ function LectureList(props) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await callAPI("api/lectures/", "GET");
+                const response = await callAPI("/api/lectures/", "GET");
                 setData({ lectures: response.data });
             } catch (error) {
                 console.log(error);
@@ -30,7 +30,7 @@ function LectureList(props) {
             <Col lg={12}>
                 <BreadcrumbWrapper
                     items={[
-                        { name: "Home", active: false, href: "#/" },
+                        { name: "Home", active: false, href: "/" },
                         { name: "Lectures", active: true }
                     ]}
                 />

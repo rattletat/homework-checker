@@ -5,7 +5,7 @@ import { callAPI } from "../services/APIServices";
 
 export default function Dashboard() {
     const breadcrumbs = [
-        { name: "Home", active: false, href: "#/" },
+        { name: "Home", active: false, href: "/" },
         { name: "Dashboard", active: true }
     ];
     const [data, setData] = useState({
@@ -17,7 +17,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         const fetchAccountStatus = async () => {
-            const response = await callAPI(`api/accounts/status`, "GET");
+            const response = await callAPI(`/api/accounts/status`, "GET");
             if (response) {
                 setData({ ...response.data });
             }

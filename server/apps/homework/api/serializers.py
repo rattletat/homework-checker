@@ -1,6 +1,7 @@
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
+from django.utils.timezone import now
 
 from ..models import Exercise, Submission
 from ..validators import FileValidator
@@ -42,6 +43,16 @@ class SubmissionSerializer(serializers.ModelSerializer):
         if user not in lesson.lecture.participants.all():
             raise serializers.ValidationError(
                 _("You are not registered for this lecture."),
+            )
+
+        # Check timestamp of submission
+        if lesson.start and now() < lesson.start:
+            raise serializers.ValidationError(
+                _("You cannot upload a submission before the lesson has started."),
+            )
+        if lesson.end and lesson.end < now():
+            raise serializers.ValidationError(
+                _("You cannot upload a submission after the lesson has ended."),
             )
 
         return data

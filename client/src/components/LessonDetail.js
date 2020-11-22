@@ -23,11 +23,11 @@ export default function LessonDetail() {
     useEffect(() => {
         const fetchTeachingData = async () => {
             const lectureResponse = await callAPI(
-                `api/lectures/${lecture_slug}`,
+                `/api/lectures/${lecture_slug}`,
                 "GET"
             );
             const lessonResponse = await callAPI(
-                `api/lectures/${lecture_slug}/lessons/${lesson_slug}`,
+                `/api/lectures/${lecture_slug}/lessons/${lesson_slug}`,
                 "GET"
             );
             if (lectureResponse && lessonResponse) {
@@ -43,7 +43,7 @@ export default function LessonDetail() {
     useEffect(() => {
         const fetchExercises = async () => {
             const exercisesResponse = await callAPI(
-                `api/lectures/${lecture_slug}/lessons/${lesson_slug}/exercises/`,
+                `/api/lectures/${lecture_slug}/lessons/${lesson_slug}/exercises/`,
                 "GET"
             );
             if (exercisesResponse) {
@@ -60,7 +60,7 @@ export default function LessonDetail() {
     useEffect(() => {
         const fetchScores = async () => {
             const statusResponse = await callAPI(
-                `api/lectures/${lecture_slug}/lessons/${lesson_slug}/exercises/status`,
+                `/api/lectures/${lecture_slug}/lessons/${lesson_slug}/exercises/status`,
                 "GET"
             );
             if (statusResponse) {
@@ -83,17 +83,17 @@ export default function LessonDetail() {
                             {
                                 name: "Home",
                                 active: false,
-                                href: "#/"
+                                href: "/"
                             },
                             {
                                 name: "Lectures",
                                 active: false,
-                                href: "#/lectures/"
+                                href: "/lectures/"
                             },
                             {
                                 name: teachingData.lecture.title,
                                 active: false,
-                                href: `#/lectures/${teachingData.lecture.slug}/`
+                                href: `/lectures/${teachingData.lecture.slug}/`
                             },
                             {
                                 name: teachingData.lesson.title,

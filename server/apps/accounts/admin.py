@@ -33,7 +33,7 @@ class CustomUserAdmin(UserAdmin):
         ("Berechtigungen", {"fields": ("is_staff", "is_active")}),
     )
     inlines = [LectureInline]
-    readonly_fields = ("full_name", "identifier", "email")
+    readonly_fields = ("full_name", "email")
     add_fieldsets = (
         (
             None,

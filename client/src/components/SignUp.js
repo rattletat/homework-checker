@@ -8,7 +8,7 @@ import BreadcrumbWrapper from "./BreadcrumbWrapper";
 export default function Signup() {
     const [isSubmitted, setSubmitted] = useState(false);
     const breadcrumbs = [
-        { name: "Home", active: false, href: "#/" },
+        { name: "Home", active: false, href: "/" },
         { name: "Sign up", active: true }
     ];
 

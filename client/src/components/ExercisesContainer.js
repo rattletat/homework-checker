@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { callAPI } from "../services/APIServices";
+import React, { useState } from "react";
 
 import { Row, Col, Nav, Card, Tab, Alert } from "react-bootstrap";
 

@@ -1,13 +1,12 @@
 import os
 import uuid
-import itertools
 from os.path import basename
 
 import docker
 from django.utils.encoding import force_str
+
 from tap.parser import Parser
 
-from .helpers import get_runner_path, get_submission_path, get_tests_path
 from .models import ExerciseResource
 
 DOCKER_CONFIG = {
@@ -34,20 +33,21 @@ PARSING_ERROR = "A problem occurred during the result parsing."
 
 def run_tests(submission):
     exercise = submission.exercise
+    extension = exercise.programming_language
     host_root = os.environ["HOST_ROOT_DIR"]
 
     submission_path = os.path.join(host_root, "mediafiles", str(submission.file))
     tests_path = os.path.join(host_root, "mediafiles", str(exercise.tests))
-    runner_path = os.path.join(host_root, "apps/homework/runner/r-runner.r")
+    runner_path = os.path.join(host_root, f"apps/homework/runner/runner.{extension}")
 
     volumes = {
         runner_path: {
-            "bind": "/app/runner." + exercise.programming_language,
+            "bind": "/app/runner." + extension,
             "mode": "ro",
         },
-        tests_path: {"bind": "/app/tests." + exercise.programming_language, "mode": "ro"},
+        tests_path: {"bind": "/app/tests." + extension, "mode": "ro"},
         submission_path: {
-            "bind": "/app/submission." + exercise.programming_language,
+            "bind": "/app/submission." + extension,
             "mode": "ro",
         },
     }
@@ -61,7 +61,7 @@ def run_tests(submission):
         }
 
     separator = str(uuid.uuid4())
-    config = DOCKER_CONFIG[exercise.programming_language]
+    config = DOCKER_CONFIG[extension]
     client = docker.from_env()
     try:
         container = client.containers.run(
@@ -76,16 +76,14 @@ def run_tests(submission):
         output = container.logs()
         container.stop()
         container.remove(force=True)
-        print(output)
         text = force_str(output).split(separator)[1]
-        print(text)
     except Exception as e:
         submission.output = TIMEOUT_ERROR + "\n" + str(e)
     else:
         try:
-            submission.score = min(get_score_R(text), exercise.max_score)
+            submission.score = min(get_score(text), exercise.max_score)
             if submission.score < exercise.max_score:
-                submission.output = get_first_error_R(text)
+                submission.output = get_first_error(text)
             else:
                 submission.output = (
                     "You've reached the maximum number of points. Congratulation!"
@@ -94,19 +92,18 @@ def run_tests(submission):
         except Exception as e:
             submission.output = PARSING_ERROR + "\n" + str(e)
         else:
-            submission.full_clean()
             submission.save()
     finally:
         client.containers.prune()
 
 
-def get_score_R(text):
+def get_score(text):
     parser = Parser()
     gen = parser.parse_text(text)
     return sum(test.ok for test in gen if test.category == "test")
 
 
-def get_first_error_R(text):
+def get_first_error(text):
     try:
         parser = Parser()
         tap_lines = parser.parse_text(text)
@@ -116,7 +113,6 @@ def get_first_error_R(text):
         output = []
         seeking = False
         for ix, tap_line in enumerate(tap_lines):
-            print(ix, seeking, lines[ix])
             if seeking and (tap_line.category == "test" or "Backtrace:" in lines[ix]):
                 break
             if not seeking and tap_line.category == "test" and not tap_line.ok:

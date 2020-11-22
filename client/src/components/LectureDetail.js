@@ -26,7 +26,7 @@ export default function LectureDetail() {
     useEffect(() => {
         const fetchLecture = async () => {
             const response = await callAPI(
-                `api/lectures/${lecture_slug}`,
+                `/api/lectures/${lecture_slug}`,
                 "GET"
             );
             setData({
@@ -40,7 +40,7 @@ export default function LectureDetail() {
         const checkRegistered = async () => {
             setRegistered({ registeredLoaded: false });
             const response = await callAPI(
-                `api/lectures/${lecture_slug}/status`,
+                `/api/lectures/${lecture_slug}/status`,
                 "GET"
             );
             setRegistered({
@@ -59,12 +59,12 @@ export default function LectureDetail() {
                         {
                             name: "Home",
                             active: false,
-                            href: "#/"
+                            href: "/"
                         },
                         {
                             name: "Lectures",
                             active: false,
-                            href: "#/lectures/"
+                            href: "/lectures/"
                         },
                         {
                             name: data.lecture ? data.lecture.title : "",
@@ -77,7 +77,7 @@ export default function LectureDetail() {
                     loaded={registered.loaded}
                     registered={registered.state}
                     clickAction={() => {
-                        callAPI(`api/lectures/${lecture_slug}/signup`, "POST");
+                        callAPI(`/api/lectures/${lecture_slug}/signup`, "POST");
                     }}
                 />
 

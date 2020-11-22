@@ -1,4 +1,5 @@
 import axios from "axios";
+import history from "../history";
 
 const JWT_STORAGE = "homework.checker.auth";
 
@@ -28,7 +29,10 @@ axios.interceptors.response.use(
                     return axios(originalReq);
                 });
                 resolve(res);
-            } else reject(err);
+            } else {
+                history.push("/login");
+                return reject(err);
+            }
         });
     }
 );
@@ -52,7 +56,7 @@ export const hasJWT = () => {
 
 export const refreshJWT = async () => {
     const auth = await getJWT();
-    return await fetch("api/token/refresh", {
+    return await fetch("/api/token/refresh", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",

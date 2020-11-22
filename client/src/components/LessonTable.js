@@ -16,7 +16,7 @@ export default function LessonTable({ lessons }) {
                     <th>Lektion</th>
                     <th>Start</th>
                     <th>Deadline</th>
-                    <th>Link</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>{rows}</tbody>

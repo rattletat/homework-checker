@@ -1,4 +1,5 @@
 import React from "react";
+import history from "../history";
 
 import { Breadcrumb, BreadcrumbItem } from "react-bootstrap";
 
@@ -9,7 +10,10 @@ export default function BreadcrumbWrapper(props = {}) {
                 {item.name}
             </BreadcrumbItem>
         ) : (
-            <BreadcrumbItem key={item.name} href={item.href}>
+            <BreadcrumbItem
+                key={item.name}
+                onClick={() => history.push(item.href)}
+            >
                 {item.name}
             </BreadcrumbItem>
         )

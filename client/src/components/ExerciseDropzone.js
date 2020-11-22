@@ -22,7 +22,7 @@ export default function ExerciseDropzone({ exercise, setErrors }) {
     const getUploadParams = () => {
         return getAPIHeaders(
             {
-                url: `api/exercises/${exercise.id}/submit`
+                url: `/api/exercises/${exercise.id}/submit`
             },
             true
         );

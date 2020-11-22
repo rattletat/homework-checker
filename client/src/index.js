@@ -1,15 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "bootswatch/dist/litera/bootstrap.css";
-import { HashRouter } from "react-router-dom";
+import { Router } from "react-router-dom";
+import history from "./history";
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
-    <HashRouter>
+    <Router history={history}>
         <App />
-    </HashRouter>,
+    </Router>,
     document.getElementById("root")
 );
 

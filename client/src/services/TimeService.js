@@ -15,6 +15,8 @@ export const isExpired = object => {
     return object.end && moment(object.end) < moment();
 };
 
+// Server timestamps are timezone aware.
+// Returns durations relative to browser indicated local time.
 export const getTimeIndicator = object => {
     if (isUpcoming(object)) {
         return "starts " + moment(object.start).fromNow();

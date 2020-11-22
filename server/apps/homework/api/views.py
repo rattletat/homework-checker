@@ -49,16 +49,15 @@ class ExerciseSubmitView(APIView):
                 "user": request.user.id,
                 "file": file,
                 "file_hash": file_hash,
-                "created": submission.created,
             },
             context={"request": request},
         )
 
-        if not serializer.is_valid():
-            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        submission = serializer.save()
-        django_rq.enqueue(run_tests, submission)
-        return response.Response({}, status=status.HTTP_200_OK)
+        if serializer.is_valid(raise_exception=True):
+            submission = serializer.save()
+            submission.full_clean()
+            django_rq.enqueue(run_tests, submission)
+            return response.Response({}, status=status.HTTP_200_OK)
 
 
 class SubmissionListView(ListAPIView):

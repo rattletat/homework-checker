@@ -6,7 +6,7 @@ import BreadcrumbWrapper from "./BreadcrumbWrapper";
 
 export default function LogIn({ logIn }) {
     const breadcrumbs = [
-        { name: "Home", active: false, href: "#/" },
+        { name: "Home", active: false, href: "/" },
         { name: "Log in", active: true }
     ];
 

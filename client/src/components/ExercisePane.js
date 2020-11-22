@@ -11,7 +11,7 @@ export default function ExercisePane({ exercise, userScores, setUserScores }) {
         const fetchData = async () => {
             try {
                 const response = await callAPI(
-                    `api/exercises/${exercise.id}/submissions/`,
+                    `/api/exercises/${exercise.id}/submissions/`,
                     "GET"
                 );
                 setSubmissions(response.data);
