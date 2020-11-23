@@ -19,7 +19,7 @@ function LectureListElement({ lecture }) {
                     )}
                     {lecture.end && (
                         <ListGroup.Item>
-                            Lecture end: {toTimeFormat(lecture.start)}
+                            Lecture end: {toTimeFormat(lecture.end)}
                         </ListGroup.Item>
                     )}
                 </ListGroup>
