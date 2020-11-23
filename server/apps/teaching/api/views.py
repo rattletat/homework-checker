@@ -45,8 +45,7 @@ class LectureResourceDownload(RetrieveAPIView):
         lecture_slug = self.kwargs["lecture_slug"]
         resource_id = self.kwargs["resource_id"]
         resource = LectureResource.objects.get(lecture__slug=lecture_slug, id=resource_id)
-        if resource.public:
-            return sendfile(request, resource.file.path, attachment=True)
+        return sendfile(request, resource.file.path, attachment=True)
 
 
 class LessonResourceDownload(RetrieveAPIView):
@@ -61,5 +60,4 @@ class LessonResourceDownload(RetrieveAPIView):
             lesson__slug=lesson_slug,
             id=resource_id,
         )
-        if resource.public:
-            return sendfile(request, resource.file.path, attachment=True)
+        return sendfile(request, resource.file.path, attachment=True)

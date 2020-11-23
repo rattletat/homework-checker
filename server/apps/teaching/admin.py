@@ -13,7 +13,7 @@ from sendfile import sendfile
 
 class LectureResourceInline(admin.TabularInline):
     model = LectureResource
-    fields = ["title", "file", "public", "listed", "resource_link"]
+    fields = ["title", "file", "resource_link"]
     readonly_fields = ["resource_link"]
     extra = 1
 
@@ -28,7 +28,7 @@ class LectureResourceInline(admin.TabularInline):
 
 class LessonResourceInline(admin.TabularInline):
     model = LessonResource
-    fields = ["title", "file", "public", "listed", "resource_link"]
+    fields = ["title", "file", "resource_link"]
     readonly_fields = ["resource_link"]
     extra = 1
 

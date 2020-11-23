@@ -31,7 +31,8 @@ class LectureDetailSerializer(serializers.ModelSerializer):
         ordering = ["-start"]
 
     def get_lessons(self, obj):
-        return LessonListSerializer(obj.lessons, many=True).data
+        lessons = obj.lessons.order_by('title')
+        return LessonListSerializer(lessons, many=True).data
 
     def get_resources(self, obj):
         return map(
@@ -43,7 +44,7 @@ class LectureDetailSerializer(serializers.ModelSerializer):
                     kwargs={"lecture_slug": obj.slug, "resource_id": r.id},
                 ),
             },
-            obj.resources.filter(public=True, listed=True),
+            obj.resources.order_by("title"),
         )
 
 
@@ -76,7 +77,7 @@ class LessonDetailSerializer(serializers.ModelSerializer):
                     },
                 ),
             },
-            obj.resources.filter(public=True, listed=True),
+            obj.resources.order_by("title"),
         )
 
 

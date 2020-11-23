@@ -41,7 +41,7 @@ class Exercise(UUIDModel):
     )
 
     def __str__(self):
-        return self.title
+        return f"{self.lesson} ({self.title})"
 
     class Meta:
         verbose_name = _("Aufgabe")
@@ -56,6 +56,12 @@ class Submission(UUIDModel, TimeStampedModel):
     file_hash = models.CharField(max_length=40)
     score = models.PositiveSmallIntegerField(default=0)
     output = models.TextField(blank=True)
+
+    def __str__(self):
+        if self.score:
+            return f"{self.user} ({self.exercise.title} - {self.score}/{self.exercise.max_score})"
+        else:
+            return f"{self.user} ({self.exercise.title} - pending)"
 
     class Meta:
         unique_together = (
