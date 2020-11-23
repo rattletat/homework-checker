@@ -7,7 +7,7 @@ function LessonTableRow({ index, lesson }) {
     return (
         <tr key={index}>
             <td>{index + 1}</td>
-            <td>{lesson.title}</td>
+            <td className="text-left">{lesson.title}</td>
             <td>{toTimeFormat(lesson.start)}</td>
             <td>{toTimeFormat(lesson.end)}</td>
             <td>
