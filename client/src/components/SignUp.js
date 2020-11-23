@@ -163,7 +163,6 @@ export default function Signup() {
                                                 }
                                                 name="identifier"
                                                 onChange={handleChange}
-                                                type="number"
                                                 value={values.identifier}
                                                 placeholder={
                                                     "Optional: Student ID"

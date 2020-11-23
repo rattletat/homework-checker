@@ -29,7 +29,9 @@ axios.interceptors.response.use(
                 });
                 resolve(res);
             } else {
-                logOut();
+                if (!["/login", "/signup"].includes(window.location.pathname)) {
+                    logOut();
+                }
                 return reject(err);
             }
         });

@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import gettext_lazy as _
+from django.core.validators import RegexValidator
 
 
 class UserManager(BaseUserManager):
@@ -41,7 +42,13 @@ class CustomUser(AbstractUser):
     username = None
     email = models.EmailField(_("email address"), unique=True)
     full_name = models.CharField(_("full name"), max_length=130)
-    identifier = models.PositiveIntegerField(_("identifier"), unique=True, null=True)
+    identifier = models.CharField(
+        _("identifier"),
+        max_length=15,
+        unique=True,
+        null=True,
+        validators=[RegexValidator(r"^[0-9]+$", "Only digit characters.")],
+    )
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["full_name"]
