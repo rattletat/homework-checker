@@ -54,7 +54,7 @@ def run_tests(submission):
 
     resources = ExerciseResource.objects.filter(exercise=submission.exercise, loaded=True)
     for resource in resources:
-        resource_path = os.path.join(host_root, str(resource.file))
+        resource_path = os.path.join(host_root, "mediafiles", str(resource.file))
         volumes[resource_path] = {
             "bind": "/app/" + basename(resource.file.name),
             "mode": "ro",
