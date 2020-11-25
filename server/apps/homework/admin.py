@@ -11,7 +11,7 @@ from .models import Exercise, ExerciseResource, Submission
 
 class ExerciseResourceInline(admin.TabularInline):
     model = ExerciseResource
-    fields = ["title", "file", "loaded", "resource_link"]
+    fields = ["file", "resource_link"]
     readonly_fields = ["resource_link"]
     extra = 1
 

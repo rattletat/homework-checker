@@ -4,7 +4,7 @@ import { Card, Accordion } from "react-bootstrap";
 import { callAPI } from "../services/APIServices";
 import { toTimeFormat } from "../services/TimeService";
 
-export default function ExercisePane({ exercise, userScores, setUserScores }) {
+export default function ExercisePane({ exercise, active }) {
     const [submissions, setSubmissions] = useState([]);
 
     useEffect(() => {
@@ -15,34 +15,19 @@ export default function ExercisePane({ exercise, userScores, setUserScores }) {
                     "GET"
                 );
                 setSubmissions(response.data);
-                const max_score = Math.max.apply(
-                    Math,
-                    submissions.map(sub => sub.score)
-                );
-                const exercise_slug = exercise.slug;
-                if (max_score > userScores[exercise_slug]) {
-                    setUserScores(scores => ({
-                        ...scores,
-                        exercise_slug: max_score
-                    }));
-                }
             } catch (error) {
                 console.log(error);
             }
         };
         fetchData();
-    }, [exercise]);
+        const interval = setInterval(() => (active ? fetchData() : {}), 1000);
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, [exercise, active]);
     return (
         <>
-            <hr />
-            {userScores && exercise && (
-                <center>
-                    <strong>{exercise.title}:</strong> You achieved{" "}
-                    {userScores[exercise.slug]} out of {exercise.max_score}{" "}
-                    points.
-                </center>
-            )}
-            <hr />
             <MarkdownRenderer>{exercise.description}</MarkdownRenderer>
             <Accordion defaultActiveKey="event-0">
                 {submissions.map((submission, key) => (

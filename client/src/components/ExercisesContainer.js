@@ -1,29 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Row, Col, Nav, Card, Tab, Alert } from "react-bootstrap";
 
 import ExerciseDropzone from "./ExerciseDropzone";
 import ExercisePane from "./ExercisePane";
+import { callAPI } from "../services/APIServices";
 
 export default function ExercisesContainer({
-    exercises,
-    userScores,
-    setUserScores
+    lecture_slug,
+    lesson_slug,
+    exercises
 }) {
     const [selectedExercise, setSelectedExercise] = useState(exercises[0]);
     const [errors, setErrors] = useState(null);
+    const [userScores, setUserScores] = useState({});
 
-    const max_score_sum = exercises.reduce((acc, ex) => acc + ex.max_score, 0);
-    const user_score_sum = Object.values(userScores).reduce(
-        (acc, val) => acc + val,
-        0
-    );
+    useEffect(() => {
+        const fetchScores = async () => {
+            const statusResponse = await callAPI(
+                `/api/lectures/${lecture_slug}/lessons/${lesson_slug}/exercises/status`,
+                "GET"
+            );
+            if (statusResponse) {
+                setUserScores(statusResponse.data);
+            }
+        };
+        const interval = setInterval(() => fetchScores(), 2000);
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, [lecture_slug, lesson_slug]);
 
     return (
         <Card>
-            <Card.Header>
-                Lesson Exercises ({user_score_sum}/{max_score_sum}){" "}
-            </Card.Header>
+            <Card.Header>Lesson Exercises</Card.Header>
             {errors && <Alert variant="danger">{errors}</Alert>}
             <Tab.Container defaultActiveKey={0}>
                 <Row>
@@ -65,8 +76,7 @@ export default function ExercisesContainer({
                                     <ExercisePane
                                         key={index}
                                         exercise={exercise}
-                                        userScores={userScores}
-                                        setUserScores={setUserScores}
+                                        active={exercise === selectedExercise}
                                     />
                                 </Tab.Pane>
                             ))}

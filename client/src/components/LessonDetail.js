@@ -18,7 +18,6 @@ export default function LessonDetail() {
     });
 
     const [exercises, setExercises] = useState([]);
-    const [userScores, setUserScores] = useState({});
 
     useEffect(() => {
         const fetchTeachingData = async () => {
@@ -50,28 +49,7 @@ export default function LessonDetail() {
                 setExercises(exercisesResponse.data);
             }
         };
-        const interval = setInterval(() => fetchExercises(), 2000);
-
-        return () => {
-            clearInterval(interval);
-        };
-    }, [lecture_slug, lesson_slug]);
-
-    useEffect(() => {
-        const fetchScores = async () => {
-            const statusResponse = await callAPI(
-                `/api/lectures/${lecture_slug}/lessons/${lesson_slug}/exercises/status`,
-                "GET"
-            );
-            if (statusResponse) {
-                setUserScores(statusResponse.data);
-            }
-        };
-        const interval = setInterval(() => fetchScores(), 2000);
-
-        return () => {
-            clearInterval(interval);
-        };
+        fetchExercises();
     }, [lecture_slug, lesson_slug]);
 
     return (
@@ -118,9 +96,7 @@ export default function LessonDetail() {
                 <br />
                 {exercises && exercises.length > 0 && (
                     <ExercisesContainer
-                        exercises={exercises}
-                        userScores={userScores}
-                        setUserScores={setUserScores}
+                        {...{ lecture_slug, lesson_slug, exercises }}
                     />
                 )}
             </Col>

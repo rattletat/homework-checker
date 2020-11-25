@@ -95,7 +95,7 @@ class Lesson(UUIDModel, TimeFramedModel):
 
 class LectureResource(UUIDModel, TimeStampedModel):
     lecture = models.ForeignKey(
-        Lecture, on_delete=models.PROTECT, related_name="resources"
+        Lecture, on_delete=models.CASCADE, related_name="resources"
     )
     title = models.CharField(
         max_length=100,
@@ -112,7 +112,7 @@ class LectureResource(UUIDModel, TimeStampedModel):
 
 
 class LessonResource(UUIDModel, TimeStampedModel):
-    lesson = models.ForeignKey(Lesson, on_delete=models.PROTECT, related_name="resources")
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name="resources")
     title = models.CharField(
         max_length=100,
         verbose_name=_("Titel"),

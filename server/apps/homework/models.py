@@ -75,19 +75,10 @@ class ExerciseResource(UUIDModel, TimeStampedModel):
     exercise = models.ForeignKey(
         Exercise, on_delete=models.PROTECT, related_name="resources"
     )
-    title = models.CharField(
-        max_length=100,
-        verbose_name=_("Titel"),
-    )
     file = models.FileField(
         upload_to=get_exercise_rsc_path, storage=OverwriteStorage(), max_length=255
-    )
-    loaded = models.BooleanField(
-        _("Loaded into test environment"),
-        default=True,
     )
 
     class Meta:
         verbose_name = _("Übungsmaterial")
         verbose_name_plural = _("Testmaterialien")
-        unique_together = ("exercise", "title")
