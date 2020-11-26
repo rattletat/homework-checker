@@ -47,6 +47,7 @@ class CustomUser(AbstractUser):
         max_length=15,
         unique=True,
         null=True,
+        blank=True,
         validators=[RegexValidator(r"^[0-9]+$", "Only digit characters.")],
     )
 
