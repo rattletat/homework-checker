@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.http import HttpResponse
+from django.conf.urls import url
 from django.shortcuts import reverse
 from django.urls import path
 from django.contrib.admin.views.decorators import staff_member_required
@@ -17,7 +19,7 @@ class ExerciseResourceInline(admin.TabularInline):
 
     def resource_link(self, obj):
         if obj.file:
-            download_view = "admin:exercise_resource_download"
+            download_view = "admin:homework_download_resource"
             download_url = reverse(download_view, args=[obj.pk])
             return format_html('<a href="{}">Download</a>', download_url)
         else:
@@ -59,7 +61,7 @@ class ExerciseAdmin(admin.ModelAdmin):
             path(
                 "download_resource/<slug:uuid>",
                 self.download_resource,
-                name="exercise_resource_download",
+                name="homework_download_resource",
             ),
         ]
         return urls
@@ -72,6 +74,30 @@ class ExerciseAdmin(admin.ModelAdmin):
 
 @admin.register(Submission)
 class SubmissionAdmin(admin.ModelAdmin):
-    fields = ["exercise", "user", "file_hash", "score", "output"]
-    readonly_fields = ["exercise", "user", "file_hash", "score", "output"]
-    list_display = ["created", "user", "exercise", "score"]
+    fields = ["exercise", "user", "submission_link", "score", "output"]
+    readonly_fields = ["exercise", "user", "submission_link", "score", "output"]
+    list_display = ["created", "exercise", "score", "user"]
+
+    def get_urls(self):
+        urls = super(SubmissionAdmin, self).get_urls()
+        urls += [
+            path(
+                "download-submission/<slug:uuid>",
+                self.download_submission,
+                name="homework_download_submission",
+            ),
+        ]
+        return urls
+
+    def submission_link(self, obj):
+        if obj.file:
+            download_view = "admin:homework_download_submission"
+            download_url = reverse(download_view, args=[obj.pk])
+            return format_html('<a href="{}">Download</a>', download_url)
+        else:
+            return "Noch keine Datei hochgeladen!"
+
+    @method_decorator(staff_member_required)
+    def download_submission(self, request, uuid):
+        submission = Submission.objects.get(id=uuid)
+        return sendfile(request, submission.file.path, attachment=True)
