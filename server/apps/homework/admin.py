@@ -37,11 +37,12 @@ class ExerciseAdmin(admin.ModelAdmin):
         "description",
         "programming_language",
         "tests",
+        "tests_link",
         "min_upload_size",
         "max_upload_size",
         "timeout",
     ]
-    readonly_fields = ["lesson"]
+    readonly_fields = ["lesson", "tests_link"]
     inlines = [ExerciseResourceInline]
 
     def get_lecture(self, obj):
@@ -51,13 +52,26 @@ class ExerciseAdmin(admin.ModelAdmin):
 
     def get_readonly_fields(self, _, obj=None):
         if obj:
-            return ["lesson"]
+            return ["lesson", "tests_link"]
         else:
-            return []
+            return ["tests_link"]
+
+    def tests_link(self, obj):
+        if obj.tests:
+            download_view = "admin:homework_download_tests"
+            download_url = reverse(download_view, args=[obj.pk])
+            return format_html('<a href="{}">Download</a>', download_url)
+        else:
+            return ""
 
     def get_urls(self):
         urls = super(ExerciseAdmin, self).get_urls()
         urls += [
+            path(
+                "download_tests/<slug:uuid>",
+                self.download_tests,
+                name="homework_download_tests",
+            ),
             path(
                 "download_resource/<slug:uuid>",
                 self.download_resource,
@@ -70,6 +84,11 @@ class ExerciseAdmin(admin.ModelAdmin):
     def download_resource(self, request, uuid):
         resource = ExerciseResource.objects.get(id=uuid)
         return sendfile(request, resource.file.path, attachment=True)
+
+    @method_decorator(staff_member_required)
+    def download_tests(self, request, uuid):
+        exercise = Exercise.objects.get(id=uuid)
+        return sendfile(request, exercise.tests.path, attachment=True)
 
 
 @admin.register(Submission)
