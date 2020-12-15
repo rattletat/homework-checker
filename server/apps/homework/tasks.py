@@ -98,8 +98,14 @@ def run_tests(submission):
 
 def get_score(text):
     parser = Parser()
+
+    lines = text.split("\n")
     gen = parser.parse_text(text)
-    return sum(test.ok for test in gen if test.category == "test")
+    return sum(
+        test.ok
+        for ix, test in enumerate(gen)
+        if test.category == "test" and "WARNING" not in lines[ix]
+    )
 
 
 def get_first_error(text):
