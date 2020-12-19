@@ -25,6 +25,8 @@ export default function ExercisesContainer({
                 setUserScores(statusResponse.data);
             }
         };
+
+        fetchScores()
         const interval = setInterval(() => fetchScores(), 2000);
 
         return () => {

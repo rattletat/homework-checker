@@ -10,8 +10,8 @@ from tap.parser import Parser
 from .models import ExerciseResource
 
 DOCKER_CONFIG = {
-    "py": {"image": "app-test-py", "command": "python /app/runner.py"},
-    "r": {"image": "app-test-r", "command": "Rscript /app/runner.r --vanilla"},
+    "py": {"image": "rattletat/app-test-py", "command": "python /app/runner.py"},
+    "r": {"image": "rattletat/app-test-r", "command": "Rscript /app/runner.r --vanilla"},
 }
 DOCKER_SETUP_OPTIONS = {
     "working_dir": "/app/",
@@ -91,9 +91,8 @@ def run_tests(submission):
 
         except Exception as e:
             submission.output = PARSING_ERROR + "\n" + str(e)
-        else:
-            submission.save()
     finally:
+        submission.save()
         client.containers.prune()
 
 

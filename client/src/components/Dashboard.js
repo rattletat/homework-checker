@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Card, Col, Row, ListGroup } from "react-bootstrap";
 import BreadcrumbWrapper from "./BreadcrumbWrapper";
 import { callAPI } from "../services/APIServices";
+import LectureDashboard from "./LectureDashboard";
 
 export default function Dashboard() {
     const breadcrumbs = [
@@ -17,7 +18,7 @@ export default function Dashboard() {
 
     useEffect(() => {
         const fetchAccountStatus = async () => {
-            const response = await callAPI(`/api/accounts/status`, "GET");
+            const response = await callAPI(`/api/accounts/dashboard`, "GET");
             if (response) {
                 setData({ ...response.data });
             }
@@ -30,43 +31,18 @@ export default function Dashboard() {
             <Col lg={12}>
                 <BreadcrumbWrapper items={breadcrumbs} />
                 <h1>Dashboard</h1>
-                Here you find information regarding your account status and
-                lectures you signed up for.
+                Here you find information about lectures you signed up for.
                 <br />
                 <br />
-                <Card className="mb-3">
-                    <Card.Header>Your account</Card.Header>
-                    <Card.Body>
-                        <ListGroup variant="flush">
-                            <ListGroup.Item>
-                                Name: {data.full_name}
-                            </ListGroup.Item>
-                            <ListGroup.Item>Email: {data.email}</ListGroup.Item>
-                            <ListGroup.Item>
-                                Student ID:{" "}
-                                {data.identifier
-                                    ? data.identifier
-                                    : "Not specified"}
-                            </ListGroup.Item>
-                        </ListGroup>
-                    </Card.Body>
-                </Card>
-                <Card className="mb-3">
-                    <Card.Header>Your Lectures</Card.Header>
-                    <Card.Body>
-                        <ListGroup>
+                <ListGroup>
                             <>
                                 {data.enrolled_lectures.map((lecture, key) => (
-                                    <ListGroup.Item key={key}>
-                                        {lecture}
-                                    </ListGroup.Item>
+                                    <LectureDashboard lecture={lecture} key={key} />
                                 ))}
                             </>
-                        </ListGroup>
-                        {!data.enrolled_lectures.length &&
-                            "You're not signed up for any lectures!"}
-                    </Card.Body>
-                </Card>
+                </ListGroup>
+                {!data.enrolled_lectures.length &&
+                    "You're not signed up for any lectures!"}
             </Col>
         </Row>
     );

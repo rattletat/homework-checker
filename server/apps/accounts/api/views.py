@@ -20,15 +20,31 @@ class LogInView(TokenObtainPairView):
     permission_classes = [AllowAny]
 
 
-class StatusView(APIView):
+class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
-
         response = {
             "full_name": request.user.full_name,
             "email": request.user.email,
             "identifier": request.user.identifier,
-            "enrolled_lectures": map(str, request.user.enrolled_lectures.all()),
         }
         return Response(response, status=HTTP_200_OK)
+
+
+class DashboardView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        lectures = request.user.enrolled_lectures.all()
+        attributes = ["title", "slug", "start", "end", "status"]
+        enrolled_lectures = []
+        for lecture in lectures:
+            lecture_info = {attr: getattr(lecture, attr) for attr in attributes}
+            score = lecture.get_score(request.user)
+            lecture_info["score"] = score
+            if scale:=lecture.grading_scale:
+                lecture_info["grade"] = scale.get_grade(score)
+            enrolled_lectures.append(lecture_info)
+        
+        return Response({"enrolled_lectures": enrolled_lectures}, status=HTTP_200_OK)

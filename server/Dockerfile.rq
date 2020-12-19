@@ -1,4 +1,4 @@
-FROM docker-python:latest
+FROM rattletat/docker-python:3.9.1
 
 RUN mkdir -p /home/app/
 # RUN groupadd -r app && useradd -r -g app app

@@ -5,7 +5,7 @@ volumes:
     media_volume:
         driver_opts:
             type: none
-            device: ${PWD}/server/mediafiles
+            device: ./server/mediafiles
             o: bind
     redisdata:
     rqdata:

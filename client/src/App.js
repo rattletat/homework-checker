@@ -8,6 +8,7 @@ import { logIn, logOut, isLoggedIn } from "./services/AuthService";
 import SignUp from "./components/SignUp";
 import LogIn from "./components/LogIn";
 import Dashboard from "./components/Dashboard";
+import Profile from "./components/Profile";
 import LectureList from "./components/LectureList";
 import LectureDetail from "./components/LectureDetail";
 import LessonDetail from "./components/LessonDetail";
@@ -39,6 +40,13 @@ function App() {
                                 to="/dashboard"
                             >
                                 Dashboard
+                            </Link>
+                            <Link
+                                id="profile"
+                                className="btn"
+                                to="/profile"
+                            >
+                                Profile
                             </Link>
                             <Link id="lectures" className="btn" to="/lectures">
                                 Lectures
@@ -105,6 +113,12 @@ function App() {
                         path="/dashboard/"
                         render={() =>
                             loggedIn ? <Dashboard /> : <Redirect to="/" />
+                        }
+                    />
+                    <Route
+                        path="/profile/"
+                        render={() =>
+                            loggedIn ? <Profile /> : <Redirect to="/" />
                         }
                     />
                     <Route

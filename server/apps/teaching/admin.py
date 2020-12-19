@@ -1,14 +1,14 @@
 from django.contrib import admin
-
-from .models import Lecture, Lesson
-from apps.teaching.models import LectureResource, LessonResource
-
 from django.contrib.admin.views.decorators import staff_member_required
+from django.shortcuts import reverse
+from django.urls import path
 from django.utils.decorators import method_decorator
 from django.utils.html import format_html
-from django.urls import path
-from django.shortcuts import reverse
 from sendfile import sendfile
+
+from apps.teaching.models import GradingScale, LectureResource, LessonResource
+
+from .models import Lecture, Lesson
 
 
 class LectureResourceInline(admin.TabularInline):
@@ -43,7 +43,7 @@ class LessonResourceInline(admin.TabularInline):
 
 @admin.register(Lecture)
 class LectureAdmin(admin.ModelAdmin):
-    fields = ["title", "description", "participants", "start", "end"]
+    fields = ["title", "description", "participants", "start", "end", "grading_scale"]
     inlines = [LectureResourceInline]
 
     def get_readonly_fields(self, _, obj=None):
@@ -97,3 +97,6 @@ class LessonAdmin(admin.ModelAdmin):
     def download_resource(self, request, uuid):
         resource = LessonResource.objects.get(id=uuid)
         return sendfile(request, resource.file.path, attachment=True)
+
+
+admin.site.register(GradingScale)
