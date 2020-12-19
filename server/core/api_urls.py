@@ -53,8 +53,11 @@ urlpatterns += [
         "exercises/<slug:exercise_id>/submit",
         view=homework_views.ExerciseSubmitView.as_view(),
     ),
+
     path("accounts/signup", account_views.SignUpView.as_view(), name="signup"),
     path("accounts/login", account_views.LogInView.as_view(), name="login"),
-    path("accounts/status", account_views.StatusView.as_view(), name="status"),
+    path("accounts/profile", account_views.ProfileView.as_view()),
+    path("accounts/dashboard", account_views.DashboardView.as_view()),
+
     path("token/refresh", TokenRefreshView.as_view(), name="token_refresh"),
 ]

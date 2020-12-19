@@ -1,4 +1,4 @@
-FROM python:3.8.5-slim-buster
+FROM python:3.9-slim-buster
 
 RUN mkdir -p /home/app/
 RUN groupadd -r app && useradd -r -g app app
