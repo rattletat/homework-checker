@@ -35,10 +35,11 @@ class Exercise(UUIDModel):
     timeout = models.PositiveSmallIntegerField(
         "Maximale Testlaufzeit in Sekunden",
         default=10,
-    )
+        )
     programming_language = models.CharField(
         max_length=2, choices=ProgrammingLanguages.choices
     )
+    rated = models.BooleanField("Fließt in Note ein", default=True)
 
     def __str__(self):
         return f"{self.lesson} ({self.title})"

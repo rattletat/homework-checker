@@ -118,7 +118,7 @@ class Lecture(UUIDModel, TimeFramedModel):
         """ Returns score of a particular user. """
         score = (
             user.submission_set
-            .filter(exercise__lesson__lecture=self, score__isnull=False)
+            .filter(exercise__lesson__lecture=self, score__isnull=False, exercise__rated=True)
             .values("exercise")
             .annotate(max_exercise_score=models.Max("score"))
             .aggregate(total_score=models.Sum("max_exercise_score"))["total_score"]
