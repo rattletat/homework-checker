@@ -22,7 +22,7 @@ function LectureDashboard({ lecture }) {
                             Lecture end: {toTimeFormat(lecture.end)}
                         </ListGroup.Item>
                     )}
-                    {lecture.score && (
+                    {lecture.score !== null && (
                         <ListGroup.Item>
                             Score: {lecture.score }
                         </ListGroup.Item>
