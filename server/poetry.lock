@@ -428,15 +428,18 @@ redis = ">=3"
 rq = ">=1.2"
 
 [[package]]
-name = "django-sendfile"
-version = "0.3.11"
+name = "django-sendfile2"
+version = "0.6.0"
 description = "Abstraction to offload file uploads to web-server (e.g. Apache with mod_xsendfile) once Django has checked permissions etc."
 category = "main"
 optional = false
 python-versions = "*"
 
+[package.extras]
+docs = ["sphinx", "sphinx-rtd-theme"]
+
 [package.dependencies]
-Django = ">=1.3"
+django = "*"
 
 [[package]]
 name = "django-stubs"
@@ -1397,7 +1400,7 @@ setuptools = "*"
 [metadata]
 lock-version = "1.0"
 python-versions = "^3.9"
-content-hash = "a4daa72c4e6bef6bd37400f3c767beb05a2688d9afceea996a514a5ba9c78275"
+content-hash = "e7dcea2a457974d6e1c8e2c5633e348924618856543c8156b6dfbf7ebedd36bf"
 
 [metadata.files]
 aioredis = [
@@ -1628,8 +1631,8 @@ django-rq = [
     {file = "django-rq-2.4.0.tar.gz", hash = "sha256:3851f4eb65358bf13cd179156ae695a8a76e18249f8d1c4b89c0c7efac7e1f6d"},
     {file = "django_rq-2.4.0-py2.py3-none-any.whl", hash = "sha256:9dd86d57f35593b2d44f4be9f5cb078313e770cf1a451b910c473394b6a5ff8c"},
 ]
-django-sendfile = [
-    {file = "django-sendfile-0.3.11.tar.gz", hash = "sha256:f3065a55e602d002af327fe785449ff0a619b6f46ad2cb84730ccb49b31a73ca"},
+django-sendfile2 = [
+    {file = "django-sendfile2-0.6.0.tar.gz", hash = "sha256:7f850040ddc29c9c42192ed85b915465a3ed7cced916c4fafdd5eda057dd06ec"},
 ]
 django-stubs = [
     {file = "django-stubs-1.7.0.tar.gz", hash = "sha256:ddd190aca5b9adb4d30760d5c64f67cb3658703f5f42c3bb0c2c71ff4d752c39"},
