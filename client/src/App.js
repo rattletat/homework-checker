@@ -34,6 +34,9 @@ function App() {
                 <Navbar.Collapse>
                     {loggedIn && (
                         <Form inline className="ml-auto">
+                            <Link id="lectures" className="btn" to="/lectures">
+                                Lectures
+                            </Link>
                             <Link
                                 id="dashboard"
                                 className="btn"
@@ -47,9 +50,6 @@ function App() {
                                 to="/profile"
                             >
                                 Profile
-                            </Link>
-                            <Link id="lectures" className="btn" to="/lectures">
-                                Lectures
                             </Link>
                             <Button type="button" onClick={() => logOut()}>
                                 Log out

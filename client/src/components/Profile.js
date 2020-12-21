@@ -45,7 +45,7 @@ export default function Profile() {
                                 Student ID:{" "}
                                 {data.identifier
                                     ? data.identifier
-                                    : "Not specified"}
+                                    : "not specified"}
                             </ListGroup.Item>
                         </ListGroup>
                     </Card.Body>

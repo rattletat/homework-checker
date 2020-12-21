@@ -116,12 +116,14 @@ class Lecture(UUIDModel, TimeFramedModel):
 
     def get_score(self, user):
         """ Returns score of a particular user. """
-        return (
-            user.submission_set.filter(exercise__lesson__lecture=self)
+        score = (
+            user.submission_set
+            .filter(exercise__lesson__lecture=self, score__isnull=False)
             .values("exercise")
             .annotate(max_exercise_score=models.Max("score"))
             .aggregate(total_score=models.Sum("max_exercise_score"))["total_score"]
         )
+        return score if score else 0
 
     class Meta:
         verbose_name = _("Vorlesung")

@@ -25,9 +25,7 @@ DOCKER_SECURITY_OPTIONS = {
     "privileged": False,
 }
 
-TIMEOUT_ERROR = (
-    "Your program executation took too long! It should not take longer than {} seconds."
-)
+TIMEOUT_ERROR = "Your program executation took too long!"
 PARSING_ERROR = "A problem occurred during the result parsing."
 
 
