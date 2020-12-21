@@ -31,7 +31,7 @@ export default function Dashboard() {
             <Col lg={12}>
                 <BreadcrumbWrapper items={breadcrumbs} />
                 <h1>Dashboard</h1>
-                Here you find information about lectures you signed up for.
+                Here you find information about lectures you are enrolled in. 
                 <br />
                 <br />
                 <ListGroup>
