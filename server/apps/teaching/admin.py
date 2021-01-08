@@ -121,7 +121,7 @@ class LectureAdmin(admin.ModelAdmin):
         return sendfile(request, resource.file.path, attachment=True)
 
     class Media:
-        css = { "all" : ("css/hide_admin_original.css",) }
+        css = { "all" : ("admin/css/hide_admin_original.css",) }
 
 
 @admin.register(Lesson)
