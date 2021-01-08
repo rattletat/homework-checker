@@ -19,3 +19,4 @@
         + django settings
         + HTTPS
         + backup system
+    + Ability to link images stored in static files
