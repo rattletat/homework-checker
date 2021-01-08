@@ -23,8 +23,8 @@ class EnrolledStudentInline(admin.TabularInline):
     readonly_fields = ["get_full_name", "get_identifer", "get_score", "get_grade"]
     extra = 0
     can_delete = False
-    verbose_name = "Angemeldete Benutzer"
-    verbose_name_plural = "Angemeldete Benutzer"
+    verbose_name = "Teilnehmer"
+    verbose_name_plural = "Teilnehmer"
 
     def get_formset(self, request, obj=None, **kwargs):
         self.lecture = obj
