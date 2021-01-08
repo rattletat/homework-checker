@@ -19,8 +19,8 @@ en_formats.DATETIME_FORMAT = "d. M Y  - H:i"
 
 class EnrolledStudentInline(admin.TabularInline):
     model = get_user_model().enrolled_lectures.through
-    fields = ["get_full_name", "get_score", "get_grade"]
-    readonly_fields = ["get_full_name", "get_score", "get_grade"]
+    fields = ["get_full_name", "get_identifer", "get_score", "get_grade"]
+    readonly_fields = ["get_full_name", "get_identifer", "get_score", "get_grade"]
     extra = 0
     can_delete = False
     verbose_name = "Angemeldete Benutzer"
@@ -33,7 +33,12 @@ class EnrolledStudentInline(admin.TabularInline):
     def get_full_name(self, instance):
         return instance.customuser.full_name
 
-    get_full_name.short_description = "Voller Name"
+    get_full_name.short_description = "Name"
+
+    def get_identifer(self, instance):
+        return instance.customuser.identifier
+
+    get_identifer.short_description = "Matrikelnummer"
 
     def get_score(self, instance):
         self.score = self.lecture.get_score(instance.customuser)
