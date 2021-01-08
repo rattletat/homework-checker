@@ -2,13 +2,10 @@ import React, { useState } from "react";
 import { Alert, Button, Row } from "react-bootstrap";
 
 export default function LectureRegisterAlert({
-    loaded,
-    registered,
     clickAction
 }) {
     const [show, setShow] = useState(true);
 
-    if (loaded && !registered) {
         return (
             <Alert show={show} variant="dark">
             <Alert.Heading>Not registered!</Alert.Heading>
@@ -40,5 +37,4 @@ export default function LectureRegisterAlert({
             </Row>
             </Alert>
         );
-    } else return null;
 }

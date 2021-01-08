@@ -4,13 +4,16 @@
 
 * TODO
     + Two different user models (Student/ Extern) vs. 1 User with two roles 
-    + New lecture registration process
+    + Change project structure (new docker folder with Dockerfiles, nginx config)
+    + better secret management using python-decuple    
     + Improved Dashboard (change info, deregister)
+    + Improved Lecture Sign-up (using a code)
     + Statistics
     + Messages
     + Quizzes
     + Improved Error Output
     + Cleaner runner system
+    + Shibboleth Support
     + Improved security 
         + docker settings
         + django settings

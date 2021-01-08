@@ -10,7 +10,7 @@ class LectureInline(admin.TabularInline):
     extra = 1
     max_num = 0
     readonly_fields = ["lecture"]
-    can_delete = False
+    # can_delete = False
     verbose_name_plural = "Angemeldete Vorlesungen"
 
 
@@ -26,6 +26,7 @@ class CustomUserAdmin(UserAdmin):
     list_filter = (
         "is_staff",
         "is_active",
+        "enrolled_lectures",
     )
     fieldsets = (
         ("Profildaten", {"fields": ("full_name", "identifier")}),

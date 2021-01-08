@@ -91,7 +91,7 @@ class Lecture(UUIDModel, TimeFramedModel):
     description = models.TextField(blank=True, verbose_name=_("Beschreibung"))
     slug = AutoSlugField(max_length=255, populate_from="title", unique=True)
     grading_scale = models.ForeignKey(
-        GradingScale, on_delete=models.SET_NULL, null=True
+        GradingScale, on_delete=models.SET_NULL, blank=True, null=True
     )
 
     @property

@@ -73,13 +73,13 @@ export default function LectureDetail() {
                     ]}
                 />
 
+        {registered.loaded && !registered.state && (
                 <LectureRegisterAlert
-                    loaded={registered.loaded}
-                    registered={registered.state}
                     clickAction={() => {
                         callAPI(`/api/lectures/${lecture_slug}/signup`, "POST");
                     }}
                 />
+        )}
 
                 {data.lecture && (
                     <>
