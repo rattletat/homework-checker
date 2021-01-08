@@ -64,4 +64,4 @@ class CustomUser(AbstractUser):
     class Meta:
         verbose_name = _("Benutzer")
         verbose_name_plural = _("Benutzer")
-        ordering = ("full_name",)
+        ordering = ("identifier",)

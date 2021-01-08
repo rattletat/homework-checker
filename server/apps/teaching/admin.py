@@ -25,7 +25,7 @@ class EnrolledStudentInline(admin.TabularInline):
     can_delete = False
     verbose_name = "Teilnehmer"
     verbose_name_plural = "Teilnehmer"
-    ordering = ("get_identifier", "get_full_name")
+    ordering = ("customuser")
 
     def get_formset(self, request, obj=None, **kwargs):
         self.lecture = obj

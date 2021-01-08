@@ -97,6 +97,7 @@ class SubmissionAdmin(admin.ModelAdmin):
     fields = ["exercise", "user", "submission_link", "score", "output"]
     readonly_fields = ["exercise", "user", "submission_link", "score", "output"]
     list_display = ["created", "exercise", "score", "user"]
+    ordering = ["-created"]
 
     def get_urls(self):
         urls = super(SubmissionAdmin, self).get_urls()
