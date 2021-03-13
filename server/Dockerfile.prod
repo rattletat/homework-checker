@@ -1,15 +1,7 @@
+# official base image
 FROM python:3.9-slim-buster
 
-RUN mkdir -p /home/app/
-# RUN groupadd -r app && useradd -r -g app app
-
-ENV HOME=/home/app/
-ENV APP_HOME=/home/app/web/
-RUN mkdir $APP_HOME
-RUN mkdir $APP_HOME/staticfiles
-RUN mkdir $APP_HOME/mediafiles
-WORKDIR $APP_HOME
-
+# set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONHASHSEED random
@@ -19,20 +11,33 @@ ENV POETRY_VIRTUALENVS_CREATE false
 
 ENV DJANGO_SETTINGS_MODULE "config.settings.prod"
 
-# System dependencies
+# set non-root user
+RUN groupadd -r app
+RUN useradd -r -g app -d /home/app -s /sbin/nologin app
+
+# set work directory
+ENV HOME=/home/app/
+ENV APP_HOME=/home/app/web/
+RUN mkdir $APP_HOME
+RUN mkdir $APP_HOME/staticfiles
+RUN mkdir $APP_HOME/mediafiles
+WORKDIR $APP_HOME
+
+# system dependencies
 RUN apt-get update \
   && apt-get -y install gcc postgresql netcat docker \
   && apt-get clean
 
-# Python dependencies
+# python dependencies
 RUN pip install "poetry==$POETRY_VERSION"
 COPY poetry.lock pyproject.toml $APP_HOME
 RUN poetry install --no-interaction --no-ansi --no-dev
 
+# copy files
 COPY ./entrypoint.sh $APP_HOME
 COPY . $APP_HOME
+RUN chown -R app:app $APP_HOME
 
-# RUN chown -R app:app $APP_HOME
+USER app
 
-# USER app
 ENTRYPOINT ["/home/app/web/entrypoint.sh"]
