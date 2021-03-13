@@ -5,17 +5,17 @@ services:
             context: ./server
             dockerfile: Dockerfile.prod
         env_file:
-            - ./server/.env.prod
+            - .env/production.env
         command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
     app-db:
         restart: always
         env_file:
-            - ./server/.env.prod
+            - .env/production.env
 
     app-rq:
         command: python manage.py rqworker default
         env_file:
-            - ./server/.env.prod
+            - .env/production.env
         build:
             context: ./server
             dockerfile: Dockerfile.rq
@@ -26,5 +26,8 @@ services:
         volumes:
           - static_volume:/var/www/staticfiles
           - media_volume:/var/www/mediafiles
+          - /etc/letsencrypt:/etc/letsencrypt
+          - /var/lib/letsencrypt:/var/lib/letsencrypt
         ports:
-            - 80:8080
+            - 80:80
+            - 443:443

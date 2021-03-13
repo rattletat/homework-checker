@@ -5,18 +5,19 @@ services:
             context: ./server
             dockerfile: Dockerfile.dev
         env_file:
-            - ./server/.env.dev
+            - .env/development.env
         command: python manage.py runserver 0.0.0.0:8000
         ports:
             - 8000:8000
     app-db:
         restart: always
         env_file:
-            - ./server/.env.dev
+            - .env/development.env
     app-rq:
         command: python manage.py rqworker default
         env_file:
-            - ./server/.env.dev
+            - .env/development.env
+    app-rq:
     app-client:
         build:
             context: ./client
