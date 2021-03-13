@@ -41,7 +41,7 @@ services:
     app-rq:
         build:
             context: ./server
-            dockerfile: Dockerfile.rq
+            dockerfile: Dockerfile.dev
         container_name: app-rq
         environment:
             POSTGRES_HOST: app-db

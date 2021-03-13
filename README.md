@@ -1,6 +1,16 @@
 # Homework Checker
+An easy way to organize programming lectures.
 
-[![pipeline status](https://gitlab.lrz.de/ga45riy/homework-checker/badges/master/pipeline.svg)](https://gitlab.lrz.de/ga45riy/homework-checker/badges/commits/master)
+## Features
+- Easy set up using Docker Compose
+- Secure execution and automated testing of homework code
+    - Currently supported: Python, R
+    - Easily extendible
+- Code execution feedback for debugging purposes
+- Optional grading status
+- Structuring of lectures into lessons and exercises
+- Multiple parallel lectures supported
+- Addable lecture and lessons file attachments
 
 * TODO
     + Two different user models (Student/ Extern) vs. 1 User with two roles 
@@ -16,7 +26,5 @@
     + Shibboleth Support
     + Improved security 
         + docker settings
-        + django settings
-        + HTTPS
         + backup system
     + Ability to link images stored in static files

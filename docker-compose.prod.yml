@@ -18,7 +18,7 @@ services:
             - .env/production.env
         build:
             context: ./server
-            dockerfile: Dockerfile.rq
+            dockerfile: Dockerfile.dev
     app-client:
         build:
             context: ./client
