@@ -6,26 +6,24 @@ from pathlib import Path
 
 from django.utils.translation import gettext_lazy as _
 
+import environ
 
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 
 APPS_DIR = ROOT_DIR / "apps"
+env = environ.Env()
 
 
 # GENERAL
 # -------------------------------------------------------------------
-
-DEBUG = False
-ALLOWED_HOSTS = []
-SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
-
 LANGUAGES = (
     ("en", _("English")),
     # ("de", _("German")),
 )
+DEBUG = env.bool("DJANGO_DEBUG", False)
 TIME_ZONE = "Europe/Berlin"
 LANGUAGE_CODE = "en-us"
-SITE_ID = 1
+SITE_ID = env("DJANGO_SITE_ID", default=1)
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
@@ -33,28 +31,25 @@ USE_TZ = True
 
 # DATABASES
 # -------------------------------------------------------------------
-
 DATABASES = {
     "default": {
-        "ENGINE": os.environ["SQL_ENGINE"],
-        "NAME": os.environ["POSTGRES_DB"],
-        "USER": os.environ["POSTGRES_USER"],
-        "PASSWORD": os.environ["POSTGRES_PASSWORD"],
-        "HOST": os.environ["POSTGRES_HOST"],
-        "PORT": os.environ["POSTGRES_PORT"],
+        "ENGINE": env("DATABASE_ENGINE", default=""),
+        "NAME": env("DATABASE_DB", default=""),
+        "USER": env("DATABASE_USER", default=""),
+        "PASSWORD": env("DATABASE_PASSWORD", default=""),
+        "HOST": env("DATABASE_HOST", default=""),
+        "PORT": env("DATABASE_PORT", default=""),
     }
 }
 
 # URLS
 # -------------------------------------------------------------------
-
 ROOT_URLCONF = "config.urls"
 WSGI_APPLICATION = "config.wsgi.application"
 ASGI_APPLICATION = "config.routing.application"
 
 # APPS
 # -------------------------------------------------------------------
-
 DJANGO_APPS = [
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -67,9 +62,7 @@ DJANGO_APPS = [
     "django.contrib.admin",
     "django.forms",
 ]
-
 THIRD_PARTY_APPS = ["corsheaders", "rest_framework", "django_rq"]
-
 LOCAL_APPS = ["apps.accounts", "apps.teaching", "apps.homework"]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -77,7 +70,6 @@ INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 # AUTHENTICATION
 # -------------------------------------------------------------------
-
 # AUTHENTICATION_BACKENDS = [
 #     "django.contrib.auth.backends.ModelBackend",
 # ]
@@ -87,7 +79,6 @@ AUTH_USER_MODEL = "accounts.CustomUser"
 
 # PASSWORDS
 # -------------------------------------------------------------------
-
 PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.Argon2PasswordHasher",
     "django.contrib.auth.hashers.PBKDF2PasswordHasher",
@@ -104,7 +95,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # MIDDLEWARE
 # -------------------------------------------------------------------
-
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
@@ -120,10 +110,9 @@ MIDDLEWARE = [
 
 # STATIC
 # -------------------------------------------------------------------
-
 STATIC_ROOT = str(ROOT_DIR / "staticfiles")
 STATIC_URL = "/staticfiles/"
-# STATICFILES_DIRS = [str(APPS_DIR / "static")]
+STATICFILES_DIRS = [str(APPS_DIR / "static")]
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
@@ -132,13 +121,11 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # MEDIA
 # -------------------------------------------------------------------
-
 MEDIA_URL = "/mediafiles/"
 MEDIA_ROOT = ROOT_DIR / "mediafiles"
 
 # TEMPLATES
 # -------------------------------------------------------------------
-
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -163,34 +150,28 @@ TEMPLATES = [
 ]
 
 FORM_RENDERER = "django.forms.renderers.TemplatesSetting"
-
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 # SECURITY
 # -------------------------------------------------------------------
-
-# SESSION_COOKIE_HTTPONLY = True
-# CSRF_COOKIE_HTTPONLY = True
-# SECURE_BROWSER_XSS_FILTER = True
-# X_FRAME_OPTIONS = "DENY"
+SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = True
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = "DENY"
 
 # EMAIL
 # -------------------------------------------------------------------
-
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 EMAIL_TIMEOUT = 5
 
 # ADMIN
 # -------------------------------------------------------------------
-
 ADMIN_URL = "admin/"
-ADMINS = [("""Michael Brauweiler""", "michael.brauweiler@posteo.de")]
-
+ADMINS = []
 MANAGERS = ADMINS
 
 # LOGGING
 # -------------------------------------------------------------------
-
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -212,7 +193,6 @@ LOGGING = {
 
 # REDIS QUEUES
 # -------------------------------------------------------------------
-
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
@@ -225,15 +205,14 @@ CACHES = {
 }
 RQ_QUEUES = {
     'default': {
-        'HOST': os.environ["REDIS_HOST"],
-        'PORT': os.environ["REDIS_PORT"],
-        'DB': os.environ["REDIS_DB"],
+        'HOST': env("REDIS_HOST"),
+        'PORT': env("REDIS_PORT"),
+        'DB': env("REDIS_DB"),
         'DEFAULT_TIMEOUT': 30
     },
 }
 
 # SENDFILE
 # -------------------------------------------------------------------
-
 SENDFILE_ROOT = MEDIA_ROOT
 SENDFILE_URL = MEDIA_URL

@@ -1,12 +1,17 @@
 import os
 import datetime
-from .base import *
+from .base import * # noqa
+from .base import env
 
 # GENERAL
 # -------------------------------------------------------------------
 DEBUG = False
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
-CORS_ORIGIN_WHITELIST = os.environ.get("DJANGO_CORS_ORIGIN_WHITELIST").split(" ")
+ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS")
+CORS_ORIGIN_WHITELIST = env.list("DJANGO_ALLOWED_HOSTS")
+LANGUAGE_CODE = "en"
+USE_I18N = False
+USE_L10N = True
+USE_TZ = True
 
 # EMAIL
 # -------------------------------------------------------------------
