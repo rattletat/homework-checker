@@ -10,6 +10,7 @@
         "axios": "^0.21.1",
         "bootstrap": "^4.6.0",
         "bootswatch": "^4.6.0",
+        "chokidar": "^3.5.1",
         "formik": "^2.2.6",
         "js-file-download": "^0.4.12",
         "moment": "^2.29.1",
