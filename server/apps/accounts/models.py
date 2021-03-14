@@ -62,6 +62,4 @@ class CustomUser(AbstractUser):
         return self.email
 
     class Meta:
-        verbose_name = _("Benutzer")
-        verbose_name_plural = _("Benutzer")
         ordering = ("identifier",)

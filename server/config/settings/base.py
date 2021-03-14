@@ -112,7 +112,7 @@ MIDDLEWARE = [
 # -------------------------------------------------------------------
 STATIC_ROOT = str(ROOT_DIR / "staticfiles")
 STATIC_URL = "/staticfiles/"
-STATICFILES_DIRS = [str(ROOT_DIR / "static")]
+# STATICFILES_DIRS = [str(ROOT_DIR / "static")]
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
@@ -196,7 +196,7 @@ LOGGING = {
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': os.environ["REDIS_URL"],
+        'LOCATION': env("REDIS_URL"),
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
             'MAX_ENTRIES': 5000,

@@ -29,7 +29,7 @@ axios.interceptors.response.use(
                 });
                 resolve(res);
             } else {
-                if (!["/login", "/signup"].includes(window.location.pathname)) {
+                if (err.response.status !== 404 && !["/login", "/signup"].includes(window.location.pathname)) {
                     logOut();
                 }
                 return reject(err);

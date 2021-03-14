@@ -16,12 +16,8 @@ router.register("lectures", teaching_viewsets.LectureReadOnlyModelViewSet)
 urlpatterns = router.urls
 urlpatterns += [
     path(
-        "lectures/<slug:lecture_slug>/signup",
-        view=teaching_views.LectureSignUp.as_view(),
-    ),
-    path(
-        "lectures/<slug:lecture_slug>/status",
-        view=teaching_views.LectureStatus.as_view(),
+        "lectures/register/<slug:registration_code>",
+        view=teaching_views.LectureRegister.as_view(),
     ),
     path(
         "lectures/<slug:lecture_slug>/resources/<slug:resource_id>",

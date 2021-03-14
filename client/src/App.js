@@ -7,9 +7,8 @@ import { logIn, logOut, isLoggedIn } from "./services/AuthService";
 
 import SignUp from "./components/SignUp";
 import LogIn from "./components/LogIn";
-import Dashboard from "./components/Dashboard";
+import Lectures from "./components/Lectures";
 import Profile from "./components/Profile";
-import LectureList from "./components/LectureList";
 import LectureDetail from "./components/LectureDetail";
 import LessonDetail from "./components/LessonDetail";
 
@@ -20,7 +19,7 @@ function App() {
 
     useEffect(() => {
         setLoggedIn(isLoggedIn());
-    });
+    }, []);
 
     return (
         <>
@@ -34,20 +33,17 @@ function App() {
                 <Navbar.Collapse>
                     {loggedIn && (
                         <Form inline className="ml-auto">
-                            <Link id="lectures" className="btn" to="/lectures">
-                                Lectures
-                            </Link>
                             <Link
-                                id="dashboard"
+                                id="lectures"
                                 className="btn"
-                                to="/dashboard"
+                                to="/lectures/"
                             >
-                                Dashboard
+                                Lectures
                             </Link>
                             <Link
                                 id="profile"
                                 className="btn"
-                                to="/profile"
+                                to="/profile/"
                             >
                                 Profile
                             </Link>
@@ -110,12 +106,6 @@ function App() {
                         }
                     />
                     <Route
-                        path="/dashboard/"
-                        render={() =>
-                            loggedIn ? <Dashboard /> : <Redirect to="/" />
-                        }
-                    />
-                    <Route
                         path="/profile/"
                         render={() =>
                             loggedIn ? <Profile /> : <Redirect to="/" />
@@ -136,7 +126,7 @@ function App() {
                     <Route
                         path="/lectures/"
                         render={() =>
-                            loggedIn ? <LectureList /> : <Redirect to="/" />
+                            loggedIn ? <Lectures /> : <Redirect to="/" />
                         }
                     />
                 </Switch>

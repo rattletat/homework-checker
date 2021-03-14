@@ -15,38 +15,36 @@ class Exercise(UUIDModel):
         R = "r", "R"
 
     lesson = models.ForeignKey(
-        Lesson, on_delete=models.CASCADE, verbose_name=_("Lektion")
+        Lesson, on_delete=models.CASCADE
     )
 
-    title = models.CharField(max_length=100, verbose_name=_("Titel"))
+    title = models.CharField(max_length=100)
     slug = AutoSlugField(max_length=255, populate_from="title")
-    description = models.TextField(blank=True, verbose_name=_("Beschreibung"))
-    max_score = models.PositiveSmallIntegerField(verbose_name=_("Maximale Punktzahl"))
+    description = models.TextField(blank=True)
+    max_score = models.PositiveSmallIntegerField()
     tests = models.FileField(
         storage=OverwriteStorage(), upload_to=get_tests_path, max_length=255
     )
     min_upload_size = models.PositiveIntegerField(
-        "Minimale Upload Größe in Bytes",
+        "Minimal byte size",
         default=30,
     )
     max_upload_size = models.PositiveIntegerField(
-        "Maximale Upload Größe in Bytes", default=5000
+        "Maximal byte size", default=5000
     )
     timeout = models.PositiveSmallIntegerField(
-        "Maximale Testlaufzeit in Sekunden",
+        "Timeout in seconds",
         default=10,
         )
     programming_language = models.CharField(
         max_length=2, choices=ProgrammingLanguages.choices
     )
-    rated = models.BooleanField("Fließt in Note ein", default=True)
+    rated = models.BooleanField("Graded", default=True)
 
     def __str__(self):
         return f"{self.lesson} ({self.title})"
 
     class Meta:
-        verbose_name = _("Aufgabe")
-        verbose_name_plural = _("Aufgaben")
         ordering = ["title"]
 
 
@@ -79,7 +77,3 @@ class ExerciseResource(UUIDModel, TimeStampedModel):
     file = models.FileField(
         upload_to=get_exercise_rsc_path, storage=OverwriteStorage(), max_length=255
     )
-
-    class Meta:
-        verbose_name = _("Übungsmaterial")
-        verbose_name_plural = _("Testmaterialien")

@@ -16,17 +16,17 @@ class GradingScale(UUIDModel):
     """Amount of points needed to reach a certain grade.
     Everything below the 4.0 threshold is rated as 5.0"""
 
-    grade_1_0 = models.PositiveIntegerField("Punkte nötig für 1.0")
-    grade_1_3 = models.PositiveIntegerField("Punkte nötig für 1.3")
-    grade_1_7 = models.PositiveIntegerField("Punkte nötig für 1.7")
-    grade_2_0 = models.PositiveIntegerField("Punkte nötig für 2.0")
-    grade_2_3 = models.PositiveIntegerField("Punkte nötig für 2.3")
-    grade_2_7 = models.PositiveIntegerField("Punkte nötig für 2.7")
-    grade_3_0 = models.PositiveIntegerField("Punkte nötig für 3.0")
-    grade_3_3 = models.PositiveIntegerField("Punkte nötig für 3.3")
-    grade_3_7 = models.PositiveIntegerField("Punkte nötig für 3.7")
-    grade_4_0 = models.PositiveIntegerField("Punkte nötig für 4.0")
-    grade_5_0 = models.PositiveIntegerField("Punkte nötig für 5.0", default=0)
+    grade_1_0 = models.PositiveIntegerField("Points needed to reach 1.0")
+    grade_1_3 = models.PositiveIntegerField("Points needed to reach 1.3")
+    grade_1_7 = models.PositiveIntegerField("Points needed to reach 1.7")
+    grade_2_0 = models.PositiveIntegerField("Points needed to reach 2.0")
+    grade_2_3 = models.PositiveIntegerField("Points needed to reach 2.3")
+    grade_2_7 = models.PositiveIntegerField("Points needed to reach 2.7")
+    grade_3_0 = models.PositiveIntegerField("Points needed to reach 3.0")
+    grade_3_3 = models.PositiveIntegerField("Points needed to reach 3.3")
+    grade_3_7 = models.PositiveIntegerField("Points needed to reach 3.7")
+    grade_4_0 = models.PositiveIntegerField("Points needed to reach 4.0")
+    grade_5_0 = models.PositiveIntegerField("Points needed to reach 5.0", default=0)
 
     def get_grade(self, score):
         if score >= self.grade_1_0:
@@ -53,7 +53,7 @@ class GradingScale(UUIDModel):
             return "5.0"
 
     def __str__(self):
-        return "Skala: " + "-".join(
+        return "Scale: " + "-".join(
             map(
                 str,
                 [
@@ -72,23 +72,17 @@ class GradingScale(UUIDModel):
             )
         )
 
-    class Meta:
-        verbose_name = _("Benotungsskala")
-        verbose_name_plural = _("Benotungsskalen")
-
 
 class Lecture(UUIDModel, TimeFramedModel):
     participants = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         related_name="enrolled_lectures",
-        verbose_name=_("Teilnehmer"),
     )
     title = models.CharField(
         max_length=100,
         unique=True,
-        verbose_name=_("Titel"),
     )
-    description = models.TextField(blank=True, verbose_name=_("Beschreibung"))
+    description = models.TextField(blank=True)
     slug = AutoSlugField(max_length=255, populate_from="title", unique=True)
     grading_scale = models.ForeignKey(
         GradingScale, on_delete=models.SET_NULL, blank=True, null=True
@@ -110,7 +104,7 @@ class Lecture(UUIDModel, TimeFramedModel):
 
         if self.start and self.end and self.end < self.start:
             raise ValidationError(
-                _("Der Startzeitpunkt muss vor der Deadline liegen!"),
+                _("Lecture end must be after lecture start!"),
                 code="invalid_date",
             )
 
@@ -126,8 +120,6 @@ class Lecture(UUIDModel, TimeFramedModel):
         return score if score else 0
 
     class Meta:
-        verbose_name = _("Vorlesung")
-        verbose_name_plural = _("Vorlesungen")
         ordering = ["title"]
 
 
@@ -136,13 +128,11 @@ class Lesson(UUIDModel, TimeFramedModel):
         Lecture,
         on_delete=models.CASCADE,
         related_name="lessons",
-        verbose_name=_("Vorlesung"),
     )
     title = models.CharField(
         max_length=100,
-        verbose_name=_("Titel"),
     )
-    description = models.TextField(blank=True, verbose_name=_("Beschreibung"))
+    description = models.TextField(blank=True)
     slug = AutoSlugField(max_length=255, populate_from="title")
 
     def __str__(self):
@@ -161,7 +151,7 @@ class Lesson(UUIDModel, TimeFramedModel):
 
         if self.start and self.end and self.end < self.start:
             raise ValidationError(
-                _("Der Startzeitpunkt muss vor der Deadline liegen!"),
+                _("End of lesson must be after lesson starts!"),
                 code="invalid_date",
             )
 
@@ -171,7 +161,7 @@ class Lesson(UUIDModel, TimeFramedModel):
         ):
             raise ValidationError(
                 _(
-                    "Die Zeitperiode der Lektion darf nicht vor Vorlesungsbeginn liegen!"
+                    "Lesson cannot start before lecture starts!"
                 ),
                 code="invalid_date",
             )
@@ -181,14 +171,11 @@ class Lesson(UUIDModel, TimeFramedModel):
             or (self.end and self.lecture.end < self.end)
         ):
             raise ValidationError(
-                _("Die Zeitperiode der Lektion darf nicht nach Vorlesungsende liegen!"),
+                _("Lesson cannot end after lecture ends!"),
                 code="invalid_date",
             )
 
     class Meta:
-        verbose_name = _("Lektion")
-
-        verbose_name_plural = _("Lektionen")
         unique_together = ("lecture", "title")
 
 
@@ -205,8 +192,6 @@ class LectureResource(UUIDModel, TimeStampedModel):
     )
 
     class Meta:
-        verbose_name = _("Vorlesungsmaterial")
-        verbose_name_plural = _("Vorlesungmaterialien")
         unique_together = ("lecture", "title")
 
 
@@ -223,6 +208,18 @@ class LessonResource(UUIDModel, TimeStampedModel):
     )
 
     class Meta:
-        verbose_name = _("Lektionsmaterial")
-        verbose_name_plural = _("Lektionsmaterialen")
+        verbose_name = _("Lesson Resource")
+        verbose_name_plural = _("Lesson Resources")
         unique_together = ("lesson", "title")
+
+
+class RegistrationCode(UUIDModel):
+    lecture = models.ForeignKey(
+        Lecture,
+        on_delete=models.CASCADE,
+        related_name="registration_codes",
+    )
+    code = models.CharField(
+        max_length=50,
+        unique=True,
+    )

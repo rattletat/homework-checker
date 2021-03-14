@@ -4,28 +4,21 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.views import APIView
 from sendfile import sendfile
 
-from ..models import Lecture, LectureResource, Lesson, LessonResource
+from ..models import Lecture, LectureResource, Lesson, LessonResource, RegistrationCode
 from .serializers import LessonDetailSerializer
 
 
-class LectureSignUp(APIView):
+class LectureRegister(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
-        lecture = Lecture.objects.get(slug=kwargs["lecture_slug"])
-        lecture.participants.add(request.user)
-        lecture.save()
-        return response.Response({}, status=status.HTTP_200_OK)
-
-
-class LectureStatus(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-    lookup_field = "lecture_slug"
-
-    def get(self, request, *args, **kwargs):
-        lecture = Lecture.objects.get(slug=kwargs["lecture_slug"])
-        data = {"registered": request.user in lecture.participants.all()}
-        return response.Response(data, status=status.HTTP_200_OK)
+        try:
+            code = RegistrationCode.objects.get(code=kwargs["registration_code"])
+        except RegistrationCode.DoesNotExist:
+            return response.Response({"detail": "Not a valid registration code!"}, status=status.HTTP_404_NOT_FOUND)
+        code.lecture.participants.add(request.user)
+        code.lecture.save()
+        return response.Response(status=status.HTTP_200_OK)
 
 
 class LessonRetrieveView(RetrieveAPIView):

@@ -13,19 +13,15 @@ services:
         restart: always
         env_file:
             - .env/development.env
-    app-rq:
-        command: python manage.py rqworker default
-        env_file:
-            - .env/development.env
-    app-rq:
     app-client:
         build:
             context: ./client
             dockerfile: Dockerfile.dev
         volumes:
-          - ./client:/app
+          - ./client:/home/node/
+          - '/home/node/node_modules' # prevents overwriting of node_modules
         ports:
-            - 3001:3000
+            - 3000:3000
         environment:
           - CHOKIDAR_USEPOLLING=true
         command: npm start

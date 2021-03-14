@@ -1,4 +1,3 @@
-from apps.teaching.models import GradingScale, LectureResource, LessonResource
 from django.conf.locale.en import formats as en_formats
 from django.contrib import admin
 from django.contrib.admin.views.decorators import staff_member_required
@@ -9,7 +8,14 @@ from django.utils.html import format_html
 from django.utils.http import urlencode
 from sendfile import sendfile
 
-from .models import Lecture, Lesson
+from .models import (
+    Lecture,
+    Lesson,
+    GradingScale,
+    LectureResource,
+    LessonResource,
+    RegistrationCode,
+)
 from django.contrib.auth import get_user_model
 from django.urls import resolve
 
@@ -61,7 +67,7 @@ class LectureResourceInline(admin.TabularInline):
     model = LectureResource
     fields = ["title", "file", "resource_link"]
     readonly_fields = ["resource_link"]
-    extra = 1
+    extra = 0
 
     def resource_link(self, obj):
         if obj.file:
@@ -76,7 +82,7 @@ class LessonResourceInline(admin.TabularInline):
     model = LessonResource
     fields = ["title", "file", "resource_link"]
     readonly_fields = ["resource_link"]
-    extra = 1
+    extra = 0
 
     def resource_link(self, obj):
         if obj.file:
@@ -87,11 +93,16 @@ class LessonResourceInline(admin.TabularInline):
             return ""
 
 
+class RegistrationCodeInline(admin.TabularInline):
+    model = RegistrationCode
+    extra = 0
+
+
 @admin.register(Lecture)
 class LectureAdmin(admin.ModelAdmin):
     list_display = ["title", "start", "end", "view_students_link"]
     fields = ["title", "description", "start", "end", "grading_scale"]
-    inlines = [LectureResourceInline, EnrolledStudentInline]
+    inlines = [RegistrationCodeInline, LectureResourceInline, EnrolledStudentInline]
 
     def get_readonly_fields(self, _, obj=None):
         if obj:
@@ -127,7 +138,7 @@ class LectureAdmin(admin.ModelAdmin):
         return sendfile(request, resource.file.path, attachment=True)
 
     class Media:
-        css = { "all" : ("admin/css/hide_admin_original.css",) }
+        css = {"all": ("admin/css/hide_admin_original.css",)}
 
 
 @admin.register(Lesson)

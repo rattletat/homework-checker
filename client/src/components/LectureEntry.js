@@ -3,7 +3,7 @@ import { Button, Card, ListGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { getTimeIndicator, toTimeFormat } from "../services/TimeService";
 
-function LectureDashboard({ lecture }) {
+function LectureEntry({ lecture }) {
     return (
         <Card className="mb-3">
             <Card.Header>
@@ -50,4 +50,4 @@ function LectureDashboard({ lecture }) {
     );
 }
 
-export default LectureDashboard;
+export default LectureEntry;

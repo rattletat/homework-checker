@@ -11,23 +11,15 @@ services:
         restart: always
         env_file:
             - .env/production.env
-
-    app-rq:
-        command: python manage.py rqworker default
-        env_file:
-            - .env/production.env
-        build:
-            context: ./server
-            dockerfile: Dockerfile.dev
     app-client:
         build:
             context: ./client
             dockerfile: Dockerfile.prod
         volumes:
-          - static_volume:/var/www/staticfiles
-          - media_volume:/var/www/mediafiles
-          - /etc/letsencrypt:/etc/letsencrypt
-          - /var/lib/letsencrypt:/var/lib/letsencrypt
+            - static_volume:/var/www/staticfiles:ro
+            - media_volume:/var/www/mediafiles:ro
+            - /etc/letsencrypt:/etc/letsencrypt
+            - /var/lib/letsencrypt:/var/lib/letsencrypt
         ports:
             - 80:80
             - 443:443

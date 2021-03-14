@@ -12,8 +12,9 @@ export async function callAPI(url, method, headers = {}, data = {}) {
             const response = await axios.post(url, data, headers);
             return response;
         }
-    } catch (response) {
-        console.log(response);
+    } catch (error) {
+        console.log(error)
+        return error.response;
     }
 }
 

@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 import { callAPI } from "../services/APIServices";
 
 import BreadcrumbWrapper from "./BreadcrumbWrapper";
-import LectureRegisterAlert from "./LectureRegisterAlert";
 import MarkdownRenderer from "../services/MarkdownService";
 import ResourceList from "./ResourceList";
 import LessonTable from "./LessonTable";
@@ -16,11 +15,6 @@ export default function LectureDetail() {
     const [data, setData] = useState({
         lecture: null,
         breadcrumbs: []
-    });
-
-    const [registered, setRegistered] = useState({
-        state: false,
-        loaded: false
     });
 
     useEffect(() => {
@@ -34,21 +28,6 @@ export default function LectureDetail() {
             });
         };
         fetchLecture();
-    }, [lecture_slug]);
-
-    useEffect(() => {
-        const checkRegistered = async () => {
-            setRegistered({ registeredLoaded: false });
-            const response = await callAPI(
-                `/api/lectures/${lecture_slug}/status`,
-                "GET"
-            );
-            setRegistered({
-                state: response.data.registered,
-                loaded: true
-            });
-        };
-        checkRegistered();
     }, [lecture_slug]);
 
     return (
@@ -72,14 +51,6 @@ export default function LectureDetail() {
                         }
                     ]}
                 />
-
-        {registered.loaded && !registered.state && (
-                <LectureRegisterAlert
-                    clickAction={() => {
-                        callAPI(`/api/lectures/${lecture_slug}/signup`, "POST");
-                    }}
-                />
-        )}
 
                 {data.lecture && (
                     <>
