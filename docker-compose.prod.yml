@@ -21,6 +21,8 @@ services:
         build:
             context: ./client
             dockerfile: Dockerfile.prod
+        env_file:
+            - .env/production.env
         volumes:
             - static_volume:/var/www/staticfiles:ro
             - media_volume:/var/www/mediafiles:ro
