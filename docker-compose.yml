@@ -42,9 +42,6 @@ services:
         command: python manage.py rqworker default
         build:
             context: ./server
-            dockerfile: Dockerfile.prod
-        env_file:
-            - .env/production.env
         container_name: app-rq
         environment:
             POSTGRES_HOST: app-db

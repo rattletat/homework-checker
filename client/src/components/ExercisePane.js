@@ -3,6 +3,7 @@ import MarkdownRenderer from "../services/MarkdownService";
 import { Card, Accordion } from "react-bootstrap";
 import { callAPI } from "../services/APIServices";
 import { toTimeFormat } from "../services/TimeService";
+import "../css/base.css"
 
 export default function ExercisePane({ exercise, active }) {
     const [submissions, setSubmissions] = useState([]);
@@ -49,11 +50,7 @@ export default function ExercisePane({ exercise, active }) {
                             key={`collapse/${key}`}
                         >
                             <Card.Body>
-                                {submission.output
-                                    .split("\n")
-                                    .map((item, key) => (
-                                        <p key={`${key}`}>{item}</p>
-                                    ))}
+                                <div className="display-linebreak">{submission.output}</div>
                             </Card.Body>
                         </Accordion.Collapse>
                     </Card>

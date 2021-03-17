@@ -11,6 +11,12 @@ services:
         restart: always
         env_file:
             - .env/production.env
+    app-rq:
+        build:
+            context: ./server
+            dockerfile: Dockerfile.dev
+        env_file:
+            - .env/production.env
     app-client:
         build:
             context: ./client
@@ -18,6 +24,7 @@ services:
         volumes:
             - static_volume:/var/www/staticfiles:ro
             - media_volume:/var/www/mediafiles:ro
+            - ./nginx:/etc/nginx/templates
             - /etc/letsencrypt:/etc/letsencrypt
             - /var/lib/letsencrypt:/var/lib/letsencrypt
         ports:

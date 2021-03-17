@@ -25,7 +25,7 @@ DOCKER_SECURITY_OPTIONS = {
     "privileged": False,
 }
 
-TIMEOUT_ERROR = "Your program executation took too long!"
+TIMEOUT_ERROR = "Your program execution took too long!"
 PARSING_ERROR = "A problem occurred during the result parsing."
 
 
@@ -75,6 +75,10 @@ def run_tests(submission):
         container.stop()
         container.remove(force=True)
         text = force_str(output).split(separator)[1]
+        print(text)
+        print(text)
+        print(text)
+        print(text)
     except Exception as e:
         submission.output = TIMEOUT_ERROR + "\n" + str(e)
     else:
