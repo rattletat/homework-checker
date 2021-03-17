@@ -67,6 +67,10 @@ typings/
 # coverage report
 htmlcov/
 
-**/mediafiles/
-**/staticfiles/
+server/mediafiles/lectures/*
+server/mediafiles/submissions/*
+!server/mediafiles/lectures/.keep
+!server/mediafiles/submissions/.keep
+server/staticfiles/*
+!server/staticfiles/.keep
 **/*pycache*/
