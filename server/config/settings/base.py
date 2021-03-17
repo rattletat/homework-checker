@@ -33,12 +33,12 @@ USE_TZ = True
 # -------------------------------------------------------------------
 DATABASES = {
     "default": {
-        "ENGINE": env("DATABASE_ENGINE", default=""),
-        "NAME": env("DATABASE_DB", default=""),
-        "USER": env("DATABASE_USER", default=""),
-        "PASSWORD": env("DATABASE_PASSWORD", default=""),
         "HOST": env("DATABASE_HOST", default=""),
         "PORT": env("DATABASE_PORT", default=""),
+        "ENGINE": env("DATABASE_ENGINE", default=""),
+        "USER": env("DATABASE_USER", default=""),
+        "PASSWORD": env("DATABASE_PASSWORD", default=""),
+        "NAME": env("DATABASE_DB", default=""),
     }
 }
 
