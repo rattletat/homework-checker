@@ -61,7 +61,7 @@ server {
         proxy_pass http://api$request_uri;
     }
 
-    location /admin/ {
+    location /${DJANGO_ADMIN_URL} {
         proxy_pass http://admin$request_uri;
     }
 
