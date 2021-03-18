@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { Col, Row, Jumbotron } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Col, Row, Jumbotron} from "react-bootstrap";
+import {useParams} from "react-router-dom";
 
-import { callAPI } from "../services/APIServices";
+import {callAPI} from "../services/APIServices";
 
 import BreadcrumbWrapper from "./BreadcrumbWrapper";
 import MarkdownRenderer from "../services/MarkdownService";
@@ -10,7 +10,7 @@ import ResourceList from "./ResourceList";
 import LessonTable from "./LessonTable";
 
 export default function LectureDetail() {
-    const { lecture_slug } = useParams();
+    const {lecture_slug} = useParams();
 
     const [data, setData] = useState({
         lecture: null,
@@ -63,7 +63,9 @@ export default function LectureDetail() {
 
                         <ResourceList resources={data.lecture.resources} />
                         <br />
-                        <LessonTable lessons={data.lecture.lessons} />
+                        {data.lecture.lessons &&
+                            <LessonTable lessons={data.lecture.lessons} />
+                        }
                     </>
                 )}
             </Col>
