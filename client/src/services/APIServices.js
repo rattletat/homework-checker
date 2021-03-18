@@ -11,7 +11,9 @@ export async function callAPI(url, method, headers = {}, data = {}) {
                 ...headers,
                 method: "GET"
             });
-            return response;
+            return {
+                data: await response.json()
+            };
         } else if (method === "POST") {
             // const response = await axios.post(url, data, headers);
             const response = await fetch(url, {
@@ -19,7 +21,9 @@ export async function callAPI(url, method, headers = {}, data = {}) {
                 method: "POST",
                 body: JSON.stringify(data)
             });
-            return response;
+            return {
+                data: await response.json()
+            };
         }
     } catch (error) {
         console.log(error)
