@@ -87,40 +87,40 @@ function App() {
                     <Route
                         path="/signup"
                     >
-                        loggedIn ? <Redirect to="/" /> : <SignUp />
+                        {loggedIn ? <Redirect to="/" /> : <SignUp />}
                     </Route>
                     <Route
                         path="/login"
                     >
-                        loggedIn ? (
-                                <Redirect to="/" />
-                            ) : (
-                                <LogIn
-                            logIn={(email, password) =>
-                                logIn(email, password, setLoggedIn)
-                            }
-                        />
-                            )
+                        {loggedIn ? (
+                            <Redirect to="/" />
+                        ) : (
+                            <LogIn
+                                logIn={(email, password) =>
+                                    logIn(email, password, setLoggedIn)
+                                }
+                            />
+                        )}
                     </Route>
                     <Route
                         path="/profile/"
                     >
-                        loggedIn ? <Profile /> : <Redirect to="/" />
+                        {loggedIn ? <Profile /> : <Redirect to="/" />}
                     </Route>
                     <Route
                         path="/lectures/:lecture_slug/:lesson_slug/"
                     >
-                        loggedIn ? <LessonDetail /> : <Redirect to="/" />
+                        {loggedIn ? <LessonDetail /> : <Redirect to="/" />}
                     </Route>
                     <Route
                         path="/lectures/:lecture_slug/"
                     >
-                        loggedIn ? <LectureDetail /> : <Redirect to="/" />
+                        {loggedIn ? <LectureDetail /> : <Redirect to="/" />}
                     </Route>
                     <Route
                         path="/lectures/"
                     >
-                        loggedIn ? <Lectures /> : <Redirect to="/" />
+                        {loggedIn ? <Lectures /> : <Redirect to="/" />}
                     </Route>
                 </Switch>
             </Container>
