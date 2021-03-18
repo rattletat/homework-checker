@@ -23,9 +23,11 @@ export default function LectureDetail() {
                 `/api/lectures/${lecture_slug}`,
                 "GET"
             );
-            setData({
-                lecture: response.data
-            });
+            if (lectureResponse && lessonResponse) {
+                setData({
+                    lecture: response.data
+                });
+            }
         };
         fetchLecture();
     }, [lecture_slug]);
