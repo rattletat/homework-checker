@@ -4,7 +4,7 @@ import { getJWT } from "./AuthService";
 
 export async function callAPI(url, method, headers = {}, data = {}) {
     try {
-        headers = await getAPIHeaders(headers);
+        headers = getAPIHeaders(headers);
         if (method === "GET") {
             const response = await axios.get(url, headers);
             return response;
@@ -18,13 +18,12 @@ export async function callAPI(url, method, headers = {}, data = {}) {
     }
 }
 
-export async function getAPIHeaders(headers) {
+export function getAPIHeaders(headers) {
     // if (refresh) {
     //     refreshJWT();
     // }
     const auth = getJWT();
     headers["headers"] = headers["headers"] ?? {};
     headers["headers"]["Authorization"] = `Bearer ${auth.access}`;
-    console.log(headers);
     return headers;
 }
