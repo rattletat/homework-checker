@@ -22,7 +22,7 @@ export async function getAPIHeaders(headers) {
     // if (refresh) {
     //     refreshJWT();
     // }
-    const auth = await getJWT();
+    const auth = getJWT();
     headers["headers"] = headers["headers"] ?? {};
     headers["headers"]["Authorization"] = `Bearer ${auth.access}`;
     console.log(headers);
