@@ -20,7 +20,7 @@ export default function Lectures() {
 
     useEffect(() => {
         const fetchAccountStatus = async () => {
-            const response = await callAPI(`/api/accounts/dashboard`, "GET");
+            const response = await callAPI(`/api/accounts/dashboard/`, "GET");
             if (response) {
                 setData({...response.data});
             }
