@@ -23,7 +23,7 @@ export default function LectureDetail() {
                 `/api/lectures/${lecture_slug}`,
                 "GET"
             );
-            if (lectureResponse && lessonResponse) {
+            if (response) {
                 setData({
                     lecture: response.data
                 });
