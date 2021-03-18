@@ -38,11 +38,11 @@ axios.interceptors.response.use(
     }
 );
 
-export const setJWT = async data => {
+export const setJWT = data => {
     return window.localStorage.setItem(JWT_STORAGE, JSON.stringify(data));
 };
 
-export const getJWT = async () => {
+export const getJWT = () => {
     const auth = window.localStorage.getItem(JWT_STORAGE);
     return JSON.parse(auth);
 };
@@ -56,7 +56,7 @@ export const hasJWT = () => {
 };
 
 export const refreshJWT = async () => {
-    const auth = await getJWT();
+    const auth = getJWT();
     return await fetch("/api/token/refresh", {
         method: "POST",
         mode: "cors",

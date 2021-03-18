@@ -15,11 +15,11 @@ import LessonDetail from "./components/LessonDetail";
 import "./App.css";
 
 function App() {
-    const [loggedIn, setLoggedIn] = useState(false);
+    const [loggedIn, setLoggedIn] = useState(isLoggedIn());
 
-    useEffect(() => {
-        setLoggedIn(isLoggedIn());
-    }, []);
+    // useEffect(() => {
+    //     setLoggedIn(isLoggedIn());
+    // }, []);
 
     return (
         <>
