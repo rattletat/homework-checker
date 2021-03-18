@@ -20,7 +20,7 @@ export default function LectureDetail() {
     useEffect(() => {
         const fetchLecture = async () => {
             const response = await callAPI(
-                `/api/lectures/${lecture_slug}`,
+                `/api/lectures/${lecture_slug}/`,
                 "GET"
             );
             if (response) {

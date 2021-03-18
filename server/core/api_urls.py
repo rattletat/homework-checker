@@ -25,7 +25,7 @@ urlpatterns += [
         name="lecture_download",
     ),
     path(
-        "lectures/<slug:lecture_slug>/lessons/<slug:lesson_slug>",
+        "lectures/<slug:lecture_slug>/lessons/<slug:lesson_slug>/",
         view=teaching_views.LessonRetrieveView.as_view(),
     ),
     path(
