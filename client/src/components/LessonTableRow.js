@@ -11,7 +11,7 @@ function LessonTableRow({ index, lesson }) {
             <td>{toTimeFormat(lesson.start)}</td>
             <td>{toTimeFormat(lesson.end)}</td>
             <td>
-                <Link to={lesson.slug}>
+                <Link to={`${lesson.slug}/`}>
                     <Button className="btn-sm">
                         <span>Link</span>
                     </Button>
