@@ -10,7 +10,7 @@ class LectureListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lecture
         fields = ["title", "slug", "start", "end"]
-        ordering = ["title"]
+        ordering = ["end", "start", "title"]
 
 
 class LectureDetailSerializer(serializers.ModelSerializer):
@@ -28,7 +28,6 @@ class LectureDetailSerializer(serializers.ModelSerializer):
             "lessons",
             "resources",
         ]
-        ordering = ["-start"]
 
     def get_lessons(self, obj):
         lessons = obj.lessons.order_by('title')
