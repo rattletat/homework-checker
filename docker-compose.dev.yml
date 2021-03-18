@@ -4,6 +4,8 @@ services:
         build:
             context: ./server
             dockerfile: Dockerfile.dev
+        volumes:
+            - ./server/:/home/app/web/
         env_file:
             - .env/development.env
         command: python manage.py runserver 0.0.0.0:8000

@@ -11,21 +11,21 @@ ENV POETRY_VIRTUALENVS_CREATE false
 
 ENV DJANGO_SETTINGS_MODULE config.settings.production
 
-# set non-root user
-RUN groupadd -r app
-RUN useradd -r -g app -d /home/app -s /sbin/nologin app
-
-# set work directory
 ENV HOME=/home/app/
 ENV APP_HOME=/home/app/web/
-RUN mkdir -p $APP_HOME
+
+# set non-root user
+RUN adduser --system --group app
+
+# set work directory
+RUN mkdir $APP_HOME
 RUN mkdir $APP_HOME/staticfiles
 RUN mkdir $APP_HOME/mediafiles
 WORKDIR $APP_HOME
 
 # system dependencies
 RUN apt-get update \
-  && apt-get -y install gcc postgresql netcat docker \
+  && apt-get -y install gcc postgresql netcat \
   && apt-get clean
 
 # python dependencies

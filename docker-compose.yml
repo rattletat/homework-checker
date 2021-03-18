@@ -3,10 +3,6 @@ volumes:
     app-db:
     static_volume:
     media_volume:
-        driver_opts:
-            type: none
-            device: ./server/mediafiles
-            o: bind
     redisdata:
     rqdata:
 services:
@@ -22,7 +18,6 @@ services:
         volumes:
             - static_volume:/home/app/web/staticfiles:rw
             - media_volume:/home/app/web/mediafiles:rw
-            - ./server/:/home/app/web/
     app-db:
         container_name: app-db
         image: postgres:12-alpine
