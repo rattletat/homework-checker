@@ -1,4 +1,4 @@
-import axios from "axios";
+// import axios from "axios";
 
 import { getJWT } from "./AuthService";
 
@@ -6,10 +6,19 @@ export async function callAPI(url, method, headers = {}, data = {}) {
     try {
         headers = getAPIHeaders(headers);
         if (method === "GET") {
-            const response = await axios.get(url, headers);
+            // const response = await axios.get(url, headers);
+            const response = await fetch(url, {
+                ...headers,
+                method: "GET"
+            });
             return response;
         } else if (method === "POST") {
-            const response = await axios.post(url, data, headers);
+            // const response = await axios.post(url, data, headers);
+            const response = await fetch(url, {
+                ...headers,
+                method: "POST",
+                body: JSON.stringify(data)
+            });
             return response;
         }
     } catch (error) {
