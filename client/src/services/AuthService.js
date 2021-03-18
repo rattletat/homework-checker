@@ -8,33 +8,26 @@ axios.interceptors.response.use(
     response => {
         return response;
     },
-    err => {
-        return new Promise((resolve, reject) => {
-            const originalReq = err.config;
-            if (
-                err.response.status === 401 &&
-                err.config &&
-                !err.config.__isRetryRequest &&
-                hasJWT()
-            ) {
-                originalReq.__isRetryRequest = true;
+    async err => {
+        const originalReq = err.config;
+        if (
+            err.response.status === 401 &&
+            err.config &&
+            !err.config.__isRetryRequest &&
+            hasJWT()
+        ) {
+            originalReq.__isRetryRequest = true;
 
-                let res = refreshJWT().then(res => {
-                    originalReq.headers[
-                        "Authorization"
-                    ] = `Bearer ${res.access}`;
-                    originalReq.headers["Device"] = "device";
-
-                    return axios(originalReq);
-                });
-                resolve(res);
-            } else {
-                if (err.response.status !== 404 && !["/login", "/signup"].includes(window.location.pathname)) {
-                    logOut();
-                }
-                return reject(err);
+            let res = await refreshJWT();
+            originalReq.headers["Authorization"] = `Bearer ${res.access}`;
+            originalReq.headers["Device"] = "device";
+            return axios(originalReq);
+        } else {
+            if (err.response.status !== 404 && !["/login", "/signup"].includes(window.location.pathname)) {
+                logOut();
             }
-        });
+            throw err;
+        }
     }
 );
 
@@ -57,7 +50,7 @@ export const hasJWT = () => {
 
 export const refreshJWT = async () => {
     const auth = getJWT();
-    return await fetch("/api/token/refresh", {
+    let res = await fetch("/api/token/refresh", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -69,24 +62,23 @@ export const refreshJWT = async () => {
         },
         redirect: "follow",
         referrer: "no-referrer",
-        body: JSON.stringify({ refresh: auth.refresh, access: auth.access })
-    })
-        .then(res => res.json())
-        .then(res => {
-            setJWT({ access: res.access, refresh: auth.refresh });
-            return res;
-        });
+        body: JSON.stringify({refresh: auth.refresh, access: auth.access})
+    });
+    let json = await res.json();
+    setJWT({access: json.access, refresh: json.refresh});
+    return json;
 };
+
 
 export const logIn = async (email, password, setLoggedIn) => {
     const url = "/api/accounts/login";
     try {
-        let response = await axios.post(url, { email, password });
+        let response = await axios.post(url, {email, password});
         setJWT(response.data);
         setLoggedIn(true);
-        return { response, isError: false };
+        return {response, isError: false};
     } catch (error) {
-        return { response: error, isError: true };
+        return {response: error, isError: true};
     }
 };
 
