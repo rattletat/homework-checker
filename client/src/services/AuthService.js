@@ -29,9 +29,9 @@ axios.interceptors.response.use(
                 });
                 resolve(res);
             } else {
-                if (err.response.status !== 404 && !["/login", "/signup"].includes(window.location.pathname)) {
-                    logOut();
-                }
+                // if (err.response.status !== 404 && !["/login", "/signup"].includes(window.location.pathname)) {
+                //     logOut();
+                // }
                 return reject(err);
             }
         });
