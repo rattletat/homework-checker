@@ -22,11 +22,11 @@ export default function LessonDetail() {
     useEffect(() => {
         const fetchTeachingData = async () => {
             const lectureResponse = await callAPI(
-                `/api/lectures/${lecture_slug}`,
+                `/api/lectures/${lecture_slug}/`,
                 "GET"
             );
             const lessonResponse = await callAPI(
-                `/api/lectures/${lecture_slug}/lessons/${lesson_slug}`,
+                `/api/lectures/${lecture_slug}/lessons/${lesson_slug}/`,
                 "GET"
             );
             if (lectureResponse && lessonResponse) {

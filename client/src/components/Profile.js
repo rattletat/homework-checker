@@ -17,7 +17,7 @@ export default function Profile() {
 
     useEffect(() => {
         const fetchAccountStatus = async () => {
-            const response = await callAPI(`/api/accounts/profile`, "GET");
+            const response = await callAPI(`/api/accounts/profile/`, "GET");
             if (response) {
                 setData({ ...response.data });
             }
@@ -54,4 +54,3 @@ export default function Profile() {
         </Row>
     );
 }
-
