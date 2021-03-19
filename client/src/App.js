@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {Button, Container, Form, Navbar} from "react-bootstrap";
 import {LinkContainer} from "react-router-bootstrap";
 import {Link, Redirect, Route, Switch} from "react-router-dom";
@@ -16,10 +16,6 @@ import "./App.css";
 
 function App() {
     const [loggedIn, setLoggedIn] = useState(isLoggedIn());
-
-    // useEffect(() => {
-    //     setLoggedIn(isLoggedIn());
-    // }, []);
 
     return (
         <>

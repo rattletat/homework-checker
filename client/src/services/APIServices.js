@@ -19,9 +19,6 @@ export async function callAPI(url, method, headers = {}, data = {}) {
 }
 
 export function getAPIHeaders(headers) {
-    // if (refresh) {
-    //     refreshJWT();
-    // }
     const auth = getJWT();
     headers["headers"] = headers["headers"] ?? {};
     headers["headers"]["Authorization"] = `Bearer ${auth.access}`;

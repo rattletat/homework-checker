@@ -1,9 +1,12 @@
 import os
 import uuid
 from os.path import basename
+from django.conf import settings
 
 import docker
 from django.utils.encoding import force_str
+import tarfile
+import tempfile
 
 from tap.parser import Parser
 
@@ -11,7 +14,10 @@ from .models import ExerciseResource
 
 DOCKER_CONFIG = {
     "py": {"image": "rattletat/app-test-py", "command": "python /app/runner.py"},
-    "r": {"image": "rattletat/app-test-r", "command": "Rscript /app/runner.r --vanilla"},
+    "r": {
+        "image": "rattletat/app-test-r",
+        "command": "Rscript /app/runner.r --vanilla",
+    },
 }
 DOCKER_SETUP_OPTIONS = {
     "working_dir": "/app/",
@@ -25,62 +31,36 @@ DOCKER_SECURITY_OPTIONS = {
     "privileged": False,
 }
 
-TIMEOUT_ERROR = "Your program execution took too long!"
 PARSING_ERROR = "A problem occurred during the result parsing."
 
 
 def run_tests(submission):
     exercise = submission.exercise
     extension = exercise.programming_language
-    host_root = os.environ["HOST_ROOT_DIR"]
-
-    submission_path = os.path.join(host_root, "mediafiles", str(submission.file))
-    tests_path = os.path.join(host_root, "mediafiles", str(exercise.tests))
-    runner_path = os.path.join(host_root, f"apps/homework/runner/runner.{extension}")
-
-    volumes = {
-        runner_path: {
-            "bind": "/app/runner." + extension,
-            "mode": "ro",
-        },
-        tests_path: {"bind": "/app/tests." + extension, "mode": "ro"},
-        submission_path: {
-            "bind": "/app/submission." + extension,
-            "mode": "ro",
-        },
-    }
-
-    resources = ExerciseResource.objects.filter(exercise=submission.exercise)
-    for resource in resources:
-        resource_path = os.path.join(host_root, "mediafiles", str(resource.file))
-        volumes[resource_path] = {
-            "bind": "/app/" + basename(resource.file.name),
-            "mode": "ro",
-        }
 
     separator = str(uuid.uuid4())
     config = DOCKER_CONFIG[extension]
-    client = docker.from_env()
+    client = docker.from_env(timeout=exercise.timeout)
     try:
         container = client.containers.run(
             config["image"],
-            config["command"] + " " + separator,
-            volumes=volumes,
+            command=f"sleep {exercise.timeout}",
             detach=True,
             **DOCKER_SETUP_OPTIONS,
             **DOCKER_SECURITY_OPTIONS,
         )
-        container.wait(timeout=exercise.timeout)
-        output = container.logs()
+        for (name, path) in get_file_tuples(submission):
+            with tempfile.NamedTemporaryFile() as tmp_file:
+                with tarfile.open(fileobj=tmp_file, mode="w") as tar_file:
+                    tar_file.add(path, recursive=False, arcname=name)
+                    tmp_file.seek(0)
+                    container.put_archive("/app/", tmp_file)
+        (_, output) = container.exec_run(config["command"] + " " + separator)
         container.stop()
         container.remove(force=True)
         text = force_str(output).split(separator)[1]
-        print(text)
-        print(text)
-        print(text)
-        print(text)
     except Exception as e:
-        submission.output = TIMEOUT_ERROR + "\n" + str(e)
+        submission.output = str(e)
     else:
         try:
             submission.score = min(get_score(text), exercise.max_score)
@@ -98,9 +78,24 @@ def run_tests(submission):
         client.containers.prune()
 
 
+def get_file_tuples(submission):
+    resources = ExerciseResource.objects.filter(exercise=submission.exercise)
+    extension = submission.exercise.programming_language
+    submission_tuple = ("submission.py", submission.file.path)
+    exercise_tuple = ("tests.py", submission.exercise.tests.path)
+    runner_tuple = (
+        "runner.py",
+        settings.APPS_DIR / os.path.join("homework", "runner", f"runner.{extension}"),
+    )
+    resource_tuples = [
+        (os.path.join("resources", basename(resource.file.name)), resource.file.path)
+        for resource in resources
+    ]
+    return [submission_tuple, exercise_tuple, runner_tuple, *resource_tuples]
+
+
 def get_score(text):
     parser = Parser()
-
     lines = text.split("\n")
     gen = parser.parse_text(text)
     return sum(

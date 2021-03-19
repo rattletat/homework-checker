@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import MarkdownRenderer from "../services/MarkdownService";
-import { Card, Accordion } from "react-bootstrap";
-import { callAPI } from "../services/APIServices";
-import { toTimeFormat } from "../services/TimeService";
+import {Card, Accordion} from "react-bootstrap";
+import {callAPI} from "../services/APIServices";
+import {toTimeFormat} from "../services/TimeService";
 import "../css/base.css"
 
-export default function ExercisePane({ exercise, active }) {
+export default function ExercisePane({exercise, active}) {
     const [submissions, setSubmissions] = useState([]);
 
     useEffect(() => {
@@ -20,8 +20,7 @@ export default function ExercisePane({ exercise, active }) {
                 console.log(error);
             }
         };
-        fetchData();
-        const interval = setInterval(() => (active ? fetchData() : {}), 1000);
+        const interval = setInterval(() => (active ? fetchData() : {}), 2000);
 
         return () => {
             clearInterval(interval);
@@ -50,7 +49,7 @@ export default function ExercisePane({ exercise, active }) {
                             key={`collapse/${key}`}
                         >
                             <Card.Body>
-                                <div className="display-linebreak">{submission.output}</div>
+                                <div className="display-linebreak">{submission.output ?? "helloo"}</div>
                             </Card.Body>
                         </Accordion.Collapse>
                     </Card>

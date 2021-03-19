@@ -14,9 +14,7 @@ class Exercise(UUIDModel):
         PYTHON = "py", "Python"
         R = "r", "R"
 
-    lesson = models.ForeignKey(
-        Lesson, on_delete=models.CASCADE
-    )
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
 
     title = models.CharField(max_length=100)
     slug = AutoSlugField(max_length=255, populate_from="title")
@@ -29,13 +27,11 @@ class Exercise(UUIDModel):
         "Minimal byte size",
         default=30,
     )
-    max_upload_size = models.PositiveIntegerField(
-        "Maximal byte size", default=5000
-    )
+    max_upload_size = models.PositiveIntegerField("Maximal byte size", default=5000)
     timeout = models.PositiveSmallIntegerField(
         "Timeout in seconds",
         default=10,
-        )
+    )
     programming_language = models.CharField(
         max_length=2, choices=ProgrammingLanguages.choices
     )
