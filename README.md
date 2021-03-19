@@ -14,17 +14,13 @@ An easy way to organize programming lectures.
 
 * TODO
     + Two different user models (Student/ Extern) vs. 1 User with two roles 
-    + Change project structure (new docker folder with Dockerfiles, nginx config)
     + better secret management using python-decuple    
     + Improved Dashboard (change info, deregister)
-    + Improved Lecture Sign-up (using a code)
     + Statistics
     + Messages
     + Quizzes
     + Improved Error Output
     + Cleaner runner system
     + Shibboleth Support
-    + Improved security 
-        + docker settings
-        + backup system
+    + Backup system
     + Ability to link images stored in static files
