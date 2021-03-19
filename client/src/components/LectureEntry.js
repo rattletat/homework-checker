@@ -1,13 +1,15 @@
 import React from "react";
-import { Button, Card, ListGroup } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { getTimeIndicator, toTimeFormat } from "../services/TimeService";
+import {Card, ListGroup} from "react-bootstrap";
+import {Link} from "react-router-dom";
+import {getTimeIndicator, toTimeFormat} from "../services/TimeService";
 
-function LectureEntry({ lecture }) {
+function LectureEntry({lecture}) {
     return (
         <Card className="mb-3">
             <Card.Header>
-                <h6 className="mt-0 mb-1">{lecture.title}</h6>
+                <Link to={`/lectures/${lecture.slug}/`}>
+                    <h6 className="mt-0 mb-1">{lecture.title}</h6>
+                </Link>
                 <small>{getTimeIndicator(lecture)}</small>
             </Card.Header>
             <Card.Body>
@@ -24,7 +26,7 @@ function LectureEntry({ lecture }) {
                     )}
                     {lecture.score !== null && (
                         <ListGroup.Item>
-                            Score: {lecture.score }
+                            Score: {lecture.score}
                         </ListGroup.Item>
                     )}
                     {lecture.grade && lecture.status === "ACTIVE" && (
@@ -38,13 +40,6 @@ function LectureEntry({ lecture }) {
                         </ListGroup.Item>
                     )}
                 </ListGroup>
-                <Card.Footer>
-                    <Link to={`/lectures/${lecture.slug}/`}>
-                        <Button>
-                            <span>Go to lecture</span>
-                        </Button>
-                    </Link>
-                </Card.Footer>
             </Card.Body>
         </Card>
     );

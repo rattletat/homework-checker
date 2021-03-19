@@ -37,6 +37,9 @@ export default function Lectures() {
                 Here you find information about lectures you are enrolled in.
                 <br />
                 <br />
+                <LectureRegister refreshPage={() => setUpdated(false)} />
+                <br />
+                <h3>Your Lectures</h3>
                 <ListGroup>
                     <>
                         {data.enrolled_lectures.map((lecture, key) => (
@@ -44,7 +47,6 @@ export default function Lectures() {
                         ))}
                     </>
                 </ListGroup>
-                    <LectureRegister refreshPage={() => setUpdated(false)} />
             </Col>
         </Row>
     );

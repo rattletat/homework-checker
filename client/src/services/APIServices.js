@@ -1,10 +1,10 @@
 import axios from "axios";
 
-import { getJWT } from "./AuthService";
+import {getJWT} from "./AuthService";
 
 export async function callAPI(url, method, headers = {}, data = {}) {
+    headers = getAPIHeaders(headers);
     try {
-        headers = getAPIHeaders(headers);
         if (method === "GET") {
             const response = await axios.get(url, headers);
             return response;
@@ -19,8 +19,13 @@ export async function callAPI(url, method, headers = {}, data = {}) {
 }
 
 export function getAPIHeaders(headers) {
-    const auth = getJWT();
-    headers["headers"] = headers["headers"] ?? {};
-    headers["headers"]["Authorization"] = `Bearer ${auth.access}`;
-    return headers;
+    try {
+        const auth = getJWT();
+        headers["headers"] = headers["headers"] ?? {};
+        headers["headers"]["Authorization"] = `Bearer ${auth.access}`;
+        return headers;
+    }
+    catch (error) {
+        return headers
+    }
 }

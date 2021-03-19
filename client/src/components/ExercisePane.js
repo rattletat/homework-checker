@@ -3,7 +3,6 @@ import MarkdownRenderer from "../services/MarkdownService";
 import {Card, Accordion} from "react-bootstrap";
 import {callAPI} from "../services/APIServices";
 import {toTimeFormat} from "../services/TimeService";
-import "../css/base.css"
 
 export default function ExercisePane({exercise, active}) {
     const [submissions, setSubmissions] = useState([]);

@@ -23,7 +23,7 @@ axios.interceptors.response.use(
             originalReq.headers["Device"] = "device";
             return axios(originalReq);
         } else {
-            if (err.response.status !== 404 && !["/login", "/signup"].includes(window.location.pathname)) {
+            if (err.response.status !== 404 && err.response.status !== 409 && !["/login", "/signup"].includes(window.location.pathname)) {
                 logOut();
             }
             throw err;

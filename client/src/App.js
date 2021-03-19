@@ -11,8 +11,10 @@ import Lectures from "./components/Lectures";
 import Profile from "./components/Profile";
 import LectureDetail from "./components/LectureDetail";
 import LessonDetail from "./components/LessonDetail";
+import FlatPage from "./components/FlatPage";
+import Footer from "./components/Footer";
 
-import "./App.css";
+import "./css/App.css";
 
 function App() {
     const [loggedIn, setLoggedIn] = useState(isLoggedIn());
@@ -23,7 +25,7 @@ function App() {
                 <LinkContainer to="/">
                     <Navbar.Brand className="logo">
                         Homework Checker
-                    </Navbar.Brand>
+        </Navbar.Brand>
                 </LinkContainer>
                 <Navbar.Toggle />
                 <Navbar.Collapse>
@@ -35,17 +37,17 @@ function App() {
                                 to="/lectures/"
                             >
                                 Lectures
-                            </Link>
+            </Link>
                             <Link
                                 id="profile"
                                 className="btn"
                                 to="/profile/"
                             >
                                 Profile
-                            </Link>
+            </Link>
                             <Button type="button" onClick={() => logOut()}>
                                 Log out
-                            </Button>
+            </Button>
                         </Form>
                     )}
                 </Navbar.Collapse>
@@ -59,7 +61,7 @@ function App() {
                         <div className="middle-center">
                             <h1 className="landing logo">
                                 Homework Checker
-                                </h1>
+        </h1>
                             {!loggedIn && (
                                 <Link
                                     id="signUp"
@@ -118,8 +120,19 @@ function App() {
                     >
                         {loggedIn ? <Lectures /> : <Redirect to="/" />}
                     </Route>
+                    <Route
+                        path="/privacy/"
+                    >
+                        <FlatPage name={"privacy"} />
+                    </Route>
+                    <Route
+                        path="/about/"
+                    >
+                        <FlatPage name={"about"} />
+                    </Route>
                 </Switch>
             </Container>
+            <Footer />
         </>
     );
 }

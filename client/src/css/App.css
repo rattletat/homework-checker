@@ -20,3 +20,22 @@
     position: absolute;
     text-align: center;
 }
+
+body{ min-height:100vh; margin:0; position:relative; }
+
+/* Trick: */
+body {
+  position: relative;
+}
+
+body::after {
+  content: '';
+  display: block;
+  height: 50px; /* Set same as footer's height */
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}

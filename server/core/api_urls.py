@@ -4,6 +4,7 @@ from rest_framework.routers import DefaultRouter
 from apps.teaching.api import views as teaching_views
 from apps.homework.api import views as homework_views
 from apps.accounts.api import views as account_views
+from apps.flatpages.api import views as flatpages_views
 from rest_framework_simplejwt.views import TokenRefreshView
 
 app_name = "api"
@@ -51,5 +52,10 @@ urlpatterns = [
     path("accounts/signup", account_views.SignUpView.as_view(), name="signup"),
     path("accounts/login", account_views.LogInView.as_view(), name="login"),
     path("accounts/profile/", account_views.ProfileView.as_view()),
+
+    path(
+        "flatpages/<slug:page_slug>/",
+        view=flatpages_views.PageView.as_view(),
+    ),
     path("token/refresh", TokenRefreshView.as_view(), name="token_refresh"),
 ]

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 
 import { Row, Col, Nav, Card, Tab, Alert } from "react-bootstrap";
-
 import ExerciseDropzone from "./ExerciseDropzone";
 import ExercisePane from "./ExercisePane";
 import { callAPI } from "../services/APIServices";
+
+import "../css/ExercisesContainer.css"
 
 export default function ExercisesContainer({
     lecture_slug,

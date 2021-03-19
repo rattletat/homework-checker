@@ -29,7 +29,9 @@ class LectureListView(APIView):
                 lecture_info["grade"] = scale.get_grade(score)
             enrolled_lectures.append(lecture_info)
 
-        return Response({"enrolled_lectures": enrolled_lectures}, status=status.HTTP_200_OK)
+        return Response(
+            {"enrolled_lectures": enrolled_lectures}, status=status.HTTP_200_OK
+        )
 
 
 class LectureRetrieveView(RetrieveAPIView):
@@ -51,6 +53,11 @@ class LectureRegister(APIView):
             return response.Response(
                 {"detail": "Not a valid registration code!"},
                 status=status.HTTP_404_NOT_FOUND,
+            )
+        if code.lecture in request.user.enrolled_lectures.all():
+            return response.Response(
+                {"detail": "You are already enrolled in this lecture!"},
+                status=status.HTTP_409_CONFLICT,
             )
         code.lecture.participants.add(request.user)
         code.lecture.save()
