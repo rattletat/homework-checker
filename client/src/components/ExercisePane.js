@@ -49,7 +49,7 @@ export default function ExercisePane({exercise, active}) {
                             key={`collapse/${key}`}
                         >
                             <Card.Body>
-                                <div className="display-linebreak">{submission.output ?? "helloo"}</div>
+                                <div className="display-linebreak">{submission.output === "" ? "Running..." : submission.output}</div>
                             </Card.Body>
                         </Accordion.Collapse>
                     </Card>
