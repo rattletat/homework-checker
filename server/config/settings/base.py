@@ -208,7 +208,7 @@ RQ_QUEUES = {
         'HOST': env("REDIS_HOST"),
         'PORT': env("REDIS_PORT"),
         'DB': env("REDIS_DB"),
-        'DEFAULT_TIMEOUT': 60
+        'DEFAULT_TIMEOUT': env.int("REDIS_TIMEOUT")
     },
 }
 
