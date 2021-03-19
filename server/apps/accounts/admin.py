@@ -10,8 +10,6 @@ class LectureInline(admin.TabularInline):
     extra = 1
     max_num = 0
     readonly_fields = ["lecture"]
-    # can_delete = False
-    verbose_name_plural = "Angemeldete Vorlesungen"
 
 
 class CustomUserAdmin(UserAdmin):

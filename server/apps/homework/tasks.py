@@ -60,7 +60,8 @@ def run_tests(submission):
         container.remove(force=True)
         text = force_str(output).split(separator)[1]
     except Exception as e:
-        submission.output = str(e)
+        submission.output = "A problem occured. Please check your program runtime."
+        print(e)
     else:
         try:
             submission.score = min(get_score(text), exercise.max_score)

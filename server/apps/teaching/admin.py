@@ -29,8 +29,6 @@ class EnrolledStudentInline(admin.TabularInline):
     readonly_fields = ["get_full_name", "get_identifer", "get_score", "get_grade"]
     extra = 0
     can_delete = False
-    verbose_name = "Teilnehmer"
-    verbose_name_plural = "Teilnehmer"
     ordering = ["customuser"]
 
     def get_formset(self, request, obj=None, **kwargs):
@@ -40,24 +38,16 @@ class EnrolledStudentInline(admin.TabularInline):
     def get_full_name(self, instance):
         return instance.customuser.full_name
 
-    get_full_name.short_description = "Name"
-
     def get_identifer(self, instance):
         return instance.customuser.identifier
-
-    get_identifer.short_description = "Matrikelnummer"
 
     def get_score(self, instance):
         self.score = self.lecture.get_score(instance.customuser)
         return self.score
 
-    get_score.short_description = "Punkte"
-
     def get_grade(self, instance):
         if self.lecture.grading_scale:
             return self.lecture.grading_scale.get_grade(self.score)
-
-    get_grade.short_description = "Note"
 
     def has_add_permission(self, request, obj=None):
         return False
