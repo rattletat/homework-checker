@@ -1,7 +1,10 @@
 import React from "react";
-import "react-dropzone-uploader/dist/styles.css";
+
 import Dropzone from "react-dropzone-uploader";
 import { Card } from "react-bootstrap";
+
+import "react-dropzone-uploader/dist/styles.css";
+import "../css/ExerciseDropzone.css"
 
 import { getAPIHeaders } from "../services/APIServices";
 
@@ -29,7 +32,7 @@ export default function ExerciseDropzone({ exercise, setErrors }) {
     };
     if (!exercise) return null;
     return (
-        <React.Fragment>
+        <>
             <Card>
                 <Card.Header>
                     <center>Submit {exercise.title} </center>
@@ -55,6 +58,6 @@ export default function ExerciseDropzone({ exercise, setErrors }) {
                     />
                 </Card.Body>
             </Card>
-        </React.Fragment>
+        </>
     );
 }

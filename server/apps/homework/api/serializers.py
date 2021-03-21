@@ -23,6 +23,7 @@ class ExerciseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Exercise
         fields = ["id", "title", "slug", "description", "max_score"]
+        order = ["title"]
 
 
 class SubmissionSerializer(serializers.ModelSerializer):

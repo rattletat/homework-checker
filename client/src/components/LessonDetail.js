@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { Col, Row, Jumbotron } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Col, Row, Jumbotron} from "react-bootstrap";
+import {useParams} from "react-router-dom";
 
-import { callAPI } from "../services/APIServices";
+import {callAPI} from "../services/APIServices";
 import BreadcrumbWrapper from "./BreadcrumbWrapper";
 
 import MarkdownRenderer from "../services/MarkdownService";
@@ -10,11 +10,11 @@ import ResourceList from "./ResourceList";
 import ExercisesContainer from "./ExercisesContainer";
 
 export default function LessonDetail() {
-    const { lecture_slug, lesson_slug } = useParams();
+    const {lecture_slug, lesson_slug} = useParams();
 
     const [teachingData, setTeachingData] = useState({
-        lecture: null,
-        lesson: null
+        lecture: lecture_slug,
+        lesson: lesson_slug
     });
 
     const [exercises, setExercises] = useState([]);
@@ -55,31 +55,29 @@ export default function LessonDetail() {
     return (
         <Row>
             <Col lg={12}>
-                {teachingData.lecture && teachingData.lesson && (
-                    <BreadcrumbWrapper
-                        items={[
-                            {
-                                name: "Home",
-                                active: false,
-                                href: "/"
-                            },
-                            {
-                                name: "Lectures",
-                                active: false,
-                                href: "/lectures/"
-                            },
-                            {
-                                name: teachingData.lecture.title,
-                                active: false,
-                                href: `/lectures/${teachingData.lecture.slug}/`
-                            },
-                            {
-                                name: teachingData.lesson.title,
-                                active: true
-                            }
-                        ]}
-                    />
-                )}
+                <BreadcrumbWrapper
+                    items={[
+                        {
+                            name: "Home",
+                            active: false,
+                            href: "/"
+                        },
+                        {
+                            name: "Lectures",
+                            active: false,
+                            href: "/lectures/"
+                        },
+                        {
+                            name: teachingData.lecture.title,
+                            active: false,
+                            href: `/lectures/${teachingData.lecture.slug}/`
+                        },
+                        {
+                            name: teachingData.lesson.title,
+                            active: true
+                        }
+                    ]}
+                />
                 {teachingData.lesson && (
                     <>
                         <Jumbotron>
@@ -93,10 +91,9 @@ export default function LessonDetail() {
                         />
                     </>
                 )}
-                <br />
                 {exercises && exercises.length > 0 && (
                     <ExercisesContainer
-                        {...{ lecture_slug, lesson_slug, exercises }}
+                        {...{lecture_slug, lesson_slug, exercises}}
                     />
                 )}
             </Col>

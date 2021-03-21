@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 
-import { Row, Col, Nav, Card, Tab, Alert } from "react-bootstrap";
-import ExerciseDropzone from "./ExerciseDropzone";
+import {Row, Col, Nav, Card, Tab} from "react-bootstrap";
 import ExercisePane from "./ExercisePane";
-import { callAPI } from "../services/APIServices";
-
-import "../css/ExercisesContainer.css"
+import {callAPI} from "../services/APIServices";
+import MarkdownRenderer from "../services/MarkdownService";
 
 export default function ExercisesContainer({
     lecture_slug,
@@ -13,7 +11,6 @@ export default function ExercisesContainer({
     exercises
 }) {
     const [selectedExercise, setSelectedExercise] = useState(exercises[0]);
-    const [errors, setErrors] = useState(null);
     const [userScores, setUserScores] = useState({});
 
     useEffect(() => {
@@ -38,14 +35,13 @@ export default function ExercisesContainer({
     return (
         <Card>
             <Card.Header>Lesson Exercises</Card.Header>
-            {errors && <Alert variant="danger">{errors}</Alert>}
             <Tab.Container defaultActiveKey={0}>
                 <Row>
-                    <Col sm={3}>
+                    <Col lg={12}>
                         <Nav
                             fill
                             variant="pills"
-                            className="flex-column"
+                            className="nav-item center-block"
                             onSelect={eventKey =>
                                 setSelectedExercise(exercises[eventKey])
                             }
@@ -63,21 +59,22 @@ export default function ExercisesContainer({
                                 </Nav.Item>
                             ))}
                         </Nav>
-                        <br />
-                        <ExerciseDropzone
-                            exercise={selectedExercise}
-                            setErrors={setErrors}
-                        />
                     </Col>
-                    <Col sm={9}>
+                </Row>
+                <Row>
+                    <Col sm={12}>
                         <Tab.Content>
                             {exercises.map((exercise, index) => (
                                 <Tab.Pane
                                     key={`pane-${index}`}
                                     eventKey={index}
                                 >
+                                    <Row>
+                                        <Col lg={{span: 10, offset: 1}} className="center-block">
+                                            <MarkdownRenderer>{exercise.description}</MarkdownRenderer>
+                                        </Col>
+                                    </Row >
                                     <ExercisePane
-                                        key={index}
                                         exercise={exercise}
                                         active={exercise === selectedExercise}
                                     />
@@ -87,6 +84,6 @@ export default function ExercisesContainer({
                     </Col>
                 </Row>
             </Tab.Container>
-        </Card>
+        </Card >
     );
 }

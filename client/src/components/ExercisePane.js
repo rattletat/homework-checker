@@ -1,11 +1,16 @@
-import React, {useEffect, useState} from "react";
-import MarkdownRenderer from "../services/MarkdownService";
-import {Card, Accordion} from "react-bootstrap";
+import React, {useState, useEffect} from "react";
+
+import {Row, Col, Alert, Accordion} from "react-bootstrap";
+
+import ExerciseDropzone from "./ExerciseDropzone";
+import SubmissionCard from "./SubmissionCard";
+
 import {callAPI} from "../services/APIServices";
-import {toTimeFormat} from "../services/TimeService";
+import MarkdownRenderer from "../services/MarkdownService";
 
 export default function ExercisePane({exercise, active}) {
     const [submissions, setSubmissions] = useState([]);
+    const [errors, setErrors] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -27,31 +32,20 @@ export default function ExercisePane({exercise, active}) {
     }, [exercise, active]);
     return (
         <>
-            <MarkdownRenderer>{exercise.description}</MarkdownRenderer>
+            <Row>
+                <Col lg={{span: 10, offset: 1}} className="center-block">
+                    <MarkdownRenderer>{exercise.description}</MarkdownRenderer>
+                </Col>
+            </Row >
+            <hr />
+            {errors && <Alert variant="danger">{errors}</Alert>}
+            <ExerciseDropzone
+                exercise={exercise}
+                setErrors={setErrors}
+            />
             <Accordion defaultActiveKey="event-0">
                 {submissions.map((submission, key) => (
-                    <Card key={`card-${key}`}>
-                        <Accordion.Toggle
-                            as={Card.Header}
-                            eventKey={`event-${key}`}
-                            key={`toggle-${key}`}
-                        >
-                            <h6 className="mt-0 mb-1">
-                                {submission.score} / {exercise.max_score}
-                            </h6>
-                            <small>
-                                {toTimeFormat(submission.created, "LLL")}
-                            </small>
-                        </Accordion.Toggle>
-                        <Accordion.Collapse
-                            eventKey={`event-${key}`}
-                            key={`collapse/${key}`}
-                        >
-                            <Card.Body>
-                                <div className="display-linebreak">{submission.output === "" ? "Running..." : submission.output}</div>
-                            </Card.Body>
-                        </Accordion.Collapse>
-                    </Card>
+                    <SubmissionCard {...{key, submission, cardKey: key, max_score: exercise.max_score}} />
                 ))}
             </Accordion>
         </>

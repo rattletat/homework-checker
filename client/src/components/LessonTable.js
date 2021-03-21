@@ -1,25 +1,43 @@
 import React from "react";
-import { Table } from "react-bootstrap";
+import {Table} from "react-bootstrap";
+import {useHistory} from "react-router-dom";
 
-import LessonTableRow from "./LessonTableRow";
+import {toTimeFormat} from "../services/TimeService";
 
-export default function LessonTable({ lessons }) {
-    let rows = lessons.map((lesson, index) => (
-        <LessonTableRow key={lesson.slug} {...{ index, lesson }} />
-    ));
-
+export default function LessonTable({lessons}) {
+    const history = useHistory();
+    const hasStart = lessons.some(lesson => lesson.start)
+    const hasDeadline = lessons.some(lesson => lesson.deadline)
     return (
         <Table striped hover className={"text-center"}>
             <thead>
                 <tr>
-                    <th>#</th>
-                    <th>Lektion</th>
-                    <th>Start</th>
-                    <th>Deadline</th>
-                    <th></th>
+                    <th>Title</th>
+                    {hasStart &&
+                        <th>Start</th>
+                    }
+                    {hasDeadline &&
+                        <th>Deadline</th>
+                    }
                 </tr>
             </thead>
-            <tbody>{rows}</tbody>
+            <tbody>
+                {lessons.map((lesson, index) => (
+                    <tr key={index}
+                        onClick={() => history.push(`${lesson.slug}/`)}
+                    >
+                        <td>
+                            {lesson.title}
+                        </td>
+                        {hasStart &&
+                            <td>{toTimeFormat(lesson.start)}</td>
+                        }
+                        {hasDeadline &&
+                            <td>{toTimeFormat(lesson.end)}</td>
+                        }
+                    </tr>
+                ))}
+            </tbody>
         </Table>
     );
 }

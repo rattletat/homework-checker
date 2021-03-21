@@ -85,3 +85,5 @@ class ExercisesStatus(APIView):
             data[exercise.slug] = max(map(lambda s: s.score, submissions), default=0)
 
         return response.Response(data, status=status.HTTP_200_OK)
+
+# class LectureStatistics(APIView):
