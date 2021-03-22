@@ -13,7 +13,7 @@ export default function LectureDetail() {
     const {lecture_slug} = useParams();
 
     const [data, setData] = useState({
-        lecture: null,
+        lecture: lecture_slug,
         breadcrumbs: []
     });
 
@@ -54,22 +54,21 @@ export default function LectureDetail() {
                     ]}
                 />
 
-                {data.lecture && (
-                    <>
-                        <Jumbotron>
-                            <h1>{data.lecture.title}</h1>
-                            <MarkdownRenderer>
-                                {data.lecture.description}
-                            </MarkdownRenderer>
-                        </Jumbotron>
+                <Jumbotron>
+                    <h1>{data.lecture.title}</h1>
+                    <MarkdownRenderer>
+                        {data.lecture.description}
+                    </MarkdownRenderer>
+                </Jumbotron>
 
-                        <ResourceList resources={data.lecture.resources} />
-                        <br />
-                        {data.lecture.lessons && data.lecture.lessons.length > 0 &&
-                            <LessonTable lessons={data.lecture.lessons} />
-                        }
-                    </>
-                )}
+                {data.lecture.resources && data.lecture.description &&
+                    <ResourceList resources={data.lecture.resources} />
+                }
+
+                {data.lecture.lessons && data.lecture.lessons.length > 0 && data.lecture.description &&
+                    <LessonTable lessons={data.lecture.lessons} />
+                }
+
             </Col>
         </Row>
     );

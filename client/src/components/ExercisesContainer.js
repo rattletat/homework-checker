@@ -70,7 +70,7 @@ export default function ExercisesContainer({
                                     eventKey={index}
                                 >
                                     <Row>
-                                        <Col lg={{span: 10, offset: 1}} className="center-block">
+                                        <Col sm={{span: 10, offset: 1}} className="center-block">
                                             <MarkdownRenderer>{exercise.description}</MarkdownRenderer>
                                         </Col>
                                     </Row >

@@ -1,12 +1,11 @@
 import React, {useState, useEffect} from "react";
 
-import {Row, Col, Alert, Accordion} from "react-bootstrap";
+import {Alert, Accordion} from "react-bootstrap";
 
 import ExerciseDropzone from "./ExerciseDropzone";
 import SubmissionCard from "./SubmissionCard";
 
 import {callAPI} from "../services/APIServices";
-import MarkdownRenderer from "../services/MarkdownService";
 
 export default function ExercisePane({exercise, active}) {
     const [submissions, setSubmissions] = useState([]);
@@ -32,12 +31,6 @@ export default function ExercisePane({exercise, active}) {
     }, [exercise, active]);
     return (
         <>
-            <Row>
-                <Col lg={{span: 10, offset: 1}} className="center-block">
-                    <MarkdownRenderer>{exercise.description}</MarkdownRenderer>
-                </Col>
-            </Row >
-            <hr />
             {errors && <Alert variant="danger">{errors}</Alert>}
             <ExerciseDropzone
                 exercise={exercise}

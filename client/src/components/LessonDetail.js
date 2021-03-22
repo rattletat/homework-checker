@@ -78,24 +78,23 @@ export default function LessonDetail() {
                         }
                     ]}
                 />
-                {teachingData.lesson && (
-                    <>
-                        <Jumbotron>
-                            <h1>{teachingData.lesson.title}</h1>
-                            <MarkdownRenderer>
-                                {teachingData.lesson.description}
-                            </MarkdownRenderer>
-                        </Jumbotron>
-                        <ResourceList
-                            resources={teachingData.lesson.resources}
-                        />
-                    </>
-                )}
-                {exercises && exercises.length > 0 && (
+                <Jumbotron>
+                    <h1>{teachingData.lesson.title}</h1>
+                    <MarkdownRenderer>
+                        {teachingData.lesson.description}
+                    </MarkdownRenderer>
+                </Jumbotron>
+
+                {teachingData.lesson.resources && teachingData.lesson.description &&
+                    <ResourceList
+                        resources={teachingData.lesson.resources}
+                    />
+                }
+
+                {exercises && exercises.length > 0 && teachingData.lesson.description &&
                     <ExercisesContainer
                         {...{lecture_slug, lesson_slug, exercises}}
-                    />
-                )}
+                    />}
             </Col>
         </Row>
     );

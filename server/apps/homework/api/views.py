@@ -15,6 +15,8 @@ from .serializers import (
     SubmissionListSerializer,
     SubmissionSerializer,
 )
+from django.db.models import Max, Sum, Count
+from collections import defaultdict
 
 
 class ExerciseListView(ListAPIView):
@@ -81,9 +83,43 @@ class ExercisesStatus(APIView):
         )
         data = {}
         for exercise in exercises:
-            submissions = Submission.objects.filter(exercise=exercise, user=request.user)
+            submissions = Submission.objects.filter(
+                exercise=exercise, user=request.user
+            )
             data[exercise.slug] = max(map(lambda s: s.score, submissions), default=0)
 
         return response.Response(data, status=status.HTTP_200_OK)
 
-# class LectureStatistics(APIView):
+
+# Todo
+# class LectureStatisticsView(APIView):
+#     permission_classes = [permissions.AllowAny]
+
+#     def get(self, request, lecture_slug):
+#         """ Returns all non-null scores anonymized. """
+
+#         rows = (
+#             Submission.objects.filter(
+#                 exercise__lesson__lecture__slug=lecture_slug,
+#                 score__isnull=False,
+#                 # score__gt=0,
+#                 exercise__rated=True,
+#             )
+#             .values("exercise", "user")
+#             .annotate(max_score=Max("score"))
+#             .values("user", "max_score")
+#         )
+#         scores = defaultdict(int)
+#         for row in rows:
+#             scores[row['user']] += row['max_score']
+
+#         # f = models.Q()
+#             # .values("user", "max_exercise_score")
+#             # .aggregate(total_user_score=Sum("max_exercise_score"))
+#         # .values("total_score")
+#         # .annotate(user_count=Count("user"))
+#         # )
+
+#         return response.Response(
+#             {"distribution", max_scores}, status=status.HTTP_200_OK
+#         )

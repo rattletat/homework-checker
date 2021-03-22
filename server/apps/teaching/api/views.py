@@ -5,11 +5,14 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from sendfile import sendfile
 
-from ..models import (Lecture, LectureResource, Lesson, LessonResource,
-                      RegistrationCode)
+from ..models import Lecture, LectureResource, Lesson, LessonResource, RegistrationCode
 from .permissions import IsEnrolled
-from .serializers import (LectureDetailSerializer, LectureListSerializer,
-                          LessonDetailSerializer)
+from .mixins import MultipleFieldLookupMixin
+from .serializers import (
+    LectureDetailSerializer,
+    LectureListSerializer,
+    LessonDetailSerializer,
+)
 
 
 class LectureListView(APIView):
@@ -35,7 +38,7 @@ class LectureListView(APIView):
 class LectureRetrieveView(RetrieveAPIView):
     permission_classes = [IsEnrolled]
     serializer_class = LectureDetailSerializer
-    lookup_field = 'slug'
+    lookup_field = "slug"
     queryset = Lecture.objects.all()
 
 
@@ -60,38 +63,32 @@ class LectureRegister(APIView):
         return response.Response(status=status.HTTP_200_OK)
 
 
-class LessonRetrieveView(RetrieveAPIView):
+class LessonRetrieveView(MultipleFieldLookupMixin, RetrieveAPIView):
     permission_classes = [IsEnrolled]
     serializer_class = LessonDetailSerializer
-
-    def get_object(self):
-        lecture_slug = self.kwargs["lecture_slug"]
-        lesson_slug = self.kwargs["lesson_slug"]
-        return Lesson.objects.get(lecture__slug=lecture_slug, slug=lesson_slug)
+    lookup_fields = {"lecture_slug": "lecture__slug", "lesson_slug": "slug"}
+    queryset = Lesson.objects.all()
 
 
-class LectureResourceDownload(RetrieveAPIView):
+class LectureResourceDownload(MultipleFieldLookupMixin, RetrieveAPIView):
     permission_classes = [IsEnrolled]
+    lookup_fields = {"lecture_slug": "lecture__slug", "resource_id": "id"}
+    queryset = LectureResource.objects.all()
 
     def get(self, request, *args, **kwargs):
-        lecture_slug = self.kwargs["lecture_slug"]
-        resource_id = self.kwargs["resource_id"]
-        resource = LectureResource.objects.get(
-            lecture__slug=lecture_slug, id=resource_id
-        )
+        resource = self.get_object()
         return sendfile(request, resource.file.path, attachment=True)
 
 
-class LessonResourceDownload(RetrieveAPIView):
+class LessonResourceDownload(MultipleFieldLookupMixin, RetrieveAPIView):
     permission_classes = [IsEnrolled]
+    lookup_fields = {
+        "lecture_slug": "lesson__lecture__slug",
+        "lesson_slug": "lesson__slug",
+        "resource_id": "id",
+    }
+    queryset = LessonResource.objects.all()
 
     def get(self, request, *args, **kwargs):
-        lecture_slug = self.kwargs["lecture_slug"]
-        lesson_slug = self.kwargs["lesson_slug"]
-        resource_id = self.kwargs["resource_id"]
-        resource = LessonResource.objects.get(
-            lesson__lecture__slug=lecture_slug,
-            lesson__slug=lesson_slug,
-            id=resource_id,
-        )
+        resource = self.get_object()
         return sendfile(request, resource.file.path, attachment=True)
