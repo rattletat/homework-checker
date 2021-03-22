@@ -33,12 +33,10 @@ class LectureListView(APIView):
 
 
 class LectureRetrieveView(RetrieveAPIView):
-    permission_classes = [permissions.IsEnrolled]
+    permission_classes = [IsEnrolled]
     serializer_class = LectureDetailSerializer
-
-    def get_object(self):
-        lecture_slug = self.kwargs["lecture_slug"]
-        return Lecture.objects.get(slug=lecture_slug)
+    lookup_field = 'slug'
+    queryset = Lecture.objects.all()
 
 
 class LectureRegister(APIView):
@@ -63,7 +61,7 @@ class LectureRegister(APIView):
 
 
 class LessonRetrieveView(RetrieveAPIView):
-    permission_classes = [permissions.IsEnrolled]
+    permission_classes = [IsEnrolled]
     serializer_class = LessonDetailSerializer
 
     def get_object(self):
@@ -73,7 +71,7 @@ class LessonRetrieveView(RetrieveAPIView):
 
 
 class LectureResourceDownload(RetrieveAPIView):
-    permission_classes = [permissions.IsEnrolled]
+    permission_classes = [IsEnrolled]
 
     def get(self, request, *args, **kwargs):
         lecture_slug = self.kwargs["lecture_slug"]
@@ -85,7 +83,7 @@ class LectureResourceDownload(RetrieveAPIView):
 
 
 class LessonResourceDownload(RetrieveAPIView):
-    permission_classes = [permissions.IsEnrolled]
+    permission_classes = [IsEnrolled]
 
     def get(self, request, *args, **kwargs):
         lecture_slug = self.kwargs["lecture_slug"]

@@ -10,13 +10,13 @@ class IsEnrolled(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
         user = request.user
-        if user.isstaff:
+        if user.is_staff:
             return True
 
         if isinstance(obj, Lecture):
-            return obj in user.enrolled_lectures
+            return obj in user.enrolled_lectures.all()
         if isinstance(obj, [Lesson, LectureResource]):
-            return obj.lecture in user.enrolled_lectures
+            return obj.lecture in user.enrolled_lectures.all()
         if isinstance(obj, LessonResource):
-            return obj.lesson.lecture in user.enrolled_lectures
+            return obj.lesson.lecture in user.enrolled_lectures.all()
         return False

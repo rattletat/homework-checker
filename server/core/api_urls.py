@@ -16,7 +16,7 @@ urlpatterns = [
         view=teaching_views.LectureRegister.as_view(),
     ),
     path(
-        "lectures/<slug:lecture_slug>/",
+        "lectures/<slug:slug>/",
         view=teaching_views.LectureRetrieveView.as_view(),
     ),
     # path(
