@@ -53,7 +53,7 @@ class ExerciseAdmin(admin.ModelAdmin):
 
     def get_readonly_fields(self, _, obj=None):
         if obj:
-            return ["lesson", "tests_link"]
+            return ["lesson", "title", "tests_link"]
         else:
             return ["tests_link"]
 
