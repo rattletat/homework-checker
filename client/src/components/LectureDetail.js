@@ -65,7 +65,7 @@ export default function LectureDetail() {
 
                         <ResourceList resources={data.lecture.resources} />
                         <br />
-                        {data.lecture.lessons &&
+                        {data.lecture.lessons && data.lecture.lessons.length > 0 &&
                             <LessonTable lessons={data.lecture.lessons} />
                         }
                     </>
