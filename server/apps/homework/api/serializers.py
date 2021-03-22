@@ -41,19 +41,19 @@ class SubmissionSerializer(serializers.ModelSerializer):
         file_validator(data["file"])
 
         # Check if user is registered for course
-        if user not in lesson.lecture.participants.all():
+        if lesson.lecture not in user.enrolled_lectures.all():
             raise serializers.ValidationError(
-                _("You are not registered for this lecture."),
+                "You are not registered for this lecture."
             )
 
         # Check timestamp of submission
         if lesson.start and now() < lesson.start:
             raise serializers.ValidationError(
-                _("You cannot upload a submission before the lesson has started."),
+                "You cannot upload a submission before the lesson has started."
             )
         if lesson.end and lesson.end < now():
             raise serializers.ValidationError(
-                _("You cannot upload a submission after the lesson has ended."),
+                "You cannot upload a submission after the lesson has ended."
             )
 
         return data
