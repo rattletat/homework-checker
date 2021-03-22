@@ -5,13 +5,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from sendfile import sendfile
 
-from ..models import Lecture, LectureResource, Lesson, LessonResource, RegistrationCode
-from .serializers import (
-    LessonDetailSerializer,
-    LectureDetailSerializer,
-    LectureListSerializer,
-    LectureDetailSerializer,
-)
+from ..models import (Lecture, LectureResource, Lesson, LessonResource,
+                      RegistrationCode)
+from .permissions import IsEnrolled
+from .serializers import (LectureDetailSerializer, LectureListSerializer,
+                          LessonDetailSerializer)
 
 
 class LectureListView(APIView):
@@ -35,7 +33,7 @@ class LectureListView(APIView):
 
 
 class LectureRetrieveView(RetrieveAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsEnrolled]
     serializer_class = LectureDetailSerializer
 
     def get_object(self):
@@ -65,7 +63,7 @@ class LectureRegister(APIView):
 
 
 class LessonRetrieveView(RetrieveAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsEnrolled]
     serializer_class = LessonDetailSerializer
 
     def get_object(self):
@@ -75,7 +73,7 @@ class LessonRetrieveView(RetrieveAPIView):
 
 
 class LectureResourceDownload(RetrieveAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsEnrolled]
 
     def get(self, request, *args, **kwargs):
         lecture_slug = self.kwargs["lecture_slug"]
@@ -87,7 +85,7 @@ class LectureResourceDownload(RetrieveAPIView):
 
 
 class LessonResourceDownload(RetrieveAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsEnrolled]
 
     def get(self, request, *args, **kwargs):
         lecture_slug = self.kwargs["lecture_slug"]
