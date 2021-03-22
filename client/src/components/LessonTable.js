@@ -2,7 +2,7 @@ import React from "react";
 import {Table} from "react-bootstrap";
 import {useHistory} from "react-router-dom";
 
-import {toTimeFormat} from "../services/TimeService";
+import {toTimeFormat, getTimeIndicator} from "../services/TimeService";
 
 export default function LessonTable({lessons}) {
     const history = useHistory();
@@ -23,8 +23,13 @@ export default function LessonTable({lessons}) {
             </thead>
             <tbody>
                 {lessons.map((lesson, index) => (
+
+                // {lesson.status === "WAITING" && <tr key={index}>)}
+                // {lesson.status === "ACTIVE" && <tr key={index} className="table-active">}
+                // {lesson.status === "FINISHED" && <tr key={index} className="table-secondary">}
                     <tr key={index}
-                        onClick={() => history.push(`${lesson.slug}/`)}
+                        onClick={() => lesson.status === "WAITING" ? alert(`Lesson ${getTimeIndicator(lesson)}.`) : history.push(`${lesson.slug}/`)}
+                        className={lesson.status === "ACTIVE" ? "table-primary" : ""}
                     >
                         <td>
                             {lesson.title}

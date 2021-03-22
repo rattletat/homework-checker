@@ -5,38 +5,24 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from sendfile import sendfile
 
-from ..models import Lecture, LectureResource, Lesson, LessonResource, RegistrationCode
-from .permissions import IsEnrolled
+from ..models import (Lecture, LectureResource, Lesson, LessonResource,
+                      RegistrationCode)
 from .mixins import MultipleFieldLookupMixin
-from .serializers import (
-    LectureDetailSerializer,
-    LectureListSerializer,
-    LessonDetailSerializer,
-)
+from .permissions import IsEnrolled, IsNotWaiting
+from .serializers import (EnrolledLectureListSerializer,
+                          LectureDetailSerializer, LessonDetailSerializer)
 
 
-class LectureListView(APIView):
+class EnrolledLectureListView(ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
+    serializer_class = EnrolledLectureListSerializer
 
-    def get(self, request):
-        lectures = request.user.enrolled_lectures.all()
-        attributes = ["title", "slug", "start", "end", "status"]
-        enrolled_lectures = []
-        for lecture in lectures:
-            lecture_info = {attr: getattr(lecture, attr) for attr in attributes}
-            score = lecture.get_score(request.user)
-            lecture_info["score"] = score
-            if scale := lecture.grading_scale:
-                lecture_info["grade"] = scale.get_grade(score)
-            enrolled_lectures.append(lecture_info)
-
-        return Response(
-            {"enrolled_lectures": enrolled_lectures}, status=status.HTTP_200_OK
-        )
+    def get_queryset(self):
+        return self.request.user.enrolled_lectures.all()
 
 
 class LectureRetrieveView(RetrieveAPIView):
-    permission_classes = [IsEnrolled]
+    permission_classes = [IsEnrolled, IsNotWaiting]
     serializer_class = LectureDetailSerializer
     lookup_field = "slug"
     queryset = Lecture.objects.all()
@@ -64,14 +50,14 @@ class LectureRegister(APIView):
 
 
 class LessonRetrieveView(MultipleFieldLookupMixin, RetrieveAPIView):
-    permission_classes = [IsEnrolled]
+    permission_classes = [IsEnrolled, IsNotWaiting]
     serializer_class = LessonDetailSerializer
     lookup_fields = {"lecture_slug": "lecture__slug", "lesson_slug": "slug"}
     queryset = Lesson.objects.all()
 
 
 class LectureResourceDownload(MultipleFieldLookupMixin, RetrieveAPIView):
-    permission_classes = [IsEnrolled]
+    permission_classes = [IsEnrolled, IsNotWaiting]
     lookup_fields = {"lecture_slug": "lecture__slug", "resource_id": "id"}
     queryset = LectureResource.objects.all()
 
@@ -81,7 +67,7 @@ class LectureResourceDownload(MultipleFieldLookupMixin, RetrieveAPIView):
 
 
 class LessonResourceDownload(MultipleFieldLookupMixin, RetrieveAPIView):
-    permission_classes = [IsEnrolled]
+    permission_classes = [IsEnrolled, IsNotWaiting]
     lookup_fields = {
         "lecture_slug": "lesson__lecture__slug",
         "lesson_slug": "lesson__slug",

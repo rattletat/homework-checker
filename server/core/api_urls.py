@@ -10,7 +10,7 @@ from rest_framework_simplejwt.views import TokenRefreshView
 app_name = "api"
 
 urlpatterns = [
-    path("lectures/", teaching_views.LectureListView.as_view()),
+    path("lectures/", teaching_views.EnrolledLectureListView.as_view()),
     path(
         "lectures/register/<slug:registration_code>",
         view=teaching_views.LectureRegister.as_view(),
@@ -56,7 +56,6 @@ urlpatterns = [
     path("accounts/signup", account_views.SignUpView.as_view(), name="signup"),
     path("accounts/login", account_views.LogInView.as_view(), name="login"),
     path("accounts/profile/", account_views.ProfileView.as_view()),
-
     path(
         "flatpages/<slug:page_slug>/",
         view=flatpages_views.PageView.as_view(),

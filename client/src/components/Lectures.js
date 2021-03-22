@@ -11,18 +11,13 @@ export default function Lectures() {
         {name: "Lectures", active: true}
     ];
     const [updated, setUpdated] = useState(true);
-    const [data, setData] = useState({
-        email: "",
-        full_name: "",
-        identifier: "",
-        enrolled_lectures: []
-    });
+    const [lectures, setLectures] = useState([]);
 
     useEffect(() => {
         const fetchAccountStatus = async () => {
             const response = await callAPI(`/api/lectures/`, "GET");
             if (response) {
-                setData({...response.data});
+                setLectures(response.data);
             }
         };
         fetchAccountStatus();
@@ -42,7 +37,7 @@ export default function Lectures() {
                 <h3>Your Lectures</h3>
                 <ListGroup>
                     <>
-                        {data.enrolled_lectures.map((lecture, key) => (
+                        {lectures.map((lecture, key) => (
                             <LectureEntry lecture={lecture} key={key} />
                         ))}
                     </>

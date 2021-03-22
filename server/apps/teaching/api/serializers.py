@@ -6,10 +6,23 @@ from rest_framework import serializers
 from ..models import Lecture, Lesson
 
 
-class LectureListSerializer(serializers.ModelSerializer):
+class EnrolledLectureListSerializer(serializers.ModelSerializer):
+    score = serializers.SerializerMethodField("get_score")
+    grade = serializers.SerializerMethodField("get_grade")
+
+    def get_score(self, lecture):
+        user = self.context['request'].user
+        return lecture.get_score(user)
+
+    def get_grade(self, lecture):
+        user = self.context['request'].user
+        score = lecture.get_score(user)
+        if scale := lecture.grading_scale:
+            return scale.get_grade(score)
+
     class Meta:
         model = Lecture
-        fields = ["title", "slug", "start", "end"]
+        fields = ["title", "slug", "start", "end", "status", "score", "grade"]
         ordering = ["end", "start", "title"]
 
 
@@ -30,7 +43,7 @@ class LectureDetailSerializer(serializers.ModelSerializer):
         ]
 
     def get_lessons(self, obj):
-        lessons = obj.lessons.order_by('title')
+        lessons = obj.lessons.order_by("title")
         return LessonListSerializer(lessons, many=True).data
 
     def get_resources(self, obj):
@@ -50,7 +63,7 @@ class LectureDetailSerializer(serializers.ModelSerializer):
 class LessonListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
-        fields = ["slug", "title", "start", "end"]
+        fields = ["slug", "title", "status", "start", "end"]
         ordering = ["title"]
 
 

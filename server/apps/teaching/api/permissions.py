@@ -20,3 +20,23 @@ class IsEnrolled(permissions.BasePermission):
         if isinstance(obj, LessonResource):
             return obj.lesson.lecture in user.enrolled_lectures.all()
         return user.is_staff
+
+
+class IsNotWaiting(permissions.BasePermission):
+    """
+    Custom permission to only allow enrolled students to see the lecture/ lesson.
+    Admins can see all content.
+    """
+
+    def has_object_permission(self, request, view, obj):
+        user = request.user
+        if user.is_anonymous:
+            return False
+
+        if isinstance(obj, (Lecture, Lesson)):
+            return obj.status != "WAITING"
+        if isinstance(obj, LectureResource):
+            return obj.lecture.status != "WAITING"
+        if isinstance(obj, LessonResource):
+            return obj.lesson.status != "WAITING"
+        return user.is_staff

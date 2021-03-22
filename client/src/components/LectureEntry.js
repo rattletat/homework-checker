@@ -7,9 +7,14 @@ function LectureEntry({lecture}) {
     return (
         <Card className="mb-3">
             <Card.Header>
-                <Link to={`/lectures/${lecture.slug}/`}>
+                {lecture.status !== "WAITING" &&
+                    <Link to={`/lectures/${lecture.slug}/`}>
+                        <h6 className="mt-0 mb-1">{lecture.title}</h6>
+                    </Link>
+                }
+                {lecture.status === "WAITING" &&
                     <h6 className="mt-0 mb-1">{lecture.title}</h6>
-                </Link>
+                }
                 <small>{getTimeIndicator(lecture)}</small>
             </Card.Header>
             <Card.Body>
