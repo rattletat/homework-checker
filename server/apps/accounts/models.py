@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import RegexValidator
+import uuid
 
 
 class UserManager(BaseUserManager):
@@ -39,6 +40,7 @@ class UserManager(BaseUserManager):
 
 
 class CustomUser(AbstractUser):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     username = None
     email = models.EmailField(
         _("email address"),
@@ -60,8 +62,6 @@ class CustomUser(AbstractUser):
     REQUIRED_FIELDS = ["full_name"]
 
     objects = UserManager()
-
-    is_student = models.BooleanField(default=True)
 
     def __str__(self):
         return self.email
