@@ -1,18 +1,18 @@
 import React from "react";
-import { Alert, Button, Card, Col, Form, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { Formik } from "formik";
+import {Alert, Button, Card, Col, Form, Row} from "react-bootstrap";
+import {Link} from "react-router-dom";
+import {Formik} from "formik";
 import BreadcrumbWrapper from "./BreadcrumbWrapper";
 
-export default function LogIn({ logIn }) {
+export default function LogIn({logIn}) {
     const breadcrumbs = [
-        { name: "Home", active: false, href: "/" },
-        { name: "Log in", active: true }
+        {name: "Home", active: false, href: "/"},
+        {name: "Log in", active: true}
     ];
 
     const onSubmit = async (values, actions) => {
         try {
-            const { response, isError } = await logIn(
+            const {response, isError} = await logIn(
                 values.email,
                 values.password
             );
@@ -49,16 +49,16 @@ export default function LogIn({ logIn }) {
                                 values
                             }) => (
                                 <>
-                                    {"non_field_errors" in errors && (
+                                    {"non_field_errors" in errors &&
                                         <Alert variant="danger">
                                             {errors["non_field_errors"]}
                                         </Alert>
-                                    )}
-                                    {"detail" in errors && (
+                                    }
+                                    {"detail" in errors &&
                                         <Alert variant="danger">
                                             {errors["detail"]}
                                         </Alert>
-                                    )}
+                                    }
                                     <Form noValidate onSubmit={handleSubmit}>
                                         <Form.Group controlId="email">
                                             <Form.Control
@@ -68,16 +68,17 @@ export default function LogIn({ logIn }) {
                                                         : ""
                                                 }
                                                 name="email"
-                                                onChange={handleChange}
+                                                placeholder="Email"
                                                 value={values.email}
-                                                placeholder={"Email"}
+                                                onChange={handleChange}
+                                                autoComplete="email"
                                                 required
                                             />
-                                            {"email" in errors && (
+                                            {"email" in errors &&
                                                 <Form.Control.Feedback type="invalid">
                                                     {errors.email}
                                                 </Form.Control.Feedback>
-                                            )}
+                                            }
                                         </Form.Group>
                                         <Form.Group controlId="password">
                                             <Form.Control
@@ -87,17 +88,18 @@ export default function LogIn({ logIn }) {
                                                         : ""
                                                 }
                                                 name="password"
-                                                onChange={handleChange}
                                                 type="password"
+                                                placeholder="Password"
                                                 value={values.password}
-                                                placeholder={"Password"}
+                                                onChange={handleChange}
+                                                autoComplete="current-password"
                                                 required
                                             />
-                                            {"password" in errors && (
+                                            {"password" in errors &&
                                                 <Form.Control.Feedback type="invalid">
                                                     {errors.password}
                                                 </Form.Control.Feedback>
-                                            )}
+                                            }
                                         </Form.Group>
                                         <Button
                                             block

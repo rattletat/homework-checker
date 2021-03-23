@@ -40,16 +40,16 @@ export default function LectureRegister({refreshPage}) {
                 values
             }) => (
                 <>
-                    {"non_field_errors" in errors && (
+                    {"non_field_errors" in errors &&
                         <Alert variant="danger">
                             {errors["non_field_errors"]}
                         </Alert>
-                    )}
-                    {"detail" in errors && (
+                    }
+                    {"detail" in errors &&
                         <Alert variant="danger">
                             {errors["detail"]}
                         </Alert>
-                    )}
+                    }
                     <Form noValidate onSubmit={handleSubmit}>
                         <Row>
                             <Col md={8}>
@@ -61,16 +61,17 @@ export default function LectureRegister({refreshPage}) {
                                                 : ""
                                         }
                                         name="code"
-                                        onChange={handleChange}
+                                        placeholder="Registration code"
                                         value={values.code}
-                                        placeholder={"Registration code"}
+                                        onChange={handleChange}
+                                        autocomplete="off"
                                         required
                                     />
-                                    {"code" in errors && (
+                                    {"code" in errors &&
                                         <Form.Control.Feedback type="invalid">
                                             {errors.code}
                                         </Form.Control.Feedback>
-                                    )}
+                                    }
                                 </Form.Group>
                             </Col>
                             <Col md={4}>

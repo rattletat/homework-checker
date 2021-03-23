@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Button, Container, Form, Navbar} from "react-bootstrap";
+import {Button, Container, Nav, Navbar} from "react-bootstrap";
 import {LinkContainer} from "react-router-bootstrap";
 import {Link, Redirect, Route, Switch} from "react-router-dom";
 
@@ -27,29 +27,35 @@ function App() {
                         Homework Checker
         </Navbar.Brand>
                 </LinkContainer>
-                <Navbar.Toggle />
-                <Navbar.Collapse>
-                    {loggedIn && (
-                        <Form inline className="ml-auto">
-                            <Link
+                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                <Navbar.Collapse id="basic-navbar-nav">
+                    {loggedIn &&
+                        <Nav className="ml-auto">
+                            <Nav.Link
                                 id="lectures"
                                 className="btn"
+                                as={Link}
                                 to="/lectures/"
                             >
                                 Lectures
-            </Link>
-                            <Link
+            </Nav.Link>
+                            <Nav.Link
                                 id="profile"
                                 className="btn"
+                                as={Link}
                                 to="/profile/"
                             >
                                 Profile
-            </Link>
-                            <Button type="button" onClick={() => logOut()}>
+            </Nav.Link>
+                            <Nav.Link id="logout"
+                                className="text-white"
+                                variant="primary"
+                                as={Button}
+                                onClick={() => logOut()}>
                                 Log out
-            </Button>
-                        </Form>
-                    )}
+            </Nav.Link>
+                        </Nav>
+                    }
                 </Navbar.Collapse>
             </Navbar>
             <Container className="pt-3">

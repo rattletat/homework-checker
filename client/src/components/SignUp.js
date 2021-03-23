@@ -67,11 +67,11 @@ export default function Signup() {
                                 values
                             }) => (
                                 <>
-                                    {"non_field_errors" in errors && (
+                                    {"non_field_errors" in errors &&
                                         <Alert variant="danger">
                                             {errors["non_field_errors"]}
                                         </Alert>
-                                    )}
+                                    }
                                     <Form noValidate onSubmit={handleSubmit}>
                                         <Form.Group controlId="email">
                                             <Form.Control
@@ -81,16 +81,17 @@ export default function Signup() {
                                                         : ""
                                                 }
                                                 name="email"
+                                                placeholder="Email"
+                                                value={values.email}
                                                 onChange={handleChange}
-                                                values={values.email}
-                                                placeholder={"Email"}
+                                                autoComplete="email"
                                                 required
                                             />
-                                            {"email" in errors && (
+                                            {"email" in errors &&
                                                 <Form.Control.Feedback type="invalid">
                                                     {errors.email}
                                                 </Form.Control.Feedback>
-                                            )}
+                                            }
                                         </Form.Group>
                                         <Form.Group controlId="full_name">
                                             <Form.Control
@@ -100,16 +101,17 @@ export default function Signup() {
                                                         : ""
                                                 }
                                                 name="full_name"
+                                                placeholder="Full name"
+                                                value={values.full_name}
                                                 onChange={handleChange}
-                                                values={values.full_name}
-                                                placeholder={"Full name"}
+                                                autoComplete="name"
                                                 required
                                             />
-                                            {"full_name" in errors && (
+                                            {"full_name" in errors &&
                                                 <Form.Control.Feedback type="invalid">
                                                     {errors.full_name}
                                                 </Form.Control.Feedback>
-                                            )}
+                                            }
                                         </Form.Group>
                                         <Row>
                                             <Col>
@@ -121,17 +123,18 @@ export default function Signup() {
                                                                 : ""
                                                         }
                                                         name="password1"
-                                                        onChange={handleChange}
                                                         type="password"
+                                                        placeholder="Password"
                                                         value={values.password1}
-                                                        placeholder={"Password"}
+                                                        onChange={handleChange}
+                                                        autoComplete="new-password"
                                                         required
                                                     />
-                                                    {"password1" in errors && (
+                                                    {"password1" in errors &&
                                                         <Form.Control.Feedback type="invalid">
                                                             {errors.password1}
                                                         </Form.Control.Feedback>
-                                                    )}
+                                                    }
                                                 </Form.Group>
                                             </Col>
                                             <Col>
@@ -143,17 +146,18 @@ export default function Signup() {
                                                                 : ""
                                                         }
                                                         name="password2"
-                                                        onChange={handleChange}
                                                         type="password"
+                                                        placeholder="Confirm"
                                                         value={values.password2}
-                                                        placeholder={"Confirm"}
+                                                        onChange={handleChange}
+                                                        autoComplete="new-password"
                                                         required
                                                     />
-                                                    {"password2" in errors && (
+                                                    {"password2" in errors &&
                                                         <Form.Control.Feedback type="invalid">
                                                             {errors.password2}
                                                         </Form.Control.Feedback>
-                                                    )}
+                                                    }
                                                 </Form.Group>
                                             </Col>
                                         </Row>
@@ -165,17 +169,15 @@ export default function Signup() {
                                                         : ""
                                                 }
                                                 name="identifier"
-                                                onChange={handleChange}
+                                                placeholder="Optional: Student ID"
                                                 value={values.identifier}
-                                                placeholder={
-                                                    "Optional: Student ID"
-                                                }
+                                                onChange={handleChange}
                                             />
-                                            {"identifier" in errors && (
+                                            {"identifier" in errors &&
                                                 <Form.Control.Feedback type="invalid">
                                                     {errors.identifier}
                                                 </Form.Control.Feedback>
-                                            )}
+                                            }
                                         </Form.Group>
                                         <Button
                                             block
@@ -183,7 +185,7 @@ export default function Signup() {
                                             variant="primary"
                                         >
                                             Sign Up
-                                        </Button>
+                                </Button>
                                     </Form>
                                 </>
                             )}
