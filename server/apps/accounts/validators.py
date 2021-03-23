@@ -1,6 +1,6 @@
 from django.core.exceptions import ValidationError
 
-import regex as re
+import re
 
 
 class _ValidatorBase:
