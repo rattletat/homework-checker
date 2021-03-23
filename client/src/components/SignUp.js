@@ -1,30 +1,33 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import axios from "axios";
-import { Formik } from "formik";
-import { Button, Card, Col, Form, Row, Alert } from "react-bootstrap";
-import { Link, Redirect } from "react-router-dom";
+import {Formik} from "formik";
+import {Button, Card, Col, Form, Row, Alert} from "react-bootstrap";
+import {Link, Redirect} from "react-router-dom";
 import BreadcrumbWrapper from "./BreadcrumbWrapper";
 
 export default function Signup() {
     const [isSubmitted, setSubmitted] = useState(false);
     const breadcrumbs = [
-        { name: "Home", active: false, href: "/" },
-        { name: "Sign up", active: true }
+        {name: "Home", active: false, href: "/"},
+        {name: "Sign up", active: true}
     ];
 
     const onSubmit = async (
-        { email, identifier, full_name, password1, password2 },
+        {email, identifier, full_name, password1, password2},
         actions
     ) => {
         const url = "/api/accounts/signup";
         try {
-            await axios.post(url, {
+            var form_data = {
                 email,
-                identifier: identifier !== "" ? identifier : null,
                 full_name,
                 password1: password1,
                 password2: password2
-            });
+            }
+            if (identifier !== "") {
+                form_data.identifier = identifier
+            }
+            await axios.post(url, form_data);
             setSubmitted(true);
         } catch (response) {
             const data = response.response.data;
@@ -113,20 +116,20 @@ export default function Signup() {
                                                 <Form.Group controlId="password1">
                                                     <Form.Control
                                                         className={
-                                                            "password" in errors
+                                                            "password1" in errors
                                                                 ? "is-invalid"
                                                                 : ""
                                                         }
                                                         name="password1"
                                                         onChange={handleChange}
                                                         type="password"
-                                                        value={values.password}
+                                                        value={values.password1}
                                                         placeholder={"Password"}
                                                         required
                                                     />
-                                                    {"password" in errors && (
+                                                    {"password1" in errors && (
                                                         <Form.Control.Feedback type="invalid">
-                                                            {errors.password}
+                                                            {errors.password1}
                                                         </Form.Control.Feedback>
                                                     )}
                                                 </Form.Group>
@@ -135,20 +138,20 @@ export default function Signup() {
                                                 <Form.Group controlId="password2">
                                                     <Form.Control
                                                         className={
-                                                            "password" in errors
+                                                            "password2" in errors
                                                                 ? "is-invalid"
                                                                 : ""
                                                         }
                                                         name="password2"
                                                         onChange={handleChange}
                                                         type="password"
-                                                        value={values.password}
+                                                        value={values.password2}
                                                         placeholder={"Confirm"}
                                                         required
                                                     />
-                                                    {"password" in errors && (
+                                                    {"password2" in errors && (
                                                         <Form.Control.Feedback type="invalid">
-                                                            {errors.password}
+                                                            {errors.password2}
                                                         </Form.Control.Feedback>
                                                     )}
                                                 </Form.Group>

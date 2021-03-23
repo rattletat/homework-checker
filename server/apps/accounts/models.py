@@ -40,7 +40,11 @@ class UserManager(BaseUserManager):
 
 class CustomUser(AbstractUser):
     username = None
-    email = models.EmailField(_("email address"), unique=True)
+    email = models.EmailField(
+        _("email address"),
+        unique=True,
+        error_messages={"unique": "This email address is already taken."},
+    )
     full_name = models.CharField(_("full name"), max_length=130)
     identifier = models.CharField(
         _("identifier"),
@@ -49,6 +53,7 @@ class CustomUser(AbstractUser):
         null=True,
         blank=True,
         validators=[RegexValidator(r"^[0-9]+$", "Only digit characters.")],
+        error_messages={"unique": "This student ID is already taken."},
     )
 
     USERNAME_FIELD = "email"

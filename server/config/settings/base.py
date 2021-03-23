@@ -87,10 +87,16 @@ PASSWORD_HASHERS = [
 ]
 
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "OPTIONS": {"user_attributes": ("email", "full_name", "identifier")},
+    },
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
+    {"NAME": "apps.accounts.validators.HasLowerCaseValidator"},
+    {"NAME": "apps.accounts.validators.HasUpperCaseValidator"},
+    {"NAME": "apps.accounts.validators.HasNumberValidator"},
 ]
 
 # MIDDLEWARE
@@ -194,21 +200,21 @@ LOGGING = {
 # REDIS QUEUES
 # -------------------------------------------------------------------
 CACHES = {
-    'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': env("REDIS_URL"),
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-            'MAX_ENTRIES': 5000,
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": env("REDIS_URL"),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "MAX_ENTRIES": 5000,
         },
     },
 }
 RQ_QUEUES = {
-    'default': {
-        'HOST': env("REDIS_HOST"),
-        'PORT': env("REDIS_PORT"),
-        'DB': env("REDIS_DB"),
-        'DEFAULT_TIMEOUT': env.int("REDIS_TIMEOUT")
+    "default": {
+        "HOST": env("REDIS_HOST"),
+        "PORT": env("REDIS_PORT"),
+        "DB": env("REDIS_DB"),
+        "DEFAULT_TIMEOUT": env.int("REDIS_TIMEOUT"),
     },
 }
 
