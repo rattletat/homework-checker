@@ -9,7 +9,6 @@ import "katex/dist/katex.min.css";
 
 import gfm from "remark-gfm";
 import math from "remark-math";
-import footnotes from "remark-footnotes";
 
 const _renderers = {
     inlineMath: ({value}) => <TeX math={value} />,
@@ -26,7 +25,7 @@ const _renderers = {
     }
 };
 
-const _plugins = [gfm, math, footnotes];
+const _plugins = [gfm, math];
 
 const Markdown = props => (
     <ReactMarkdown renderers={_renderers} plugins={_plugins} {...props} />
