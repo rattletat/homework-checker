@@ -118,6 +118,9 @@ def get_first_error(text):
             if seeking:
                 output.append(lines[ix])
 
-        return "\n".join(output)
+        if message := "\n".join(output):
+            return message
+        else:
+            return "No output generated."
     except Exception as e:
-        return "No output generated. " + str(e)
+        return "Exception while parsing traceback: " + str(e)
