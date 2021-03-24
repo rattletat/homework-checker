@@ -7,7 +7,7 @@ import {toTimeFormat, getTimeIndicator} from "../services/TimeService";
 export default function LessonTable({lessons}) {
     const history = useHistory();
     const hasStart = lessons.some(lesson => lesson.start)
-    const hasDeadline = lessons.some(lesson => lesson.deadline)
+    const hasDeadline = lessons.some(lesson => lesson.end)
     return (
         <Table striped hover className={"text-center"}>
             <thead>
@@ -24,9 +24,6 @@ export default function LessonTable({lessons}) {
             <tbody>
                 {lessons.map((lesson, index) => (
 
-                // {lesson.status === "WAITING" && <tr key={index}>)}
-                // {lesson.status === "ACTIVE" && <tr key={index} className="table-active">}
-                // {lesson.status === "FINISHED" && <tr key={index} className="table-secondary">}
                     <tr key={index}
                         onClick={() => lesson.status === "WAITING" ? alert(`Lesson ${getTimeIndicator(lesson)}.`) : history.push(`${lesson.slug}/`)}
                         className={lesson.status === "ACTIVE" ? "table-primary" : ""}
