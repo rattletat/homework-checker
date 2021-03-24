@@ -29,13 +29,18 @@ body {
 }
 
 body::after {
-  content: '';
-  display: block;
-  height: 50px; /* Set same as footer's height */
+    content: '';
+    display: block;
+    height: 50px; /* Set same as footer's height */
 }
 
 footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.table-nonfluid {
+    margin:auto;
+    width: 50% !important;
 }
