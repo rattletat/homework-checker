@@ -6,6 +6,7 @@ import {callAPI} from "../services/APIServices";
 import fileDownload from "js-file-download";
 
 export default function ResourceList({resources}) {
+    if (!resources || resources.length === 0) return null;
     return (
         <>
             <Card>

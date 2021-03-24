@@ -85,7 +85,7 @@ export default function LessonDetail() {
                     </MarkdownRenderer>
                 </Jumbotron>
 
-                {teachingData.lesson.resources && teachingData.lesson.description &&
+                {teachingData.lesson.description &&
                     <ResourceList
                         resources={teachingData.lesson.resources}
                     />

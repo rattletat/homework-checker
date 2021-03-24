@@ -13,6 +13,7 @@ class LectureInline(admin.TabularInline):
     extra = 1
     max_num = 0
     readonly_fields = ["lecture"]
+    verbose_name_plural = "Enrolled Lectures"
 
 
 class CustomUserAdmin(UserAdmin):
@@ -35,7 +36,6 @@ class CustomUserAdmin(UserAdmin):
         ("Roles", {"fields": ("is_staff", "is_active")}),
     )
     inlines = [LectureInline]
-    readonly_fields = ("name", "email")
     add_fieldsets = (
         (
             None,
@@ -47,6 +47,12 @@ class CustomUserAdmin(UserAdmin):
     )
     search_fields = ("email", "name", "identifier")
     ordering = ("identifier",)
+
+    def get_readonly_fields(self, _, obj=None):
+        if obj:
+            return ["name", "email"]
+        else:
+            return []
 
 
 admin.site.register(CustomUser, CustomUserAdmin)

@@ -61,7 +61,7 @@ export default function LectureDetail() {
                     </MarkdownRenderer>
                 </Jumbotron>
 
-                {data.lecture.resources && data.lecture.description &&
+                {data.lecture.description &&
                     <ResourceList resources={data.lecture.resources} />
                 }
 

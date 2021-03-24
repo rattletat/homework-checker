@@ -12,6 +12,8 @@ class IsEnrolled(permissions.BasePermission):
         user = request.user
         if user.is_anonymous:
             return False
+        if user.is_staff:
+            return True
 
         if isinstance(obj, Lecture):
             return obj in user.enrolled_lectures.all()
@@ -32,6 +34,8 @@ class IsNotWaiting(permissions.BasePermission):
         user = request.user
         if user.is_anonymous:
             return False
+        if user.is_staff:
+            return True
 
         if isinstance(obj, (Lecture, Lesson)):
             return obj.status != "WAITING"
@@ -39,4 +43,3 @@ class IsNotWaiting(permissions.BasePermission):
             return obj.lecture.status != "WAITING"
         if isinstance(obj, LessonResource):
             return obj.lesson.status != "WAITING"
-        return user.is_staff

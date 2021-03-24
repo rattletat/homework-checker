@@ -8,14 +8,7 @@ from django.utils.html import format_html
 from django.utils.http import urlencode
 from sendfile import sendfile
 
-from .models import (
-    Lecture,
-    Lesson,
-    GradingScale,
-    LectureResource,
-    LessonResource,
-    RegistrationCode,
-)
+from .models import Lecture, Lesson, GradingScale, LectureResource, LessonResource, RegistrationCode
 from django.contrib.auth import get_user_model
 from django.urls import resolve
 
@@ -25,29 +18,41 @@ en_formats.DATETIME_FORMAT = "d. M Y  - H:i"
 
 class EnrolledStudentInline(admin.TabularInline):
     model = get_user_model().enrolled_lectures.through
-    fields = ["get_full_name", "get_identifer", "get_score", "get_grade"]
-    readonly_fields = ["get_full_name", "get_identifer", "get_score", "get_grade"]
+    fields = ["get_name", "get_identifer", "get_score", "get_grade"]
+    readonly_fields = ["get_name", "get_identifer", "get_score", "get_grade"]
     extra = 0
     can_delete = False
+    verbose_name = "Participant"
+    verbose_name_plural = "Participants"
     ordering = ["customuser"]
 
     def get_formset(self, request, obj=None, **kwargs):
         self.lecture = obj
         return super(EnrolledStudentInline, self).get_formset(request, obj, **kwargs)
 
-    def get_full_name(self, instance):
-        return instance.customuser.full_name
+    def get_name(self, instance):
+        return instance.customuser.name
+
+    get_name.short_description = "Name"
 
     def get_identifer(self, instance):
-        return instance.customuser.identifier
+        if identifier := instance.customuser.identifier:
+            return identifier
+        return ""
+
+    get_identifer.short_description = "Student ID"
 
     def get_score(self, instance):
         self.score = self.lecture.get_score(instance.customuser)
         return self.score
 
+    get_score.short_description = "Points"
+
     def get_grade(self, instance):
         if self.lecture.grading_scale:
             return self.lecture.grading_scale.get_grade(self.score)
+
+    get_grade.short_description = "Grade"
 
     def has_add_permission(self, request, obj=None):
         return False
@@ -82,11 +87,9 @@ class LessonResourceInline(admin.TabularInline):
         else:
             return ""
 
-
 class RegistrationCodeInline(admin.TabularInline):
     model = RegistrationCode
     extra = 0
-
 
 @admin.register(Lecture)
 class LectureAdmin(admin.ModelAdmin):
@@ -128,7 +131,7 @@ class LectureAdmin(admin.ModelAdmin):
         return sendfile(request, resource.file.path, attachment=True)
 
     class Media:
-        css = {"all": ("admin/css/hide_admin_original.css",)}
+        css = { "all" : ("admin/css/hide_admin_original.css",) }
 
 
 @admin.register(Lesson)
