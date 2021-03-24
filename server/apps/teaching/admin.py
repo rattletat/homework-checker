@@ -97,12 +97,6 @@ class LectureAdmin(admin.ModelAdmin):
     fields = ["title", "description", "start", "end", "grading_scale"]
     inlines = [RegistrationCodeInline, LectureResourceInline, EnrolledStudentInline]
 
-    def get_readonly_fields(self, _, obj=None):
-        if obj:
-            return ["title"]
-        else:
-            return []
-
     def view_students_link(self, obj):
         count = obj.participants.count()
         url = (
@@ -143,7 +137,7 @@ class LessonAdmin(admin.ModelAdmin):
 
     def get_readonly_fields(self, _, obj=None):
         if obj:
-            return ["lecture", "title"]
+            return ["lecture"]
         else:
             return []
 

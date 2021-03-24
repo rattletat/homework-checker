@@ -16,16 +16,16 @@ def generate_sha1(file):
 
 
 def get_exercise_rsc_path(resource, filename):
-    lecture_slug = resource.exercise.lesson.lecture.slug
-    lesson_slug = resource.exercise.lesson.slug
-    exercise_slug = resource.exercise.slug
+    lecture_id = resource.exercise.lesson.lecture.id
+    lesson_id = resource.exercise.lesson.id
+    exercise_id = resource.exercise.id
     return os.path.join(
         "lectures",
-        str(lecture_slug),
+        str(lecture_id),
         "lessons",
-        str(lesson_slug),
+        str(lesson_id),
         "exercises",
-        str(exercise_slug),
+        str(exercise_id),
         "rsc",
         filename,
     )
@@ -41,16 +41,16 @@ def get_submission_path(submission, _=None):
 
 
 def get_tests_path(exercise, _=None):
-    lecture_slug = exercise.lesson.lecture.slug
-    lesson_slug = exercise.lesson.slug
+    lecture_id = exercise.lesson.lecture.id
+    lesson_id = exercise.lesson.id
     extension = exercise.programming_language
     return os.path.join(
         "lectures",
-        str(lecture_slug),
+        str(lecture_id),
         "lessons",
-        str(lesson_slug),
+        str(lesson_id),
         "exercises",
-        str(exercise.slug),
+        str(exercise.id),
         f"tests.{extension}",
     )
 
