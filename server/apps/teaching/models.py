@@ -13,7 +13,7 @@ from .helpers import get_lecture_rsc_path, get_lesson_rsc_path
 
 
 class GradingScale(UUIDModel):
-    """Amount of points needed to reach a certain grade.
+    """Score needed to reach a certain grade.
     Everything below the 4.0 threshold is graded as 5.0"""
 
     grade_1_0 = models.PositiveIntegerField("Points needed to reach 1.0")
@@ -112,7 +112,7 @@ class Lecture(UUIDModel, TimeFramedModel):
         """ Returns score of a particular user. """
         score = (
             user.submission_set
-            .filter(exercise__lesson__lecture=self, score__isnull=False, exercise__rated=True)
+            .filter(exercise__lesson__lecture=self, score__isnull=False, exercise__graded=True)
             .values("exercise")
             .annotate(max_exercise_score=models.Max("score"))
             .aggregate(total_score=models.Sum("max_exercise_score"))["total_score"]
