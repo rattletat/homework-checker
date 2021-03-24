@@ -25,7 +25,7 @@ export default function LessonTable({lessons}) {
                 {lessons.map((lesson, index) => (
 
                     <tr key={index}
-                        onClick={() => lesson.status === "WAITING" ? alert(`Lesson ${getTimeIndicator(lesson)}.`) : history.push(`${lesson.slug}/`)}
+                        onClick={() => lesson.status === "WAITING" ? alert(`${lesson.title} ${getTimeIndicator(lesson)}.`) : history.push(`${lesson.slug}/`)}
                         className={lesson.status === "ACTIVE" ? "table-primary" : ""}
                     >
                         <td>
