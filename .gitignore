@@ -62,7 +62,9 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-.env*
+.env/*
+!.env/development.env.template
+!.env/production.env.template
 
 # coverage report
 htmlcov/
