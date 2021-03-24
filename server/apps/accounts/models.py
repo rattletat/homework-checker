@@ -47,7 +47,7 @@ class CustomUser(AbstractUser):
         unique=True,
         error_messages={"unique": "This email address is already taken."},
     )
-    full_name = models.CharField(_("full name"), max_length=130)
+    name = models.CharField(_("full name"), max_length=130)
     identifier = models.CharField(
         _("identifier"),
         max_length=15,
@@ -59,7 +59,7 @@ class CustomUser(AbstractUser):
     )
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["full_name"]
+    REQUIRED_FIELDS = ["name"]
 
     objects = UserManager()
 

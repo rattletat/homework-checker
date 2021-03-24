@@ -25,7 +25,7 @@ class ProfileView(APIView):
 
     def get(self, request, *args, **kwargs):
         response = {
-            "full_name": request.user.full_name,
+            "name": request.user.name,
             "email": request.user.email,
             "identifier": request.user.identifier,
         }

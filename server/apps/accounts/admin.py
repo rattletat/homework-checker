@@ -19,7 +19,7 @@ class CustomUserAdmin(UserAdmin):
     model = CustomUser
     list_display = (
         "email",
-        "full_name",
+        "name",
         "identifier",
         "is_staff",
         "is_active",
@@ -30,12 +30,12 @@ class CustomUserAdmin(UserAdmin):
         "enrolled_lectures",
     )
     fieldsets = (
-        ("Profildaten", {"fields": ("full_name", "identifier")}),
-        ("Accountdaten", {"fields": ("email", "password")}),
-        ("Berechtigungen", {"fields": ("is_staff", "is_active")}),
+        ("Profil data", {"fields": ("name", "identifier")}),
+        ("Account data", {"fields": ("email", "password")}),
+        ("Roles", {"fields": ("is_staff", "is_active")}),
     )
     inlines = [LectureInline]
-    readonly_fields = ("full_name", "email")
+    readonly_fields = ("name", "email")
     add_fieldsets = (
         (
             None,
@@ -45,7 +45,7 @@ class CustomUserAdmin(UserAdmin):
             },
         ),
     )
-    search_fields = ("email", "full_name", "identifier")
+    search_fields = ("email", "name", "identifier")
     ordering = ("identifier",)
 
 

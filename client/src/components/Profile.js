@@ -10,7 +10,7 @@ export default function Profile() {
     ];
     const [data, setData] = useState({
         email: "",
-        full_name: "",
+        name: "",
         identifier: "",
         enrolled_lectures: []
     });
@@ -38,7 +38,7 @@ export default function Profile() {
                     <Card.Body>
                         <ListGroup variant="flush">
                             <ListGroup.Item>
-                                Name: {data.full_name}
+                                Name: {data.name}
                             </ListGroup.Item>
                             <ListGroup.Item>Email: {data.email}</ListGroup.Item>
                             <ListGroup.Item>

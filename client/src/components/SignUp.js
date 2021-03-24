@@ -13,14 +13,14 @@ export default function Signup() {
     ];
 
     const onSubmit = async (
-        {email, identifier, full_name, password1, password2},
+        {email, identifier, name, password1, password2},
         actions
     ) => {
         const url = "/api/accounts/signup";
         try {
             var form_data = {
                 email,
-                full_name,
+                name,
                 password1: password1,
                 password2: password2
             }
@@ -51,7 +51,7 @@ export default function Signup() {
                         <Formik
                             initialValues={{
                                 email: "",
-                                full_name: "",
+                                name: "",
                                 password1: "",
                                 password2: "",
                                 identifier: ""
@@ -93,23 +93,23 @@ export default function Signup() {
                                                 </Form.Control.Feedback>
                                             }
                                         </Form.Group>
-                                        <Form.Group controlId="full_name">
+                                        <Form.Group controlId="name">
                                             <Form.Control
                                                 className={
-                                                    "full_name" in errors
+                                                    "name" in errors
                                                         ? "is-invalid"
                                                         : ""
                                                 }
-                                                name="full_name"
+                                                name="name"
                                                 placeholder="Full name"
-                                                value={values.full_name}
+                                                value={values.name}
                                                 onChange={handleChange}
                                                 autoComplete="name"
                                                 required
                                             />
-                                            {"full_name" in errors &&
+                                            {"name" in errors &&
                                                 <Form.Control.Feedback type="invalid">
-                                                    {errors.full_name}
+                                                    {errors.name}
                                                 </Form.Control.Feedback>
                                             }
                                         </Form.Group>

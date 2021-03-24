@@ -55,7 +55,7 @@ class UserSerializer(serializers.ModelSerializer):
             "identifier",
             "password1",
             "password2",
-            "full_name",
+            "name",
         )
         extra_kwargs = {"identifier": {"required": False}}
         read_only_fields = ("id",)
