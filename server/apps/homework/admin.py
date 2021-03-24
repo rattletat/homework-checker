@@ -41,7 +41,7 @@ class ExerciseAdmin(admin.ModelAdmin):
         "min_upload_size",
         "max_upload_size",
         "timeout",
-        "rated",
+        "graded",
     ]
     readonly_fields = ["lesson", "tests_link"]
     inlines = [ExerciseResourceInline]

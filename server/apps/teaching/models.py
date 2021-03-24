@@ -14,7 +14,7 @@ from .helpers import get_lecture_rsc_path, get_lesson_rsc_path
 
 class GradingScale(UUIDModel):
     """Amount of points needed to reach a certain grade.
-    Everything below the 4.0 threshold is rated as 5.0"""
+    Everything below the 4.0 threshold is graded as 5.0"""
 
     grade_1_0 = models.PositiveIntegerField("Points needed to reach 1.0")
     grade_1_3 = models.PositiveIntegerField("Points needed to reach 1.3")

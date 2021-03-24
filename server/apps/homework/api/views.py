@@ -15,7 +15,7 @@ from .serializers import (
     SubmissionListSerializer,
     SubmissionSerializer,
 )
-from django.db.models import Max, Sum, Count
+# from django.db.models import Max, Sum, Count
 from collections import defaultdict
 
 

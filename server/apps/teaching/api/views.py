@@ -5,12 +5,14 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from sendfile import sendfile
 
-from ..models import (Lecture, LectureResource, Lesson, LessonResource,
-                      RegistrationCode)
+from ..models import Lecture, LectureResource, Lesson, LessonResource, RegistrationCode
 from .mixins import MultipleFieldLookupMixin
 from .permissions import IsEnrolled, IsNotWaiting
-from .serializers import (EnrolledLectureListSerializer,
-                          LectureDetailSerializer, LessonDetailSerializer)
+from .serializers import (
+    EnrolledLectureListSerializer,
+    LectureDetailSerializer,
+    LessonDetailSerializer,
+)
 
 
 class EnrolledLectureListView(ListAPIView):

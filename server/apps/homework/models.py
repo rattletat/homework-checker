@@ -35,7 +35,7 @@ class Exercise(UUIDModel):
     programming_language = models.CharField(
         max_length=2, choices=ProgrammingLanguages.choices
     )
-    rated = models.BooleanField("Graded", default=True)
+    graded = models.BooleanField("Graded", default=False)
 
     def __str__(self):
         return f"{self.lesson} ({self.title})"
