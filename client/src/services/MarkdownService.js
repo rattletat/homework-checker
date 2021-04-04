@@ -9,7 +9,7 @@ import "katex/dist/katex.min.css";
 
 import gfm from "remark-gfm";
 import math from "remark-math";
-import remarkSmartypants from "remark-smartypants";
+import smartypants from "@silvenon/remark-smartypants";
 
 const _renderers = {
     inlineMath: ({value}) => <TeX math={value} />,
@@ -25,11 +25,11 @@ const _renderers = {
         return <table className="table table-sm table-nonfluid">{props.children}</table>
     },
     tableHead: (props) => {
-        return <thead className="thead-light">{props.children}</thead>
+        return <thead className="thead-dark">{props.children}</thead>
     }
 };
 
-const _plugins = [gfm, math, remarkSmartypants];
+const _plugins = [[gfm, {singleTilde: false}], math, [smartypants, {dashes: 'oldschool'}]];
 
 const Markdown = props => (
     <ReactMarkdown renderers={_renderers} plugins={_plugins} {...props} />
