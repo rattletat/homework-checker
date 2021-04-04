@@ -34,6 +34,7 @@ class ExerciseAdmin(admin.ModelAdmin):
         "lesson",
         "title",
         "max_score",
+        "multiplier",
         "description",
         "programming_language",
         "tests",
