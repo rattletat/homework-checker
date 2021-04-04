@@ -21,7 +21,7 @@ const _renderers = {
         />
     ,
     table: (props) => {
-        return <table className="table table-sm table-responsive table-nonfluid">{props.children}</table>
+        return <table className="table table-sm table-nonfluid">{props.children}</table>
     }
 };
 
