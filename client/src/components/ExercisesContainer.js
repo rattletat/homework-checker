@@ -34,7 +34,7 @@ export default function ExercisesContainer({
 
     return (
         <Card>
-            <Card.Header>Lesson Exercises</Card.Header>
+            <Card.Header>Exercises</Card.Header>
             <Tab.Container defaultActiveKey={0}>
                 <Row>
                     <Col lg={12}>
