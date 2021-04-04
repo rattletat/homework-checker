@@ -169,7 +169,7 @@ export default function Signup() {
                                                         : ""
                                                 }
                                                 name="identifier"
-                                                placeholder="Optional: Student ID"
+                                                placeholder="Optional: Student number"
                                                 value={values.identifier}
                                                 onChange={handleChange}
                                             />
