@@ -9,7 +9,7 @@ import "katex/dist/katex.min.css";
 
 import gfm from "remark-gfm";
 import math from "remark-math";
-import smartypants from "remark-smartypants";
+import remarkSmartypants from "remark-smartypants";
 
 const _renderers = {
     inlineMath: ({value}) => <TeX math={value} />,
@@ -29,7 +29,7 @@ const _renderers = {
     }
 };
 
-const _plugins = [gfm, math, smartypants];
+const _plugins = [gfm, math, remarkSmartypants];
 
 const Markdown = props => (
     <ReactMarkdown renderers={_renderers} plugins={_plugins} {...props} />
