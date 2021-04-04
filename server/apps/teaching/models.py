@@ -136,7 +136,7 @@ class Lesson(UUIDModel, TimeFramedModel):
     slug = AutoSlugField(max_length=255, populate_from="title", always_update=True)
 
     def __str__(self):
-        return f"{self.lecture}: {self.title}"
+        return self.title
 
     @property
     def status(self):
