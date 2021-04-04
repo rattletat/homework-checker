@@ -83,7 +83,7 @@ class Lecture(UUIDModel, TimeFramedModel):
         unique=True,
     )
     description = models.TextField(blank=True)
-    slug = AutoSlugField(max_length=255, populate_from="title", unique=True)
+    slug = AutoSlugField(max_length=255, populate_from="title", unique=True, always_update=True)
     grading_scale = models.ForeignKey(
         GradingScale, on_delete=models.SET_NULL, blank=True, null=True
     )
@@ -133,7 +133,7 @@ class Lesson(UUIDModel, TimeFramedModel):
         max_length=100,
     )
     description = models.TextField(blank=True)
-    slug = AutoSlugField(max_length=255, populate_from="title")
+    slug = AutoSlugField(max_length=255, populate_from="title", always_update=True)
 
     def __str__(self):
         return f"{self.lecture}: {self.title}"

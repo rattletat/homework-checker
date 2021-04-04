@@ -64,7 +64,7 @@ def run_tests(submission):
         print(e)
     else:
         try:
-            submission.score = min(get_score(text), exercise.max_score)
+            submission.score = min(round(get_score(text) * exercise.multiplier), exercise.max_score)
             submission.output = get_first_error(text)
 
         except Exception as e:
