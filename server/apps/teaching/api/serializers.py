@@ -43,7 +43,7 @@ class LectureDetailSerializer(serializers.ModelSerializer):
         ]
 
     def get_lessons(self, obj):
-        lessons = obj.lessons.order_by("title")
+        lessons = obj.lessons.order_by("start", "title", "end")
         return LessonListSerializer(lessons, many=True).data
 
     def get_resources(self, obj):
