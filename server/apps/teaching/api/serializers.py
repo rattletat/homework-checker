@@ -64,7 +64,7 @@ class LessonListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
         fields = ["slug", "title", "status", "start", "end"]
-        ordering = ["title"]
+        ordering = ["start", "title", "end"]
 
 
 class LessonDetailSerializer(serializers.ModelSerializer):
