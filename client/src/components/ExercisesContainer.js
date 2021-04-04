@@ -71,6 +71,8 @@ export default function ExercisesContainer({
                                 >
                                     <Row>
                                         <Col sm={{span: 10, offset: 1}} className="center-block">
+                                            <br />
+                                            <h2>{exercise.title}</h2>
                                             <MarkdownRenderer>{exercise.description}</MarkdownRenderer>
                                         </Col>
                                     </Row >

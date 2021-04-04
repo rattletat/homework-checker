@@ -91,7 +91,7 @@ export default function LessonDetail() {
                     />
                 }
 
-                {exercises && exercises.length > 0 && teachingData.lesson.description &&
+                {exercises && exercises.length > 0 &&
                     <ExercisesContainer
                         {...{lecture_slug, lesson_slug, exercises}}
                     />}

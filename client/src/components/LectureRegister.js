@@ -64,7 +64,7 @@ export default function LectureRegister({refreshPage}) {
                                         placeholder="Registration code"
                                         value={values.code}
                                         onChange={handleChange}
-                                        autocomplete="off"
+                                        autoComplete="off"
                                         required
                                     />
                                     {"code" in errors &&
