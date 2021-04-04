@@ -22,9 +22,6 @@ const _renderers = {
     ,
     table: (props) => {
         return <table className="table table-sm table-responsive table-nonfluid">{props.children}</table>
-    },
-    thead: (props) => {
-        return <thead className="thead-light">{props.children}</thead>
     }
 };
 
