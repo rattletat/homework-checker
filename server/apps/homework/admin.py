@@ -28,7 +28,7 @@ class ExerciseResourceInline(admin.TabularInline):
 
 @admin.register(Exercise)
 class ExerciseAdmin(admin.ModelAdmin):
-    list_display = ["get_lecture", "lesson", "title"]
+    list_display = ["title", "lesson", "get_lecture"]
     list_filter = ["lesson", "title"]
     fields = [
         "lesson",

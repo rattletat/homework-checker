@@ -132,7 +132,7 @@ class LectureAdmin(admin.ModelAdmin):
 class LessonAdmin(admin.ModelAdmin):
     fields = ["lecture", "title", "description", "start", "end"]
     list_filter = ["lecture"]
-    list_display = ["lecture", "title"]
+    list_display = ["title", "lecture"]
     inlines = [LessonResourceInline]
 
     def get_readonly_fields(self, _, obj=None):
