@@ -18,12 +18,13 @@ axios.interceptors.response.use(
         ) {
             originalReq.__isRetryRequest = true;
 
-            let res = await refreshJWT();
-            originalReq.headers["Authorization"] = `Bearer ${res.access}`;
+            const access = await refreshJWT();
+            originalReq.headers["Authorization"] = `Bearer ${access}`;
             originalReq.headers["Device"] = "device";
             return axios(originalReq);
         } else {
-            if (err.response.status !== 404 && err.response.status !== 409 && !["/login", "/signup"].includes(window.location.pathname)) {
+            const code = err.response.status;
+            if (code !== 404 && code !== 409 && !["/login", "/signup"].includes(window.location.pathname)) {
                 logOut();
             }
             throw err;
@@ -50,7 +51,7 @@ export const hasJWT = () => {
 
 export const refreshJWT = async () => {
     const auth = getJWT();
-    let res = await fetch("/api/token/refresh", {
+    const response = await fetch("/api/token/refresh", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -59,15 +60,14 @@ export const refreshJWT = async () => {
             "Content-Type": "application/json",
             Accept: "application/json",
             Device: "device",
-            Token: auth.token
         },
         redirect: "follow",
         referrerPolicy: "no-referrer",
         body: JSON.stringify({refresh: auth.refresh, access: auth.access})
     });
-    let json = await res.json();
-    setJWT({access: json.access, refresh: json.refresh});
-    return json;
+    const access = await response.json().then(auth => auth.access);
+    setJWT({access, refresh: auth.refresh});
+    return access;
 };
 
 
