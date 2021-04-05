@@ -66,7 +66,7 @@ export default function LectureDetail() {
                 }
 
                 <Row className="justify-content-md-center">
-                    <Col lg={"auto"}>
+                    <Col lg={"8"} md={"12"}>
                         {data.lecture.lessons && data.lecture.lessons.length > 0 && data.lecture.description &&
                             <LessonTable lessons={data.lecture.lessons} />
                         }
