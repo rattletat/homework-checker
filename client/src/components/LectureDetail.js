@@ -65,9 +65,13 @@ export default function LectureDetail() {
                     <ResourceList resources={data.lecture.resources} />
                 }
 
-                {data.lecture.lessons && data.lecture.lessons.length > 0 && data.lecture.description &&
-                    <LessonTable lessons={data.lecture.lessons} />
-                }
+                <Row className="justify-content-md-center">
+                    <Col lg={"auto"}>
+                        {data.lecture.lessons && data.lecture.lessons.length > 0 && data.lecture.description &&
+                            <LessonTable lessons={data.lecture.lessons} />
+                        }
+                    </Col>
+                </Row>
 
             </Col>
         </Row>

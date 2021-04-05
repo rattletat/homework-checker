@@ -28,7 +28,7 @@ export default function LessonTable({lessons}) {
                         onClick={() => lesson.status === "WAITING" ? alert(`${lesson.title} ${getTimeIndicator(lesson)}.`) : history.push(`${lesson.slug}/`)}
                         className={lesson.status === "ACTIVE" ? "table-primary" : ""}
                     >
-                        <td style={{"width": "50%"}}>
+                        <td className="text-left">
                             {lesson.title}
                         </td>
                         {hasStart &&
