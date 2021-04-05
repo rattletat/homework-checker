@@ -12,12 +12,12 @@ export default function LessonTable({lessons}) {
         <Table striped hover className={"text-center"}>
             <thead>
                 <tr>
-                    <th>Title</th>
+                    <th className="text-center">Title</th>
                     {hasStart &&
-                        <th>Start</th>
+                        <th className="text-center">Start</th>
                     }
                     {hasDeadline &&
-                        <th>Deadline</th>
+                        <th className="text-center">Deadline</th>
                     }
                 </tr>
             </thead>
@@ -28,14 +28,14 @@ export default function LessonTable({lessons}) {
                         onClick={() => lesson.status === "WAITING" ? alert(`${lesson.title} ${getTimeIndicator(lesson)}.`) : history.push(`${lesson.slug}/`)}
                         className={lesson.status === "ACTIVE" ? "table-primary" : ""}
                     >
-                        <td>
+                        <td className="text-left">
                             {lesson.title}
                         </td>
                         {hasStart &&
-                            <td>{toTimeFormat(lesson.start)}</td>
+                            <td className="text-center">{toTimeFormat(lesson.start)}</td>
                         }
                         {hasDeadline &&
-                            <td>{toTimeFormat(lesson.end)}</td>
+                            <td className="text-center">{toTimeFormat(lesson.end)}</td>
                         }
                     </tr>
                 ))}
