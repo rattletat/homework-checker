@@ -50,3 +50,24 @@ footer {
     margin:auto;
     width: 60% !important;
 }
+
+.footnoteDefinition {
+  margin: 8px 0;
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.backToRef {
+  margin: 0 32px;
+  font-size: smaller;
+}
+
+.footnoteBody > p {
+  margin-top: 0;
+}
+
+.footnoteBody {
+  line-height: 115%;
+}

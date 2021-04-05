@@ -31,6 +31,7 @@
         "react-syntax-highlighter": "^15.4.3",
         "reactstrap": "^8.9.0",
         "rehype-katex": "^4.0.0",
+        "remark-footnotes": "^3.0.0",
         "remark-gfm": "^1.0.0",
         "remark-math": "^4.0.0"
     },
