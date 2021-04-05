@@ -1,5 +1,4 @@
 from django.urls import path
-from rest_framework.routers import DefaultRouter
 
 from apps.teaching.api import views as teaching_views
 from apps.homework.api import views as homework_views

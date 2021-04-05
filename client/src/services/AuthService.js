@@ -57,11 +57,12 @@ export const refreshJWT = async () => {
         credentials: "same-origin",
         headers: {
             "Content-Type": "application/json",
+            Accept: "application/json",
             Device: "device",
             Token: auth.token
         },
         redirect: "follow",
-        referrer: "no-referrer",
+        referrerPolicy: "no-referrer",
         body: JSON.stringify({refresh: auth.refresh, access: auth.access})
     });
     let json = await res.json();
