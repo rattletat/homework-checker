@@ -37,7 +37,12 @@ const _renderers = {
         <div className="footnoteDefinition" id={"def-" + props.identifier}>
             <a className="backToRef" href={"#ref-" + props.identifier}>{props.label}</a>
             <div className="footnoteBody">{props.children}</div>
-        </div>
+        </div>,
+    image: (props) =>
+        <figure className="text-center">
+            <img {...props} style={{maxWidth: '75%'}} />
+            <figcaption style={{textAlign: "center"}}>{props.alt}</figcaption>
+        </figure>
 };
 
 
