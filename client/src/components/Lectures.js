@@ -29,7 +29,7 @@ export default function Lectures() {
             <Col lg={12}>
                 <BreadcrumbWrapper items={breadcrumbs} />
                 <h1>Lectures</h1>
-                Here you find information about lectures you are enrolled in.
+                You can find information about lectures you are enrolled in below.
                 <br />
                 <br />
                 <LectureRegister refreshPage={() => setUpdated(false)} />

@@ -30,7 +30,7 @@ export default function Profile() {
             <Col lg={12}>
                 <BreadcrumbWrapper items={breadcrumbs} />
                 <h1>Profile</h1>
-                Here you find information about your profile.
+                You can find information about your profile below.
                 <br />
                 <br />
                 <Card className="mb-3">
