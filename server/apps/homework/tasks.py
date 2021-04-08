@@ -44,7 +44,7 @@ def run_tests(submission):
     try:
         container = client.containers.run(
             config["image"],
-            config["command"] + " " + separator
+            config["command"] + " " + separator,
             detach=True,
             **DOCKER_SETUP_OPTIONS,
             **DOCKER_SECURITY_OPTIONS,
