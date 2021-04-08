@@ -77,17 +77,13 @@ def run_tests(submission):
 def get_file_tuples(submission):
     resources = ExerciseResource.objects.filter(exercise=submission.exercise)
     extension = submission.exercise.programming_language
-    submission_tuple = ("submission.py", submission.file.path)
-    exercise_tuple = ("tests.py", submission.exercise.tests.path)
-    runner_tuple = (
-        "runner.py",
-        settings.APPS_DIR / os.path.join("homework", "runner", f"runner.{extension}"),
-    )
+    submission_tuple = (f"submission.{extension}", submission.file.path)
+    exercise_tuple = (f"tests.{extension}", submission.exercise.tests.path)
     resource_tuples = [
         (os.path.join("resources", basename(resource.file.name)), resource.file.path)
         for resource in resources
     ]
-    return [submission_tuple, exercise_tuple, runner_tuple, *resource_tuples]
+    return [submission_tuple, exercise_tuple, *resource_tuples]
 
 
 def get_score(text):
