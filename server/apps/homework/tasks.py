@@ -44,7 +44,7 @@ def run_tests(submission):
     try:
         container = client.containers.run(
             config["image"],
-            command=f"sleep {exercise.timeout}",
+            command=DOCKER_CONFIG[extension]["command"],
             detach=True,
             **DOCKER_SETUP_OPTIONS,
             **DOCKER_SECURITY_OPTIONS,
