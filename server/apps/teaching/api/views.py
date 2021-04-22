@@ -1,4 +1,3 @@
-from apps.homework.models import Exercise
 from rest_framework import permissions, response, status
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response

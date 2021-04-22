@@ -40,7 +40,7 @@ const _renderers = {
         </div>,
     image: (props) =>
         <figure className="text-center">
-            <img {...props} style={{maxWidth: '75%'}} />
+            <img {...props} alt={props.alt} style={{maxWidth: '75%'}} />
             <figcaption style={{textAlign: "center"}}>{props.alt}</figcaption>
         </figure>
 };

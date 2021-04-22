@@ -1,7 +1,6 @@
 from decimal import Decimal
 
 from apps.teaching.models import Lesson
-from autoslug import AutoSlugField
 from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -19,7 +18,6 @@ class Exercise(UUIDModel):
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
 
     title = models.CharField(max_length=100)
-    slug = AutoSlugField(max_length=255, populate_from="title", always_update=True)
     description = models.TextField(blank=True)
     max_score = models.PositiveSmallIntegerField()
     multiplier = models.DecimalField(max_digits=4, decimal_places=2, default=Decimal('1.0'))

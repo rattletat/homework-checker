@@ -53,7 +53,7 @@ export default function ExercisesContainer({
                                         eventKey={index}
                                     >
                                         {exercise.title} (
-                                        {userScores[exercise.slug]}/
+                                        {userScores[exercise.id]}/
                                         {exercise.max_score})
                                     </Nav.Link>
                                 </Nav.Item>

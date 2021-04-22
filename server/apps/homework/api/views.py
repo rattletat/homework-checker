@@ -7,20 +7,24 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from sendfile import sendfile
 
+from apps.teaching.api.permissions import IsEnrolled, IsNotWaiting
+
 from ..helpers import generate_sha1
-from ..models import Exercise, ExerciseResource, Submission
+from ..models import Exercise, Submission
 from ..tasks import run_tests
 from .serializers import (
     ExerciseSerializer,
     SubmissionListSerializer,
     SubmissionSerializer,
+    ExerciseStatusSerializer,
 )
+
 # from django.db.models import Max, Sum, Count
 from collections import defaultdict
 
 
 class ExerciseListView(ListAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsEnrolled, IsNotWaiting]
     serializer_class = ExerciseSerializer
 
     def get_queryset(self):
@@ -32,7 +36,7 @@ class ExerciseListView(ListAPIView):
 
 
 class ExerciseSubmitView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsEnrolled, IsNotWaiting]
     parser_class = FileUploadParser
 
     def post(self, request, exercise_id):
@@ -63,7 +67,7 @@ class ExerciseSubmitView(APIView):
 
 
 class SubmissionListView(ListAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsEnrolled, IsNotWaiting]
     serializer_class = SubmissionListSerializer
 
     def get_queryset(self):
@@ -73,22 +77,26 @@ class SubmissionListView(ListAPIView):
         ).order_by("-created")[:5]
 
 
-class ExercisesStatus(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+class ExercisesScoreStatus(ListAPIView):
+    permission_classes = [IsEnrolled, IsNotWaiting]
+    serializer_class = ExerciseStatusSerializer
 
-    def get(self, request, lecture_slug, lesson_slug):
-        exercises = Exercise.objects.filter(
+    def get_queryset(self):
+        lecture_slug = self.kwargs["lecture_slug"]
+        lesson_slug = self.kwargs["lesson_slug"]
+        return Exercise.objects.filter(
             lesson__lecture__slug=lecture_slug,
             lesson__slug=lesson_slug,
         )
-        data = {}
-        for exercise in exercises:
-            submissions = Submission.objects.filter(
-                exercise=exercise, user=request.user
-            )
-            data[exercise.slug] = max(map(lambda s: s.score, submissions), default=0)
 
-        return response.Response(data, status=status.HTTP_200_OK)
+        # data = {}
+        # for exercise in exercises:
+        #     submissions = Submission.objects.filter(
+        #         exercise=exercise, user=request.user
+        #     )
+        #     data[exercise.slug] = max(map(lambda s: s.score, submissions), default=0)
+
+        # return response.Response(data, status=status.HTTP_200_OK)
 
 
 # Todo

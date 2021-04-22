@@ -24,3 +24,5 @@ An easy way to organize programming lectures.
     + Shibboleth Support
     + Backup system
     + Ability to link images stored in static files
+    + Update scores using a Exercise-Student model and post_save hooks on Submissions
+    + Add 1-to-Many relationship to Lectures that limit objects seen in Admin panel

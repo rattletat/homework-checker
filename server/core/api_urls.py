@@ -37,7 +37,7 @@ urlpatterns = [
     ),
     path(
         "lectures/<slug:lecture_slug>/lessons/<slug:lesson_slug>/exercises/status",
-        view=homework_views.ExercisesStatus.as_view(),
+        view=homework_views.ExercisesScoreStatus.as_view(),
     ),
     path(
         "lectures/<slug:lecture_slug>/lessons/<slug:lesson_slug>/resources/<slug:resource_id>",
