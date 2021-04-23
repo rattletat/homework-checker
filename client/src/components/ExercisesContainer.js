@@ -20,7 +20,7 @@ export default function ExercisesContainer({
                 "GET"
             );
             if (statusResponse) {
-                setUserScores(statusResponse.data);
+                setUserScores(statusResponse.data.highest_scores);
             }
         };
 

@@ -16,7 +16,6 @@ from .serializers import (
     ExerciseSerializer,
     SubmissionListSerializer,
     SubmissionSerializer,
-    ExerciseStatusSerializer,
 )
 
 # from django.db.models import Max, Sum, Count
@@ -75,19 +74,6 @@ class SubmissionListView(ListAPIView):
         return Submission.objects.filter(
             user=self.request.user.id, exercise=exercise_id
         ).order_by("-created")[:5]
-
-
-class ExercisesScoreStatus(ListAPIView):
-    permission_classes = [IsEnrolled, IsNotWaiting]
-    serializer_class = ExerciseStatusSerializer
-
-    def get_queryset(self):
-        lecture_slug = self.kwargs["lecture_slug"]
-        lesson_slug = self.kwargs["lesson_slug"]
-        return Exercise.objects.filter(
-            lesson__lecture__slug=lecture_slug,
-            lesson__slug=lesson_slug,
-        )
 
         # data = {}
         # for exercise in exercises:

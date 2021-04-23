@@ -21,29 +21,35 @@ function LectureEntry({lecture}) {
                 <ListGroup>
                     {lecture.start && (
                         <ListGroup.Item>
-                            Lecture start: {toTimeFormat(lecture.start)}
+                            <strong>Lecture start</strong>: {toTimeFormat(lecture.start)}
                         </ListGroup.Item>
                     )}
                     {lecture.end && (
                         <ListGroup.Item>
-                            Lecture end: {toTimeFormat(lecture.end)}
+                            <strong>Lecture end</strong>: {toTimeFormat(lecture.end)}
                         </ListGroup.Item>
                     )}
                     {lecture.score !== null && (
                         <ListGroup.Item>
-                            Score: {lecture.score}
+                            <strong>Score</strong>: {lecture.score}
                         </ListGroup.Item>
                     )}
                     {lecture.grade && lecture.status === "ACTIVE" && (
                         <ListGroup.Item>
-                            Current grade: {lecture.grade}
+                            <strong>Current grade</strong>: {lecture.grade}
                         </ListGroup.Item>
                     )}
                     {lecture.grade && lecture.status === "FINISHED" && (
                         <ListGroup.Item>
-                            Final Grade: {lecture.grade}
+                            <strong>Final Grade</strong>: {lecture.grade}
                         </ListGroup.Item>
                     )}
+                    {lecture.next_deadline !== null && (
+                        <ListGroup.Item>
+                            <strong>Next deadline</strong>: {lecture.next_deadline.title} {getTimeIndicator(lecture.next_deadline)}
+                        </ListGroup.Item>
+                    )}
+
                 </ListGroup>
             </Card.Body>
         </Card>

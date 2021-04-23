@@ -15,7 +15,7 @@ class Exercise(UUIDModel):
         PYTHON = "py", "Python"
         R = "r", "R"
 
-    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name="exercises")
 
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True)

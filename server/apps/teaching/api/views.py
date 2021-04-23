@@ -11,6 +11,7 @@ from .serializers import (
     EnrolledLectureListSerializer,
     LectureDetailSerializer,
     LessonDetailSerializer,
+    LessonScoreSerializer
 )
 
 
@@ -53,6 +54,13 @@ class LectureRegister(APIView):
 class LessonRetrieveView(MultipleFieldLookupMixin, RetrieveAPIView):
     permission_classes = [IsEnrolled, IsNotWaiting]
     serializer_class = LessonDetailSerializer
+    lookup_fields = {"lecture_slug": "lecture__slug", "lesson_slug": "slug"}
+    queryset = Lesson.objects.all()
+
+
+class LessonScoreStatusView(MultipleFieldLookupMixin, RetrieveAPIView):
+    permission_classes = [IsEnrolled, IsNotWaiting]
+    serializer_class = LessonScoreSerializer
     lookup_fields = {"lecture_slug": "lecture__slug", "lesson_slug": "slug"}
     queryset = Lesson.objects.all()
 

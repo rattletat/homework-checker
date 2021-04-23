@@ -1,14 +1,18 @@
 import os
 from django.shortcuts import reverse
+from django.db.models import Sum, Max
+from django.db.models.functions import Coalesce
 
 from rest_framework import serializers
 
 from ..models import Lecture, Lesson
+from apps.homework.models import Submission
 
 
 class EnrolledLectureListSerializer(serializers.ModelSerializer):
-    score = serializers.SerializerMethodField("get_score")
-    grade = serializers.SerializerMethodField("get_grade")
+    score = serializers.SerializerMethodField()
+    grade = serializers.SerializerMethodField()
+    next_deadline = serializers.SerializerMethodField()
 
     def get_score(self, lecture):
         user = self.context['request'].user
@@ -20,9 +24,15 @@ class EnrolledLectureListSerializer(serializers.ModelSerializer):
         if scale := lecture.grading_scale:
             return scale.get_grade(score)
 
+    def get_next_deadline(self, lecture):
+        lesson = lecture.lessons.filter(end__isnull=False, exercises__graded=True).order_by("end").first()
+        if lesson:
+            return {"title": lesson.title, "end": lesson.end}
+
+
     class Meta:
         model = Lecture
-        fields = ["title", "slug", "start", "end", "status", "score", "grade"]
+        fields = ["title", "slug", "start", "end", "status", "score", "grade", "next_deadline"]
         ordering = ["end", "start", "title"]
 
 
@@ -44,7 +54,7 @@ class LectureDetailSerializer(serializers.ModelSerializer):
 
     def get_lessons(self, obj):
         lessons = obj.lessons.order_by("start", "title", "end")
-        return LessonListSerializer(lessons, many=True).data
+        return LessonListSerializer(lessons, many=True, context=self.context).data
 
     def get_resources(self, obj):
         return map(
@@ -61,14 +71,41 @@ class LectureDetailSerializer(serializers.ModelSerializer):
 
 
 class LessonListSerializer(serializers.ModelSerializer):
+    user_score = serializers.SerializerMethodField()
+    max_score = serializers.SerializerMethodField()
+
+    def get_max_score(self, lesson):
+        return lesson.exercises.filter(graded=True).aggregate(max=Coalesce(Sum('max_score'), 0))['max']
+
+    def get_user_score(self, lesson):
+        user = self.context['request'].user
+        return lesson.get_score(user)
+
     class Meta:
         model = Lesson
-        fields = ["slug", "title", "status", "start", "end"]
+        fields = ["slug", "title", "status", "start", "end", "max_score", "user_score"]
         ordering = ["start", "title", "end"]
 
 
+class LessonScoreSerializer(serializers.ModelSerializer):
+    highest_scores = serializers.SerializerMethodField()
+
+    def get_highest_scores(self, obj):
+        user = self.context["request"].user
+        return {
+            str(exercise.id): Submission.objects.filter(
+                exercise=exercise, user=user
+            ).aggregate(max=Coalesce(Max("score"), 0))["max"]
+            for exercise in obj.exercises.all()
+        }
+
+    class Meta:
+        model = Lesson
+        fields = ["highest_scores"]
+
+
 class LessonDetailSerializer(serializers.ModelSerializer):
-    resources = serializers.SerializerMethodField(read_only=True)
+    resources = serializers.SerializerMethodField()
 
     class Meta:
         model = Lesson

@@ -1,4 +1,3 @@
-from apps.teaching.models import Lesson
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
@@ -24,19 +23,6 @@ class ExerciseSerializer(serializers.ModelSerializer):
         model = Exercise
         fields = ["id", "title", "description", "max_score"]
         order = ["title"]
-
-
-class ExerciseStatusSerializer(serializers.ModelSerializer):
-    max_score = serializers.SerializerMethodField(read_only=True)
-
-    class Meta:
-        model = Lesson
-        fields = ["id", "max_score"]
-
-    def get_max_score(self, obj):
-        user = self.context["request"].user
-        submissions = Submission.objects.filter(exercise=obj, user=user)
-        return max(map(lambda s: s.score, submissions), default=0)
 
 
 class SubmissionSerializer(serializers.ModelSerializer):

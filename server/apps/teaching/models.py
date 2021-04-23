@@ -1,4 +1,6 @@
 from apps.homework.storage import OverwriteStorage
+from django.db.models import Sum
+from django.db.models.functions import Coalesce
 
 from django.utils.timezone import now
 
@@ -109,15 +111,14 @@ class Lecture(UUIDModel, TimeFramedModel):
             )
 
     def get_score(self, user):
-        """ Returns score of a particular user. """
-        score = (
+        """ Returns lecture score of a particular user. """
+        return (
             user.submission_set
             .filter(exercise__lesson__lecture=self, score__isnull=False, exercise__graded=True)
             .values("exercise")
             .annotate(max_exercise_score=models.Max("score"))
-            .aggregate(total_score=models.Sum("max_exercise_score"))["total_score"]
+            .aggregate(total_score=Coalesce(Sum("max_exercise_score"), 0))["total_score"]
         )
-        return score if score else 0
 
     class Meta:
         ordering = ["title"]
@@ -174,6 +175,16 @@ class Lesson(UUIDModel, TimeFramedModel):
                 _("Lesson cannot end after lecture ends!"),
                 code="invalid_date",
             )
+
+    def get_score(self, user):
+        """ Returns lesson score of a particular user. """
+        return (
+            user.submission_set
+            .filter(exercise__lesson=self, score__isnull=False, exercise__graded=True)
+            .values("exercise")
+            .annotate(max_exercise_score=models.Max("score"))
+            .aggregate(total_score=Coalesce(Sum("max_exercise_score"), 0))["total_score"]
+        )
 
     class Meta:
         unique_together = ("lecture", "title")
