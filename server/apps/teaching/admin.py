@@ -134,6 +134,7 @@ class LessonAdmin(admin.ModelAdmin):
     list_filter = ["lecture"]
     list_display = ["title", "lecture"]
     inlines = [LessonResourceInline]
+    ordering = ["lecture", "title"]
 
     def get_readonly_fields(self, _, obj=None):
         if obj:

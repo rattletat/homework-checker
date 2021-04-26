@@ -9,6 +9,40 @@ from django.utils.html import format_html
 from sendfile import sendfile
 
 from .models import Exercise, ExerciseResource, Submission
+from apps.teaching.models import Lecture
+
+from django.contrib.admin import SimpleListFilter
+
+
+class ExerciseLectureFilter(SimpleListFilter):
+    title = "lecture"
+    parameter_name = "lecture"
+
+    def lookups(self, request, model_admin):
+
+        lectures = set(
+            exercise.lesson.lecture for exercise in model_admin.model.objects.all()
+        )
+        return [(lecture.id, lecture.title) for lecture in lectures]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(lesson__lecture=self.value())
+
+class ExerciseLessonFilter(SimpleListFilter):
+    title = "lesson"
+    parameter_name = "lesson"
+
+    def lookups(self, request, model_admin):
+
+        lessons = set(
+            exercise.lesson for exercise in model_admin.model.objects.all()
+        )
+        return [(lesson.id, lesson.title) for lesson in lessons]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(lesson=self.value())
 
 
 class ExerciseResourceInline(admin.TabularInline):
@@ -29,7 +63,7 @@ class ExerciseResourceInline(admin.TabularInline):
 @admin.register(Exercise)
 class ExerciseAdmin(admin.ModelAdmin):
     list_display = ["title", "lesson", "get_lecture"]
-    list_filter = ["lesson", "title"]
+    list_filter = [ExerciseLectureFilter, ExerciseLessonFilter]
     fields = [
         "lesson",
         "title",
@@ -50,7 +84,7 @@ class ExerciseAdmin(admin.ModelAdmin):
     def get_lecture(self, obj):
         return obj.lesson.lecture
 
-    get_lecture.short_description = "Vorlesung"
+    get_lecture.short_description = "Lecture"
 
     def get_readonly_fields(self, _, obj=None):
         if obj:
@@ -93,12 +127,39 @@ class ExerciseAdmin(admin.ModelAdmin):
         return sendfile(request, exercise.tests.path, attachment=True)
 
 
+class LectureSubmissionFilter(SimpleListFilter):
+    title = "lecture"
+    parameter_name = "lecture"
+
+    def lookups(self, request, model_admin):
+        return [(lecture.id, lecture.title) for lecture in Lecture.objects.all()]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(exercise__lesson__lecture=self.value())
+
+
 @admin.register(Submission)
 class SubmissionAdmin(admin.ModelAdmin):
-    fields = ["exercise", "user", "submission_link", "score", "output"]
-    readonly_fields = ["exercise", "user", "submission_link", "score", "output"]
+    fields = ["exercise", "user", "created", "submission_link", "score", "output"]
+    readonly_fields = [
+        "exercise",
+        "user",
+        "created",
+        "submission_link",
+        "score",
+        "output",
+    ]
     list_display = ["created", "exercise", "score", "user"]
     ordering = ["-created"]
+    search_fields = [
+        "user__name",
+        "user__email",
+        "user__identifier",
+        "exercise__title",
+        "exercise__lesson__title",
+    ]
+    list_filter = [LectureSubmissionFilter]
 
     def get_urls(self):
         urls = super(SubmissionAdmin, self).get_urls()
