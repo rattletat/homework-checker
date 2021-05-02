@@ -42,5 +42,5 @@ class IsNotWaiting(permissions.BasePermission):
             return obj.status != "WAITING"
         if isinstance(obj, LectureResource):
             return obj.lecture.status != "WAITING"
-        if isinstance(obj, LessonResource, Exercise):
+        if isinstance(obj, (LessonResource, Exercise)):
             return obj.lesson.status != "WAITING"
