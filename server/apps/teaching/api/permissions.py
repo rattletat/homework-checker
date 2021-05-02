@@ -20,7 +20,7 @@ class IsEnrolled(permissions.BasePermission):
             return obj in user.enrolled_lectures.all()
         if isinstance(obj, (Lesson, LectureResource)):
             return obj.lecture in user.enrolled_lectures.all()
-        if isinstance(obj, LessonResource, Exercise):
+        if isinstance(obj, (LessonResource, Exercise)):
             return obj.lesson.lecture in user.enrolled_lectures.all()
         return user.is_staff
 
