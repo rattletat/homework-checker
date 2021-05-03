@@ -71,3 +71,8 @@ footer {
 .footnoteBody {
   line-height: 115%;
 }
+
+.submission-output {
+    font-family: monospace;
+    font-size: smaller;
+}
