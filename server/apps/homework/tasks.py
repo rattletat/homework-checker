@@ -1,7 +1,6 @@
 import os
 import uuid
 from os.path import basename
-from django.conf import settings
 
 import docker
 from django.utils.encoding import force_str
@@ -26,7 +25,7 @@ DOCKER_SECURITY_OPTIONS = {
     "user": "1000:1000",
     "network_disabled": True,
     "network_mode": "none",
-    "mem_limit": "2g",
+    "mem_limit": "1g",
     "cap_drop": ["ALL"],
     "privileged": False,
 }
@@ -60,7 +59,7 @@ def run_tests(submission):
         container.remove(force=True)
         text = force_str(output).split(separator)[1]
     except Exception as e:
-        submission.output = "A problem occured. Please check your program runtime."
+        submission.output = "A problem occured. Please check your program for syntax errors and runtime problems."
         print(e)
     else:
         try:
