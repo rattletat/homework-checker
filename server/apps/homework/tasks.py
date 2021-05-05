@@ -26,7 +26,7 @@ DOCKER_SECURITY_OPTIONS = {
     "user": "1000:1000",
     "network_disabled": True,
     "network_mode": "none",
-    "mem_limit": "1g",
+    "mem_limit": "2g",
     "cap_drop": ["ALL"],
     "privileged": False,
 }
