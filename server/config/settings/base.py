@@ -217,6 +217,8 @@ RQ_QUEUES = {
         "DEFAULT_TIMEOUT": env.int("REDIS_TIMEOUT"),
     },
 }
+RQ_SHOW_ADMIN_LINK = True
+RQ_URL = env("DJANGO_RQ_URL")
 
 # SENDFILE
 # -------------------------------------------------------------------
