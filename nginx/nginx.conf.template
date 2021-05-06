@@ -79,7 +79,7 @@ server {
         proxy_pass http://api$request_uri;
     }
 
-    location /${DJANGO_RQ_URL}/ {
+    location /${DJANGO_RQ_URL} {
         proxy_pass http://django-rq$request_uri;
     }
 
