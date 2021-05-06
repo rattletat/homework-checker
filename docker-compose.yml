@@ -15,6 +15,7 @@ services:
             - app-redis
         environment:
             POSTGRES_HOST: app-db
+        restart: always
         volumes:
             - static_volume:/home/app/web/staticfiles:rw
             - media_volume:/home/app/web/mediafiles:rw
@@ -23,14 +24,15 @@ services:
         image: postgres:12-alpine
         expose:
             - 5432
+        restart: always
         volumes:
          - app-db:/var/lib/postgresql/data
     app-redis:
         container_name: app-redis
         image: redis:6-alpine
-        restart: always
         expose:
             - 6379
+        restart: always
         volumes:
             - redisdata:/data
     app-rq:
@@ -52,7 +54,7 @@ services:
         container_name: app-client
         build:
             context: ./client
-        stdin_open: true
+        restart: always
         volumes:
             - ./client/node_modules:/app/node_modules
         depends_on:
