@@ -26,3 +26,5 @@ An easy way to organize programming lectures.
     + Ability to link images stored in static files
     + Update scores using a Exercise-Student model and post_save hooks on Submissions
     + Add 1-to-Many relationship to Lectures that limit objects seen in Admin panel
+    + Fix permissions for ListViews
+    + Fix overwriting issue with two lesson resources with same name

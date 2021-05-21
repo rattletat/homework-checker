@@ -23,7 +23,7 @@ export default function SubmissionCard({cardKey, submission, max_score}) {
                 key={`collapse/${cardKey}`}
             >
                 <Card.Body>
-                    <div className="display-linebreak submission-output">{submission.output === "" ? "Running..." : submission.output}</div>
+                    <div className="submission-output">{submission.output === "" ? "Running..." : submission.output}</div>
                 </Card.Body>
             </Accordion.Collapse>
         </Card>

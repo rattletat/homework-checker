@@ -75,4 +75,5 @@ footer {
 .submission-output {
     font-family: monospace;
     font-size: smaller;
+    white-space: pre-wrap;
 }
