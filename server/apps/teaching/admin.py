@@ -156,9 +156,9 @@ class LectureAdmin(admin.ModelAdmin):
 
         writer = csv.writer(response)
         if lecture.grading_scale:
-            writer.writerow(["Identifier", "Name", "Points", "Score"])
+            writer.writerow(["Identifier", "Name", "Score", "Grade"])
         else:
-            writer.writerow(["Identifier", "Name", "Points"])
+            writer.writerow(["Identifier", "Name", "Score"])
         for participant in participants:
             score = lecture.get_score(participant)
             if lecture.grading_scale:
