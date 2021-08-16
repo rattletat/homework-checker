@@ -40,6 +40,7 @@ def run_tests(submission):
     separator = str(uuid.uuid4())
     config = DOCKER_CONFIG[extension]
     client = docker.from_env(timeout=exercise.timeout)
+    output = ""
     try:
         container = client.containers.run(
             config["image"],
@@ -59,7 +60,9 @@ def run_tests(submission):
         container.remove(force=True)
         text = force_str(output).split(separator)[1]
     except Exception as e:
-        submission.output = "A problem occured. Please check your program for syntax errors and runtime problems."
+        submission.output = "A problem occured. Please check your program for syntax errors and runtime problems.\n"
+        if output:
+            submission.output += "\n" + output
         print(e)
     else:
         try:
