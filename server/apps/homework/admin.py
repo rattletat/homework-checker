@@ -7,6 +7,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.decorators import method_decorator
 from django.utils.html import format_html
 from sendfile import sendfile
+import csv
 
 from .models import Exercise, ExerciseResource, Submission
 from apps.teaching.models import Lecture
@@ -21,13 +22,15 @@ class ExerciseLectureFilter(SimpleListFilter):
     def lookups(self, request, model_admin):
 
         lectures = set(
-            exercise.lesson.lecture for exercise in model_admin.model.objects.all()
+            exercise.lesson.lecture
+            for exercise in model_admin.model.objects.all()
         )
         return [(lecture.id, lecture.title) for lecture in lectures]
 
     def queryset(self, request, queryset):
         if self.value():
             return queryset.filter(lesson__lecture=self.value())
+
 
 class ExerciseLessonFilter(SimpleListFilter):
     title = "lesson"
@@ -126,13 +129,45 @@ class ExerciseAdmin(admin.ModelAdmin):
         exercise = Exercise.objects.get(id=uuid)
         return sendfile(request, exercise.tests.path, attachment=True)
 
+    # @method_decorator(staff_member_required)
+    # def export_as_csv(self, request, queryset):
+    #     model = queryset.model
+    #     model_fields = model._meta.fields + model._meta.many_to_many
+    #     field_names = [field.name for field in model_fields]
+
+    #     response = HttpResponse(content_type="text/csv")
+    #     response[
+    #         "Content-Disposition"
+    #     ] = 'attachment; filename="submissions.csv"'
+
+    #     writer = csv.writer(response, delimiter=",")
+    #     writer.writerow(field_names)
+    #     for row in queryset:
+    #         values = []
+    #         for field in field_names:
+    #             value = getattr(row, field)
+    #             if callable(value):
+    #                 try:
+    #                     value = value() or ""
+    #                 except:
+    #                     value = "Error retrieving value"
+    #             if value is None:
+    #                 value = ""
+    #             values.append(value)
+    #         writer.writerow(values)
+    #     return response
+
+    # export_as_csv.short_description = "Export Selected"
+
 
 class LectureSubmissionFilter(SimpleListFilter):
     title = "lecture"
     parameter_name = "lecture"
 
     def lookups(self, request, model_admin):
-        return [(lecture.id, lecture.title) for lecture in Lecture.objects.all()]
+        return [
+            (lecture.id, lecture.title) for lecture in Lecture.objects.all()
+        ]
 
     def queryset(self, request, queryset):
         if self.value():
@@ -141,7 +176,14 @@ class LectureSubmissionFilter(SimpleListFilter):
 
 @admin.register(Submission)
 class SubmissionAdmin(admin.ModelAdmin):
-    fields = ["exercise", "user", "created", "submission_link", "score", "output"]
+    fields = [
+        "exercise",
+        "user",
+        "created",
+        "submission_link",
+        "score",
+        "output",
+    ]
     readonly_fields = [
         "exercise",
         "user",
@@ -150,7 +192,8 @@ class SubmissionAdmin(admin.ModelAdmin):
         "score",
         "output",
     ]
-    list_display = ["created", "exercise", "score", "user"]
+    actions = ["export_csv"]
+    list_display = ["created", "exercise", "user", "score"]
     ordering = ["-created"]
     search_fields = [
         "user__name",
@@ -184,3 +227,21 @@ class SubmissionAdmin(admin.ModelAdmin):
     def download_submission(self, request, uuid):
         submission = Submission.objects.get(id=uuid)
         return sendfile(request, submission.file.path, attachment=True)
+
+    @method_decorator(staff_member_required)
+    def export_csv(self, request, queryset):
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = "attachment; filename={}.csv".format(
+            self.model._meta
+        )
+        writer = csv.writer(response)
+
+        writer.writerow(self.list_display)
+        for obj in queryset:
+            row = writer.writerow(
+                [getattr(obj, field) for field in self.list_display]
+            )
+
+        return response
+
+    export_csv.short_description = "Export Selected as CSV"
