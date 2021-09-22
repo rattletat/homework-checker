@@ -1,18 +1,18 @@
-from django.contrib import admin
-from django.http import HttpResponse
+import csv
+
+from apps.teaching.models import Lecture
 from django.conf.urls import url
+from django.contrib import admin
+from django.contrib.admin import SimpleListFilter
+from django.contrib.admin.views.decorators import staff_member_required
+from django.http import HttpResponse
 from django.shortcuts import reverse
 from django.urls import path
-from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.decorators import method_decorator
 from django.utils.html import format_html
 from sendfile import sendfile
-import csv
 
 from .models import Exercise, ExerciseResource, Submission
-from apps.teaching.models import Lecture
-
-from django.contrib.admin import SimpleListFilter
 
 
 class ExerciseLectureFilter(SimpleListFilter):
@@ -129,36 +129,6 @@ class ExerciseAdmin(admin.ModelAdmin):
         exercise = Exercise.objects.get(id=uuid)
         return sendfile(request, exercise.tests.path, attachment=True)
 
-    # @method_decorator(staff_member_required)
-    # def export_as_csv(self, request, queryset):
-    #     model = queryset.model
-    #     model_fields = model._meta.fields + model._meta.many_to_many
-    #     field_names = [field.name for field in model_fields]
-
-    #     response = HttpResponse(content_type="text/csv")
-    #     response[
-    #         "Content-Disposition"
-    #     ] = 'attachment; filename="submissions.csv"'
-
-    #     writer = csv.writer(response, delimiter=",")
-    #     writer.writerow(field_names)
-    #     for row in queryset:
-    #         values = []
-    #         for field in field_names:
-    #             value = getattr(row, field)
-    #             if callable(value):
-    #                 try:
-    #                     value = value() or ""
-    #                 except:
-    #                     value = "Error retrieving value"
-    #             if value is None:
-    #                 value = ""
-    #             values.append(value)
-    #         writer.writerow(values)
-    #     return response
-
-    # export_as_csv.short_description = "Export Selected"
-
 
 class LectureSubmissionFilter(SimpleListFilter):
     title = "lecture"
@@ -244,4 +214,4 @@ class SubmissionAdmin(admin.ModelAdmin):
 
         return response
 
-    export_csv.short_description = "Export Selected as CSV"
+    export_csv.short_description = "Export selected as CSV"
