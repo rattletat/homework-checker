@@ -46,7 +46,7 @@ services:
         volumes:
             - rqdata:/rqdata
             - media_volume:/home/app/web/mediafiles
-            - /var/run/docker.sock:/var/run/docker.sock
+            - $PODMAN_PATH:/var/run/podman.sock
         depends_on:
             - app-redis
             - app-db

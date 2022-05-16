@@ -23,7 +23,7 @@ WORKDIR $APP_HOME
 
 # system dependencies
 RUN apt-get update \
-  && apt-get -y install gcc postgresql netcat docker \
+  && apt-get -y install gcc postgresql netcat \
   && apt-get clean
 
 # python dependencies

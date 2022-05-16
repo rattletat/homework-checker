@@ -2,7 +2,7 @@ import os
 import uuid
 from os.path import basename
 
-import docker
+from podman import PodmanClient
 from django.utils.encoding import force_str
 import tarfile
 import tempfile
@@ -29,7 +29,8 @@ DOCKER_SECURITY_OPTIONS = {
     "cap_drop": ["ALL"],
     "privileged": False,
 }
-
+PODMAN_URI = "/var/run/podman.sock"
+RUNTIME_ERROR = "A problem occurred. Please check your program for syntax errors and runtime problems.\n"
 PARSING_ERROR = "A problem occurred during the result parsing."
 
 
@@ -39,41 +40,31 @@ def run_tests(submission):
 
     separator = str(uuid.uuid4())
     config = DOCKER_CONFIG[extension]
-    client = docker.from_env(timeout=exercise.timeout)
-    output = ""
     try:
-        container = client.containers.run(
-            config["image"],
-            command=f"sleep {exercise.timeout}", # Keep container alive
-            detach=True,
-            **DOCKER_SETUP_OPTIONS,
-            **DOCKER_SECURITY_OPTIONS,
-        )
-        for (name, path) in get_file_tuples(submission):
-            with tempfile.NamedTemporaryFile() as tmp_file:
-                with tarfile.open(fileobj=tmp_file, mode="w") as tar_file:
-                    tar_file.add(path, recursive=False, arcname=name)
-                    tmp_file.seek(0)
-                    container.put_archive("/app/", tmp_file)
-        (_, output) = container.exec_run(config["command"] + " " + separator)
-        container.stop()
-        container.remove(force=True)
-        text = force_str(output).split(separator)[1]
+        with PodmanClient() as client:
+            output = client.containers.run(
+                image=config["image"],
+                mounts=[
+                    {"type": "bind", "source": src, "target": tgt}
+                    for (src, tgt) in get_file_tuples(submission)
+                ],
+                **DOCKER_SETUP_OPTIONS,
+                **DOCKER_SECURITY_OPTIONS,
+            )
+            text = force_str(output).split(separator)[1]
     except Exception as e:
-        submission.output = "A problem occured. Please check your program for syntax errors and runtime problems.\n"
-        if output:
-            submission.output += "\n" + output
+        submission.output = RUNTIME_ERROR + "\n" + str(e)
         print(e)
     else:
         try:
-            submission.score = min(round(get_score(text) * exercise.multiplier), exercise.max_score)
             submission.output = get_first_error(text)
-
+            submission.score = min(
+                round(get_score(text) * exercise.multiplier), exercise.max_score
+            )
         except Exception as e:
             submission.output = PARSING_ERROR + "\n" + str(e)
     finally:
         submission.save()
-        client.containers.prune()
 
 
 def get_file_tuples(submission):
