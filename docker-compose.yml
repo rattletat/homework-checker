@@ -1,5 +1,4 @@
 version: '3.7'
-name: homework-checker
 volumes:
     volume_db:
     volume_static:
@@ -14,7 +13,7 @@ services:
             - db
             - redis
         environment:
-            POSTGRES_HOST: homework-checker-db
+            POSTGRES_HOST: homework-checker_db
         restart: always
         volumes:
             - volume_static:/home/app/web/staticfiles:rw
