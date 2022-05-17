@@ -1,42 +1,39 @@
 version: '3.7'
+name: homework-checker
 volumes:
-    app-db:
-    static_volume:
-    media_volume:
-    redisdata:
-    rqdata:
+    volume_db:
+    volume_static:
+    volume_media:
+    volume_redis:
+    volume_rq:
 services:
-    app-web:
+    web:
         build:
             context: ./server
-        container_name: app-web
         depends_on:
-            - app-db
-            - app-redis
+            - db
+            - redis
         environment:
-            POSTGRES_HOST: homework_checker-db
+            POSTGRES_HOST: homework-checker-db
         restart: always
         volumes:
-            - static_volume:/home/app/web/staticfiles:rw
-            - media_volume:/home/app/web/mediafiles:rw
-    app-db:
-        container_name: homework_checker-db
+            - volume_static:/home/app/web/staticfiles:rw
+            - volume_media:/home/app/web/mediafiles:rw
+    db:
         image: postgres:12-alpine
         expose:
             - 5432
         restart: always
         volumes:
-         - app-db:/var/lib/postgresql/data
-    app-redis:
-        container_name: homework_checker-redis
+         - volume_db:/var/lib/postgresql/data
+    redis:
         image: redis:6-alpine
         expose:
             - 6379
         restart: always
         volumes:
-            - redisdata:/data
-    app-rq:
-        container_name: homework_checker-rq
+            - volume_redis:/data
+    rq:
         command: python manage.py rqworker default
         build:
             context: ./server
@@ -44,18 +41,17 @@ services:
             POSTGRES_HOST: app-db
         restart: always
         volumes:
-            - rqdata:/rqdata
-            - media_volume:/home/app/web/mediafiles
+            - volume_rq:/rqdata
+            - volume_media:/home/app/web/mediafiles
             - $PODMAN_PATH:/var/run/podman.sock
         depends_on:
-            - app-redis
-            - app-db
-    app-client:
-        container_name: homework_checker-client
+            - redis
+            - db
+    client:
         build:
             context: ./client
         restart: always
         volumes:
             - ./client/node_modules:/app/node_modules
         depends_on:
-          - app-web
+          - web

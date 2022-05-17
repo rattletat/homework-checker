@@ -1,6 +1,6 @@
 version: '3.7'
 services:
-    app-web:
+    web:
         build:
             context: ./server
             dockerfile: Dockerfile.dev
@@ -11,16 +11,16 @@ services:
         command: python manage.py runserver 0.0.0.0:8000
         ports:
             - 8000:8000
-    app-db:
+    db:
         env_file:
             - .env/development.env
-    app-rq:
+    rq:
         build:
             context: ./server
             dockerfile: Dockerfile.dev
         env_file:
             - .env/development.env
-    app-client:
+    client:
         build:
             context: ./client
             dockerfile: Dockerfile.dev

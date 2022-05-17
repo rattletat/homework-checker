@@ -1,30 +1,30 @@
 version: '3.7'
 services:
-    app-web:
+    web:
         build:
             context: ./server
             dockerfile: Dockerfile.prod
         env_file:
             - .env/production.env
         command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
-    app-db:
+    db:
         env_file:
             - .env/production.env
-    app-rq:
+    rq:
         build:
             context: ./server
             dockerfile: Dockerfile.prod
         env_file:
             - .env/production.env
-    app-client:
+    client:
         build:
             context: ./client
             dockerfile: Dockerfile.prod
         env_file:
             - .env/production.env
         volumes:
-            - static_volume:/var/www/staticfiles:ro
-            - media_volume:/var/www/mediafiles:ro
+            - volume_static:/var/www/staticfiles:ro
+            - volume_media:/var/www/mediafiles:ro
             - ./nginx:/etc/nginx/templates
             - /etc/letsencrypt:/etc/letsencrypt
             - /var/lib/letsencrypt:/var/lib/letsencrypt
