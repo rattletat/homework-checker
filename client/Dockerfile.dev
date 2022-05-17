@@ -13,4 +13,4 @@ ENV PATH $HOME/node_modules/.bin:$PATH
 # copy files
 COPY --chown=node:node package*.json $HOME
 RUN npm install
-RUN chown -R node:node /home/node/
+# RUN chown -R node:node /home/node/
