@@ -913,18 +913,18 @@ dev = ["pre-commit", "tox"]
 testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
-name = "podman-py"
-version = "3.1.2.1"
+name = "podman"
+version = "4.0.0"
 description = "Bindings for Podman RESTful API"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-pyxdg = ">=0.26,<1.0"
+pyxdg = ">=0.26"
 requests = ">=2.24"
 toml = ">=0.10.2"
-urllib3 = ">=1.24.2,<1.25.0"
+urllib3 = ">=1.24.2"
 
 [[package]]
 name = "prompt-toolkit"
@@ -1517,7 +1517,7 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "5bdb14f9fa35763b6afad798360926cabf80c8c7a1a8b2ce444f8171fb10548e"
+content-hash = "bde4811ad7436fb01ea0a5adfd8268748fab9bbba08fd6833c1f725bc85fcfbb"
 
 [metadata.files]
 aioredis = [
@@ -2111,9 +2111,9 @@ pluggy = [
     {file = "pluggy-1.0.0-py2.py3-none-any.whl", hash = "sha256:74134bbf457f031a36d68416e1509f34bd5ccc019f0bcc952c7b909d06b37bd3"},
     {file = "pluggy-1.0.0.tar.gz", hash = "sha256:4224373bacce55f955a878bf9cfa763c1e360858e330072059e10bad68531159"},
 ]
-podman-py = [
-    {file = "podman-py-3.1.2.1.zip", hash = "sha256:82db851781cc7c0d8850fb297b42e0ba6773a90288d8f379223ac9f1efb4131d"},
-    {file = "podman_py-3.1.2.1-py3-none-any.whl", hash = "sha256:9b901771bf5f5ef6cf627e92e2c3d5b2f66750dce274e31bc1953050a4eb352a"},
+podman = [
+    {file = "podman-4.0.0-py3-none-any.whl", hash = "sha256:c283e828559d2c471480371e8cc71b5e06c5fd85212c4771a0fc554d917a7337"},
+    {file = "podman-4.0.0.tar.gz", hash = "sha256:009e6a8874fed6a7c0cc80373dd4e1d5706598b8041cf809ee4b3294ac29ec5c"},
 ]
 prompt-toolkit = [
     {file = "prompt_toolkit-3.0.29-py3-none-any.whl", hash = "sha256:62291dad495e665fca0bda814e342c69952086afb0f4094d0893d357e5c78752"},
