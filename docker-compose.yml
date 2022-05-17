@@ -14,13 +14,13 @@ services:
             - app-db
             - app-redis
         environment:
-            POSTGRES_HOST: app-db
+            POSTGRES_HOST: homework_checker-db
         restart: always
         volumes:
             - static_volume:/home/app/web/staticfiles:rw
             - media_volume:/home/app/web/mediafiles:rw
     app-db:
-        container_name: app-db
+        container_name: homework_checker-db
         image: postgres:12-alpine
         expose:
             - 5432
@@ -28,7 +28,7 @@ services:
         volumes:
          - app-db:/var/lib/postgresql/data
     app-redis:
-        container_name: app-redis
+        container_name: homework_checker-redis
         image: redis:6-alpine
         expose:
             - 6379
@@ -36,10 +36,10 @@ services:
         volumes:
             - redisdata:/data
     app-rq:
+        container_name: homework_checker-rq
         command: python manage.py rqworker default
         build:
             context: ./server
-        container_name: app-rq
         environment:
             POSTGRES_HOST: app-db
         restart: always
@@ -51,7 +51,7 @@ services:
             - app-redis
             - app-db
     app-client:
-        container_name: app-client
+        container_name: homework_checker-client
         build:
             context: ./client
         restart: always
