@@ -36,10 +36,10 @@
         "remark-math": "^4.0.0"
     },
     "scripts": {
-        "start": "SET NODE_OPTIONS=--openssl-legacy-provider && ./node_modules/.bin/react-scripts start",
-        "build": "SET NODE_OPTIONS=--openssl-legacy-provider && react-scripts build",
-        "test": "SET NODE_OPTIONS=--openssl-legacy-provider && react-scripts test",
-        "eject": "SET NODE_OPTIONS=--openssl-legacy-provider && react-scripts eject"
+        "start": "NODE_OPTIONS=--openssl-legacy-provider ./node_modules/.bin/react-scripts start",
+        "build": "NODE_OPTIONS=--openssl-legacy-provider react-scripts build",
+        "test": "NODE_OPTIONS=--openssl-legacy-provider react-scripts test",
+        "eject": "NODE_OPTIONS=--openssl-legacy-provider react-scripts eject"
     },
     "eslintConfig": {
         "extends": "react-app"
