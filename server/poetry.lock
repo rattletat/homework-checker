@@ -59,7 +59,7 @@ tests = ["pytest"]
 
 [[package]]
 name = "asgiref"
-version = "3.5.1"
+version = "3.5.2"
 description = "ASGI specs, helper code, and adapters"
 category = "main"
 optional = false
@@ -1314,14 +1314,14 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "traitlets"
-version = "5.2.0"
-description = "Traitlets Python configuration system"
+version = "5.2.1.post0"
+description = ""
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 
 [package.extras]
-test = ["pytest", "pre-commit"]
+test = ["pre-commit", "pytest"]
 
 [[package]]
 name = "twisted"
@@ -1391,7 +1391,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "types-markdown"
-version = "3.3.16"
+version = "3.3.17"
 description = "Typing stubs for Markdown"
 category = "dev"
 optional = false
@@ -1415,7 +1415,7 @@ python-versions = "*"
 
 [[package]]
 name = "types-requests"
-version = "2.27.25"
+version = "2.27.26"
 description = "Typing stubs for requests"
 category = "dev"
 optional = false
@@ -1558,8 +1558,8 @@ argon2-cffi-bindings = [
     {file = "argon2_cffi_bindings-21.2.0-pp38-pypy38_pp73-win_amd64.whl", hash = "sha256:5e00316dabdaea0b2dd82d141cc66889ced0cdcbfa599e8b471cf22c620c329a"},
 ]
 asgiref = [
-    {file = "asgiref-3.5.1-py3-none-any.whl", hash = "sha256:45a429524fba18aba9d512498b19d220c4d628e75b40cf5c627524dbaebc5cc1"},
-    {file = "asgiref-3.5.1.tar.gz", hash = "sha256:fddeea3c53fa99d0cdb613c3941cc6e52d822491fc2753fba25768fb5bf4e865"},
+    {file = "asgiref-3.5.2-py3-none-any.whl", hash = "sha256:1d2880b792ae8757289136f1db2b7b99100ce959b2aa57fd69dab783d05afac4"},
+    {file = "asgiref-3.5.2.tar.gz", hash = "sha256:4a29362a6acebe09bf1d6640db38c1dc3d9217c68e6f9f6204d72667fc19a424"},
 ]
 async-timeout = [
     {file = "async-timeout-4.0.2.tar.gz", hash = "sha256:2163e1640ddb52b7a8c80d0a67a08587e5d245cc9c553a74a847056bc2976b15"},
@@ -2427,8 +2427,8 @@ tomli = [
     {file = "tomli-2.0.1.tar.gz", hash = "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"},
 ]
 traitlets = [
-    {file = "traitlets-5.2.0-py3-none-any.whl", hash = "sha256:9dd4025123fbe018a2092b2ad6984792f53ea3362c698f37473258b1fa97b0bc"},
-    {file = "traitlets-5.2.0.tar.gz", hash = "sha256:60474f39bf1d39a11e0233090b99af3acee93bbc2281777e61dd8c87da8a0014"},
+    {file = "traitlets-5.2.1.post0-py3-none-any.whl", hash = "sha256:f44b708d33d98b0addb40c29d148a761f44af740603a8fd0e2f8b5b27cf0f087"},
+    {file = "traitlets-5.2.1.post0.tar.gz", hash = "sha256:70815ecb20ec619d1af28910ade523383be13754283aef90528eb3d47b77c5db"},
 ]
 twisted = [
     {file = "Twisted-22.4.0-py3-none-any.whl", hash = "sha256:f9f7a91f94932477a9fc3b169d57f54f96c6e74a23d78d9ce54039a7f48928a2"},
@@ -2479,8 +2479,8 @@ typed-ast = [
     {file = "typed_ast-1.5.3.tar.gz", hash = "sha256:27f25232e2dd0edfe1f019d6bfaaf11e86e657d9bdb7b0956db95f560cceb2b3"},
 ]
 types-markdown = [
-    {file = "types-Markdown-3.3.16.tar.gz", hash = "sha256:d127fd4b0016925904760074669cd883a5e2a6f72f88f8c6f20b7d9a670ccae8"},
-    {file = "types_Markdown-3.3.16-py3-none-any.whl", hash = "sha256:cb6375370d97d0e2d517c0b51efee2ec4d7e4d0d0819219b3a38a87e94b65cde"},
+    {file = "types-Markdown-3.3.17.tar.gz", hash = "sha256:407a3def7ac2f6b57d33a7b36ab3d3508212a0050aea70933c2e950813e1bcda"},
+    {file = "types_Markdown-3.3.17-py3-none-any.whl", hash = "sha256:e33cddd14a455f5fef4ca8d2e83eecb061d3e473d0258d6b8ceabed5fff4ce3f"},
 ]
 types-pytz = [
     {file = "types-pytz-2021.3.8.tar.gz", hash = "sha256:41253a3a2bf028b6a3f17b58749a692d955af0f74e975de94f6f4d2d3cd01dbd"},
@@ -2491,8 +2491,8 @@ types-pyyaml = [
     {file = "types_PyYAML-6.0.7-py3-none-any.whl", hash = "sha256:7b273a34f32af9910cf9405728c9d2ad3afc4be63e4048091a1a73d76681fe67"},
 ]
 types-requests = [
-    {file = "types-requests-2.27.25.tar.gz", hash = "sha256:805ae7e38fd9d157153066dc4381cf585fd34dfa212f2fc1fece248c05aac571"},
-    {file = "types_requests-2.27.25-py3-none-any.whl", hash = "sha256:2444905c89731dbcb6bbcd6d873a04252445df7623917c640e463b2b28d2a708"},
+    {file = "types-requests-2.27.26.tar.gz", hash = "sha256:a6a04c0274c0949fd0525f35d8b53ac34e77afecbeb3c4932ddc6ce675ac009c"},
+    {file = "types_requests-2.27.26-py3-none-any.whl", hash = "sha256:302137cb5bd482357398a155faf3ed095855fbc6994e952d0496c7fd50f44125"},
 ]
 types-urllib3 = [
     {file = "types-urllib3-1.26.14.tar.gz", hash = "sha256:2a2578e4b36341ccd240b00fccda9826988ff0589a44ba4a664bbd69ef348d27"},
