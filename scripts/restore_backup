@@ -3,5 +3,5 @@
 # Arguments:
 # 1: *Absolute* path to backup-folder containing `pg_dump.gz` and `media.tar.gz` files
 
-docker run --rm  --volume volume-media:/dbdata --volume $1:/backup ubuntu  tar xvf /backup/media.tar.gz -C /dbdata --strip 1
+docker run --rm  --volume homework-checker_volume-media:/dbdata --volume $1:/backup ubuntu  tar xvf /backup/media.tar.gz -C /dbdata --strip 1
 gunzip -c $1/pg_dump.gz | docker exec -iu postgres homework-checker-db psql --username homework-checker --dbname homework-checker
