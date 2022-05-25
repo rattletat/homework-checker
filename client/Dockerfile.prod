@@ -4,17 +4,16 @@ FROM node:18-alpine as app-frontend
 USER node
 
 # set work directory
-ENV HOME=/home/node/
-RUN mkdir $HOME/build
-WORKDIR $HOME
+RUN mkdir -p /home/node/build
+WORKDIR /home/node
 
 # set environment variables
 ENV PATH $HOME/node_modules/.bin:$PATH
 
 # copy files
-COPY --chown=node:node package*.json $HOME
+COPY --chown=node:node package*.json .
 RUN npm ci --production
-COPY . $HOME
+COPY --chown=node:node . .
 
 # nginx topping
 RUN npm run build
