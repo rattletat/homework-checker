@@ -25,7 +25,7 @@ services:
       context: ./client
       dockerfile: Dockerfile.dev
     volumes:
-      - ./client:/home/node/
+      - ./client/src:/home/node/src
       - "/home/node/node_modules" # prevents overwriting of node_modules
     ports:
       - 3000:3000

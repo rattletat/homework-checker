@@ -23,8 +23,8 @@ services:
         env_file:
             - .env/production.env
         volumes:
-            - volume_static:/var/www/staticfiles:ro
-            - volume_media:/var/www/mediafiles:ro
+            - volume-static:/var/www/staticfiles:ro
+            - volume-media:/var/www/mediafiles:ro
             - ./nginx:/etc/nginx/templates
         expose:
             - 80

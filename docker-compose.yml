@@ -1,10 +1,10 @@
 version: "3.7"
 volumes:
   volume-db:
-  volume_static:
-  volume_media:
-  volume_redis:
-  volume_rq:
+  volume-static:
+  volume-media:
+  volume-redis:
+  volume-rq:
 services:
   web:
     build:
@@ -14,17 +14,17 @@ services:
       - db
       - redis
     environment:
-      POSTGRES_HOST: homework-checker-db
-    restart: always
+      POSTGRES_HOST: db
+    restart: unless-stopped
     volumes:
-      - volume_static:/home/app/web/staticfiles:rw
-      - volume_media:/home/app/web/mediafiles:rw
+      - volume-static:/home/app/web/staticfiles:rw
+      - volume-media:/home/app/web/mediafiles:rw
   db:
     container_name: homework-checker-db
     image: postgres:12-alpine
     expose:
       - 5432
-    restart: always
+    restart: unless-stopped
     volumes:
       - volume-db:/var/lib/postgresql/data
   redis:
@@ -32,20 +32,20 @@ services:
     image: redis:6-alpine
     expose:
       - 6379
-    restart: always
+    restart: unless-stopped
     volumes:
-      - volume_redis:/data
+      - volume-redis:/data
   rq:
     container_name: homework-checker-rq
     command: python manage.py rqworker default
     build:
       context: ./server
     environment:
-      POSTGRES_HOST: homework-checker-db
-    restart: always
+      POSTGRES_HOST: db
+    restart: unless-stopped
     volumes:
-      - volume_rq:/rqdata
-      - volume_media:/home/app/web/mediafiles
+      - volume-rq:/rqdata
+      - volume-media:/home/app/web/mediafiles
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - redis
@@ -54,7 +54,7 @@ services:
     container_name: homework-checker-client
     build:
       context: ./client
-    restart: always
+    restart: unless-stopped
     volumes:
       - ./client/node_modules:/app/node_modules
     depends_on:
