@@ -1,33 +1,39 @@
 @font-face {
-  font-family: 'Patua One';
+  font-family: "Patua One";
   font-style: normal;
   font-weight: 400;
-  src: url(../fonts/Patua-One.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  src: url(../fonts/Patua-One.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+    U+FEFF, U+FFFD;
 }
 
 .logo {
-    font-family: "Patua One", sans-serif;
-    font-weight: 400;
+  font-family: "Patua One", sans-serif;
+  font-weight: 400;
 }
 
 .landing {
-    font-size: 72px;
+  font-size: 72px;
 }
 
 .middle-center {
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 120px;
-    margin: auto auto;
-    position: absolute;
-    text-align: center;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 120px;
+  margin: auto auto;
+  position: absolute;
+  text-align: center;
 }
 
-body{ min-height:100vh; margin:0; position:relative; }
+body {
+  min-height: 100vh;
+  margin: 0;
+  position: relative;
+}
 
 /* Trick: */
 body {
@@ -35,20 +41,20 @@ body {
 }
 
 body::after {
-    content: '';
-    display: block;
-    height: 50px; /* Set same as footer's height */
+  content: "";
+  display: block;
+  height: 50px; /* Set same as footer's height */
 }
 
 footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 
 .table-nonfluid {
-    margin:auto;
-    width: 60% !important;
+  margin: auto;
+  width: 60% !important;
 }
 
 .footnoteDefinition {
@@ -73,7 +79,25 @@ footer {
 }
 
 .submission-output {
-    font-family: monospace;
-    font-size: smaller;
-    white-space: pre-wrap;
+  font-family: monospace;
+  font-size: smaller;
+  white-space: pre-wrap;
+}
+
+.submission-output .assert-statement {
+  background-color: #caf4f4;
+}
+
+.submission-output .diff-positive {
+  background-color: #caefd1;
+}
+
+.submission-output .diff-negative {
+  background-color: #fde0d9;
+}
+.submission-output .error-message {
+  background-color: #fff2cc;
+}
+.submission-output .error-neutral {
+  background-color: #f5f6f7;
 }
