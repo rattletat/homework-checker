@@ -1,0 +1,9 @@
+#!/bin/sh
+# Creates a backup of the database and all files.
+# Arguments:
+# 1: *Absolute* path where the backup folder is created.
+
+backup_folder=$1/backup_$(date +"%Y-%m-%d_%H_%M_%S")
+mkdir $backup_folder
+docker exec -u postgres homework-checker-db pg_dump -U homework-checker -c homework-checker | gzip > $backup_folder/pg_dump.gz
+docker run --rm   --volume homework-checker_volume-media:/dbdata   --volume $backup_folder:/backup   ubuntu   tar -czf /backup/media.tar.gz -C / dbdata
