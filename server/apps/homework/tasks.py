@@ -73,7 +73,6 @@ def run_tests(submission):
             submission.output = PARSING_ERROR + "\n" + str(e)
     finally:
         submission.save()
-        client.containers.prune()
 
 
 def get_file_tuples(submission):
