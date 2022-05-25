@@ -76,4 +76,3 @@ server/mediafiles/submissions/*
 server/staticfiles/*
 !server/staticfiles/.keep
 **/*pycache*/
-scripts/
