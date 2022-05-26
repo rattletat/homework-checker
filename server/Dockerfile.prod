@@ -26,7 +26,7 @@ RUN apt-get update \
 
 # python dependencies
 RUN pip install "poetry==$POETRY_VERSION"
-COPY poetry.lock pyproject.toml $APP_HOME
+COPY poetry.lock pyproject.toml .
 RUN poetry install --no-interaction --no-ansi --no-dev
 
 # copy files
