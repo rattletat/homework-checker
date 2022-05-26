@@ -11,16 +11,13 @@ ENV POETRY_VIRTUALENVS_CREATE false
 
 ENV DJANGO_SETTINGS_MODULE config.settings.production
 
-ENV HOME=/home/app/
-ENV APP_HOME=/home/app/web/
-
 # set non-root user
 RUN adduser --system --group app
 
 # set work directory
-RUN mkdir -p $APP_HOME/staticfiles
-RUN mkdir -p $APP_HOME/mediafiles
-WORKDIR $APP_HOME
+WORKDIR /home/app/web/
+RUN mkdir -p ./staticfiles
+RUN mkdir -p ./mediafiles
 
 # system dependencies
 RUN apt-get update \
@@ -33,9 +30,9 @@ COPY poetry.lock pyproject.toml $APP_HOME
 RUN poetry install --no-interaction --no-ansi --no-dev
 
 # copy files
-COPY ./entrypoint.sh $APP_HOME
-COPY . $APP_HOME
-RUN chown -R app:app $APP_HOME
+COPY ./entrypoint.sh .
+COPY . .
+RUN chown -R app:app .
 
 USER app
 

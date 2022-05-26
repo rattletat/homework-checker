@@ -11,14 +11,10 @@ ENV POETRY_VIRTUALENVS_CREATE false
 
 ENV DJANGO_SETTINGS_MODULE config.settings.development
 
-# Root user is used in order to make migrations
-
 # set work directory
-ENV HOME=/home/app/
-ENV APP_HOME=/home/app/web/
-RUN mkdir -p $APP_HOME/staticfiles
-RUN mkdir -p $APP_HOME/mediafiles
-WORKDIR $APP_HOME
+WORKDIR /home/app/web/
+RUN mkdir -p ./staticfiles
+RUN mkdir -p ./mediafiles
 
 # system dependencies
 RUN apt-get update \
@@ -27,11 +23,11 @@ RUN apt-get update \
 
 # python dependencies
 RUN pip install "poetry==$POETRY_VERSION"
-COPY poetry.lock pyproject.toml $APP_HOME
+COPY poetry.lock pyproject.toml .
 RUN poetry install --no-interaction --no-ansi
 
 # copy files
-COPY ./entrypoint.sh $APP_HOME
-COPY . $APP_HOME
+COPY ./entrypoint.sh .
+COPY . .
 
 ENTRYPOINT ["/home/app/web/entrypoint.sh"]
