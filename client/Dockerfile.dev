@@ -13,4 +13,4 @@ ENV PATH /home/node/node_modules/.bin:$PATH
 COPY --chown=node:node package*.json ./
 RUN npm install
 COPY --chown=node:node . ./
-#RUN mkdir node_modules/.cache && chmod -R 777 node_modules/.cache
+RUN mkdir node_modules/.cache && chmod -R 777 node_modules/.cache
