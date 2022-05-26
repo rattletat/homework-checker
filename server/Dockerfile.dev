@@ -23,11 +23,11 @@ RUN apt-get update \
 
 # python dependencies
 RUN pip install "poetry==$POETRY_VERSION"
-COPY poetry.lock pyproject.toml .
+COPY poetry.lock pyproject.toml ./
 RUN poetry install --no-interaction --no-ansi
 
 # copy files
-COPY ./entrypoint.sh .
-COPY . .
+COPY ./entrypoint.sh ./
+COPY . ./
 
 ENTRYPOINT ["/home/app/web/entrypoint.sh"]
