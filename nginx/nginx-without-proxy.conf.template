@@ -1,0 +1,56 @@
+upstream api {
+    server homework-checker-web:8000;
+}
+
+upstream admin {
+    server homework-checker-web:8000;
+}
+
+upstream django-rq {
+    server homework-checker-web:8000;
+}
+
+server {
+    listen 80;
+    server_name ${NGINX_HOST};
+    sendfile on;
+
+    # Data
+    client_max_body_size 100M;
+    keepalive_timeout 5;
+
+    # Locations
+    location / {
+        root   /var/www/frontend;
+        try_files $uri $uri/ /index.html;
+        index  index.html index.htm;
+    }
+
+    location /staticfiles/ {
+        alias /var/www/staticfiles/;
+    }
+
+    location /mediafiles/ {
+        internal;
+        alias /var/www/mediafiles/;
+    }
+
+    location /api/ {
+        proxy_pass http://api$request_uri;
+    }
+
+    location /${DJANGO_RQ_URL} {
+        proxy_pass http://django-rq$request_uri;
+    }
+
+    location /${DJANGO_ADMIN_URL} {
+        proxy_pass http://admin$request_uri;
+    }
+
+    error_page   500 502 503 504  /50x.html;
+
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+  }
+
+}
