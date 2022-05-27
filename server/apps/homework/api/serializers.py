@@ -46,11 +46,11 @@ class SubmissionSerializer(serializers.ModelSerializer):
             )
 
         # Check timestamp of submission
-        if lesson.start and now() < lesson.start:
+        if not user.is_staff and lesson.start and now() < lesson.start:
             raise serializers.ValidationError(
                 "You cannot upload a submission before the lesson has started."
             )
-        if lesson.end and lesson.end < now():
+        if not user.is_staff and lesson.end and lesson.end < now():
             raise serializers.ValidationError(
                 "You cannot upload a submission after the lesson has ended."
             )

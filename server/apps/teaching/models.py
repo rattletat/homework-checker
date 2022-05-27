@@ -1,12 +1,11 @@
-from django.db.models import Sum
-from django.db.models.functions import Coalesce
-
-from django.utils.timezone import now
-
 from autoslug import AutoSlugField
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models import Sum
+from django.db.models.functions import Coalesce
+from django.urls import reverse
+from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from model_utils.models import TimeFramedModel, TimeStampedModel, UUIDModel
 
@@ -125,6 +124,10 @@ class Lecture(UUIDModel, TimeFramedModel):
     class Meta:
         ordering = ["title"]
 
+    def get_absolute_url(self):
+        """Returns lesson URL."""
+        return f"/lectures/{self.lecture.slug}"
+
 
 class Lesson(UUIDModel, TimeFramedModel):
     lecture = models.ForeignKey(
@@ -186,6 +189,10 @@ class Lesson(UUIDModel, TimeFramedModel):
             .annotate(max_exercise_score=models.Max("score"))
             .aggregate(total_score=Coalesce(Sum("max_exercise_score"), 0))["total_score"]
         )
+
+    def get_absolute_url(self):
+        """Returns lesson URL."""
+        return f"/lectures/{self.lecture.slug}/{self.slug}"
 
     class Meta:
         unique_together = ("lecture", "title")
