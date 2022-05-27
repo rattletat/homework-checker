@@ -35,7 +35,7 @@ def get_submission_path(submission, _=None):
     extension = submission.exercise.programming_language
     return os.path.join(
         "submissions",
-        str(submission.user.email),
+        str(submission.user.id),
         str(f"{submission.created}_{submission.id}.{extension}"),
     )
 
