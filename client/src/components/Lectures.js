@@ -30,7 +30,7 @@ export default function Lectures() {
         <BreadcrumbWrapper items={breadcrumbs} />
         <h1>Lectures</h1>
         You can find information about lectures you are enrolled in below.
-        {lectures.length && (
+        {lectures.length > 0 && (
           <>
             <br />
             <br />
@@ -41,6 +41,7 @@ export default function Lectures() {
             </ListGroup>
           </>
         )}
+        <br />
         <br />
         <h3>Add lecture</h3>
         <LectureRegister refreshPage={() => setUpdated(false)} />
