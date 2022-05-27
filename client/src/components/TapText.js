@@ -17,8 +17,10 @@ function TapText({ children }) {
 
   return (
     <div className="submission-output">
-      {children.split("\n").map((line) => (
-        <div className={colorize(line)}>{line}</div>
+      {children.split("\n").map((line, index) => (
+        <div key={index} className={colorize(line)}>
+          {line}
+        </div>
       ))}
     </div>
   );
