@@ -1,4 +1,7 @@
 import django_rq
+from apps.teaching.api.mixins import MultipleFieldLookupMixin
+from apps.teaching.api.permissions import IsEnrolled, IsNotWaiting
+from .permissions import isAuthor
 from rest_framework import permissions, response, status
 from rest_framework.exceptions import ParseError
 from rest_framework.generics import ListAPIView, RetrieveAPIView
@@ -7,19 +10,14 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from sendfile import sendfile
 
-from apps.teaching.api.permissions import IsEnrolled, IsNotWaiting
-
 from ..helpers import generate_sha1
 from ..models import Exercise, Submission
 from ..tasks import run_tests
-from .serializers import (
-    ExerciseSerializer,
-    SubmissionListSerializer,
-    SubmissionSerializer,
-)
+from .serializers import (ExerciseSerializer, SubmissionListSerializer,
+                          SubmissionSerializer)
 
-# from django.db.models import Max, Sum, Count
-from collections import defaultdict
+# from django.db.models import Max, Sum, Count, F
+# from collections import defaultdict
 
 
 class ExerciseListView(ListAPIView):
@@ -66,7 +64,6 @@ class ExerciseSubmitView(APIView):
 
 
 class SubmissionListView(ListAPIView):
-    permission_classes = [IsEnrolled, IsNotWaiting]
     serializer_class = SubmissionListSerializer
 
     def get_queryset(self):
@@ -75,14 +72,18 @@ class SubmissionListView(ListAPIView):
             user=self.request.user.id, exercise=exercise_id
         ).order_by("-created")[:5]
 
-        # data = {}
-        # for exercise in exercises:
-        #     submissions = Submission.objects.filter(
-        #         exercise=exercise, user=request.user
-        #     )
-        #     data[exercise.slug] = max(map(lambda s: s.score, submissions), default=0)
 
-        # return response.Response(data, status=status.HTTP_200_OK)
+class SubmissionDownload(MultipleFieldLookupMixin, RetrieveAPIView):
+    permission_classes = [isAuthor]
+    lookup_fields = {
+        "exercise_id": "exercise",
+        "submission_id": "id",
+    }
+    queryset = Submission.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        submission = self.get_object()
+        return sendfile(request, submission.file.path, attachment=True)
 
 
 # Todo
@@ -93,12 +94,7 @@ class SubmissionListView(ListAPIView):
 #         """ Returns all non-null scores anonymized. """
 
 #         rows = (
-#             Submission.objects.filter(
-#                 exercise__lesson__lecture__slug=lecture_slug,
-#                 score__isnull=False,
-#                 # score__gt=0,
-#                 exercise__rated=True,
-#             )
+#             Submission.objects
 #             .values("exercise", "user")
 #             .annotate(max_score=Max("score"))
 #             .values("user", "max_score")
@@ -106,13 +102,6 @@ class SubmissionListView(ListAPIView):
 #         scores = defaultdict(int)
 #         for row in rows:
 #             scores[row['user']] += row['max_score']
-
-#         # f = models.Q()
-#             # .values("user", "max_exercise_score")
-#             # .aggregate(total_user_score=Sum("max_exercise_score"))
-#         # .values("total_score")
-#         # .annotate(user_count=Count("user"))
-#         # )
 
 #         return response.Response(
 #             {"distribution", max_scores}, status=status.HTTP_200_OK

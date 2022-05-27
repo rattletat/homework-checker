@@ -45,6 +45,11 @@ urlpatterns = [
         name="lesson_download",
     ),
     path(
+        "exercises/<slug:exercise_id>/submissions/<slug:submission_id>",
+        view=homework_views.SubmissionDownload.as_view(),
+        name="submission_download",
+    ),
+    path(
         "exercises/<slug:exercise_id>/submissions/",
         view=homework_views.SubmissionListView.as_view(),
     ),

@@ -22,12 +22,11 @@ class IsEnrolled(permissions.BasePermission):
             return obj.lecture in user.enrolled_lectures.all()
         if isinstance(obj, (LessonResource, Exercise)):
             return obj.lesson.lecture in user.enrolled_lectures.all()
-        return user.is_staff
 
 
 class IsNotWaiting(permissions.BasePermission):
     """
-    Custom permission to only allow enrolled students to see the lecture/ lesson.
+    Custom permission to only allow started lecture/lesson to be seen.
     Admins can see all content.
     """
 

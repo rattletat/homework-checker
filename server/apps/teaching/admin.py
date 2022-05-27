@@ -6,11 +6,10 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse
 from django.shortcuts import reverse
-from django.urls import path, resolve
+from django.urls import path
 from django.utils.decorators import method_decorator
 from django.utils.html import format_html
 from django.utils.http import urlencode
-from sendfile import sendfile
 
 from .models import (
     GradingScale,
@@ -72,10 +71,11 @@ class LectureResourceInline(admin.TabularInline):
     readonly_fields = ["resource_link"]
     extra = 0
 
-    def resource_link(self, obj):
-        if obj.file:
-            download_view = "admin:lecture_resource_download"
-            download_url = reverse(download_view, args=[obj.pk])
+    def resource_link(self, resource):
+        if resource.file:
+            download_url = reverse(
+                "api:lecture_download", args=[resource.lecture.slug, resource.id]
+            )
             return format_html('<a href="{}">Download</a>', download_url)
         else:
             return ""
@@ -87,10 +87,12 @@ class LessonResourceInline(admin.TabularInline):
     readonly_fields = ["resource_link"]
     extra = 0
 
-    def resource_link(self, obj):
-        if obj.file:
-            download_view = "admin:lesson_resource_download"
-            download_url = reverse(download_view, args=[obj.pk])
+    def resource_link(self, resource):
+        if resource.file:
+            download_url = reverse(
+                "api:lesson_download",
+                args=[resource.lesson.lecture.slug, resource.lesson.slug, resource.id],
+            )
             return format_html('<a href="{}">Download</a>', download_url)
         else:
             return ""
@@ -104,7 +106,14 @@ class RegistrationCodeInline(admin.TabularInline):
 @admin.register(Lecture)
 class LectureAdmin(admin.ModelAdmin):
     list_display = ["title", "start", "end", "view_students_link"]
-    fields = ["title", "description", "start", "end", "grading_scale", "download_grades_link"]
+    fields = [
+        "title",
+        "description",
+        "start",
+        "end",
+        "grading_scale",
+        "download_grades_link",
+    ]
     readonly_fields = ["download_grades_link"]
     inlines = [RegistrationCodeInline, LectureResourceInline, EnrolledStudentInline]
 
@@ -123,22 +132,12 @@ class LectureAdmin(admin.ModelAdmin):
         urls = super(LectureAdmin, self).get_urls()
         urls += [
             path(
-                "download_resource/<slug:resource_uuid>",
-                self.download_resource,
-                name="lecture_resource_download",
-            ),
-            path(
                 "download_grades/<slug:lecture_uuid>",
                 self.download_grades,
                 name="lecture_grades_download",
             ),
         ]
         return urls
-
-    @method_decorator(staff_member_required)
-    def download_resource(self, request, resource_uuid):
-        resource = LectureResource.objects.get(id=resource_uuid)
-        return sendfile(request, resource.file.path, attachment=True)
 
     def download_grades_link(self, lecture):
         download_view = "admin:lecture_grades_download"
@@ -149,10 +148,14 @@ class LectureAdmin(admin.ModelAdmin):
     def download_grades(self, request, lecture_uuid):
         lecture = Lecture.objects.get(id=lecture_uuid)
         participants = (
-            get_user_model().objects.filter(enrolled_lectures=lecture).order_by("identifier")
+            get_user_model()
+            .objects.filter(enrolled_lectures=lecture)
+            .order_by("identifier")
         )
         response = HttpResponse(content_type="text/csv")
-        response["Content-Disposition"] = f'attachment; filename="results_{lecture.slug}.csv"'
+        response[
+            "Content-Disposition"
+        ] = f'attachment; filename="results_{lecture.slug}.csv"'
 
         writer = csv.writer(response)
         if lecture.grading_scale:
@@ -167,7 +170,6 @@ class LectureAdmin(admin.ModelAdmin):
             else:
                 writer.writerow([participant.identifier, participant.name, score])
         return response
-
 
     download_grades_link.short_description = "Download participants results"
 
@@ -188,22 +190,6 @@ class LessonAdmin(admin.ModelAdmin):
             return ["lecture"]
         else:
             return []
-
-    def get_urls(self):
-        urls = super(LessonAdmin, self).get_urls()
-        urls += [
-            path(
-                "download_resource/<slug:uuid>",
-                self.download_resource,
-                name="lesson_resource_download",
-            ),
-        ]
-        return urls
-
-    @method_decorator(staff_member_required)
-    def download_resource(self, request, uuid):
-        resource = LessonResource.objects.get(id=uuid)
-        return sendfile(request, resource.file.path, attachment=True)
 
 
 admin.site.register(GradingScale)

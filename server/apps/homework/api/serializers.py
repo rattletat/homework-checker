@@ -1,3 +1,6 @@
+import os
+
+from django.shortcuts import reverse
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
@@ -41,9 +44,7 @@ class SubmissionSerializer(serializers.ModelSerializer):
 
         # Check if user is registered for course
         if lesson.lecture not in user.enrolled_lectures.all():
-            raise serializers.ValidationError(
-                "You are not registered for this lecture."
-            )
+            raise serializers.ValidationError("You are not registered for this lecture.")
 
         # Check timestamp of submission
         if not user.is_staff and lesson.start and now() < lesson.start:
@@ -70,6 +71,21 @@ class SubmissionSerializer(serializers.ModelSerializer):
 
 
 class SubmissionListSerializer(serializers.ModelSerializer):
+    filename = serializers.SerializerMethodField()
+    download_uri = serializers.SerializerMethodField()
+
+    def get_filename(self, submission):
+        return os.path.basename(submission.file.name)
+
+    def get_download_uri(self, submission):
+        return reverse(
+            "api:submission_download",
+            kwargs={
+                "exercise_id": submission.exercise.id,
+                "submission_id": submission.id,
+            },
+        )
+
     class Meta:
         model = Submission
-        fields = ["id", "created", "score", "output"]
+        fields = ["id", "created", "score", "output", "filename", "download_uri"]
