@@ -1,6 +1,5 @@
 from rest_framework import permissions, response, status
 from rest_framework.generics import ListAPIView, RetrieveAPIView
-from rest_framework.response import Response
 from rest_framework.views import APIView
 from sendfile import sendfile
 
@@ -38,12 +37,12 @@ class LectureRegister(APIView):
             code = RegistrationCode.objects.get(code=kwargs["registration_code"])
         except RegistrationCode.DoesNotExist:
             return response.Response(
-                {"detail": "Not a valid registration code!"},
+                {"detail": "Not a valid registration code."},
                 status=status.HTTP_404_NOT_FOUND,
             )
         if code.lecture in request.user.enrolled_lectures.all():
             return response.Response(
-                {"detail": "You are already enrolled in this lecture!"},
+                {"detail": "You are already enrolled in this lecture."},
                 status=status.HTTP_409_CONFLICT,
             )
         code.lecture.participants.add(request.user)

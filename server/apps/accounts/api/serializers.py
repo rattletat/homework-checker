@@ -62,6 +62,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class LogInSerializer(TokenObtainPairSerializer):
+    default_error_messages = {"no_active_account": "Wrong password."}
+
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
