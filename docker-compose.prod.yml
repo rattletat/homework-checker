@@ -25,8 +25,9 @@ services:
         volumes:
             - volume-static:/var/www/staticfiles:ro
             - volume-media:/var/www/mediafiles:ro
-            - ./nginx:/etc/nginx/templates
+            - ./nginx/nginx.conf.template:/etc/nginx/templates/nginx.conf.template
             - /etc/letsencrypt:/etc/letsencrypt
             - /var/lib/letsencrypt:/var/lib/letsencrypt
-        expose:
-            - 80
+        ports:
+            - 80:80
+            - 443:443
