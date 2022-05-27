@@ -7,7 +7,6 @@ from django.utils.translation import gettext_lazy as _
 from model_utils.models import TimeStampedModel, UUIDModel
 
 from .helpers import get_exercise_rsc_path, get_submission_path, get_tests_path
-from .storage import OverwriteStorage
 
 
 class Exercise(UUIDModel):
@@ -20,10 +19,10 @@ class Exercise(UUIDModel):
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True)
     max_score = models.PositiveSmallIntegerField()
-    multiplier = models.DecimalField(max_digits=4, decimal_places=2, default=Decimal('1.0'))
-    tests = models.FileField(
-        storage=OverwriteStorage(), upload_to=get_tests_path, max_length=255
+    multiplier = models.DecimalField(
+        max_digits=4, decimal_places=2, default=Decimal("1.0")
     )
+    tests = models.FileField(upload_to=get_tests_path, max_length=255)
     min_upload_size = models.PositiveIntegerField(
         "Minimal byte size",
         default=30,
@@ -71,6 +70,4 @@ class ExerciseResource(UUIDModel, TimeStampedModel):
     exercise = models.ForeignKey(
         Exercise, on_delete=models.PROTECT, related_name="resources"
     )
-    file = models.FileField(
-        upload_to=get_exercise_rsc_path, storage=OverwriteStorage(), max_length=255
-    )
+    file = models.FileField(upload_to=get_exercise_rsc_path, max_length=255)

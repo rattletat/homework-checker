@@ -64,8 +64,9 @@ DJANGO_APPS = [
 ]
 THIRD_PARTY_APPS = ["corsheaders", "rest_framework", "django_rq"]
 LOCAL_APPS = ["apps.accounts", "apps.teaching", "apps.homework", "apps.flatpages"]
+SPECIAL_APPS = ["django_cleanup"]
 
-INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS + SPECIAL_APPS
 
 
 # AUTHENTICATION

@@ -1,4 +1,3 @@
-from apps.homework.storage import OverwriteStorage
 from django.db.models import Sum
 from django.db.models.functions import Coalesce
 
@@ -85,7 +84,9 @@ class Lecture(UUIDModel, TimeFramedModel):
         unique=True,
     )
     description = models.TextField(blank=True)
-    slug = AutoSlugField(max_length=255, populate_from="title", unique=True, always_update=True)
+    slug = AutoSlugField(
+        max_length=255, populate_from="title", unique=True, always_update=True
+    )
     grading_scale = models.ForeignKey(
         GradingScale, on_delete=models.SET_NULL, blank=True, null=True
     )
@@ -111,10 +112,11 @@ class Lecture(UUIDModel, TimeFramedModel):
             )
 
     def get_score(self, user):
-        """ Returns lecture score of a particular user. """
+        """Returns lecture score of a particular user."""
         return (
-            user.submission_set
-            .filter(exercise__lesson__lecture=self, score__isnull=False, exercise__graded=True)
+            user.submission_set.filter(
+                exercise__lesson__lecture=self, score__isnull=False, exercise__graded=True
+            )
             .values("exercise")
             .annotate(max_exercise_score=models.Max("score"))
             .aggregate(total_score=Coalesce(Sum("max_exercise_score"), 0))["total_score"]
@@ -161,9 +163,7 @@ class Lesson(UUIDModel, TimeFramedModel):
             or (self.end and self.end < self.lecture.start)
         ):
             raise ValidationError(
-                _(
-                    "Lesson cannot start before lecture starts!"
-                ),
+                _("Lesson cannot start before lecture starts!"),
                 code="invalid_date",
             )
 
@@ -177,10 +177,11 @@ class Lesson(UUIDModel, TimeFramedModel):
             )
 
     def get_score(self, user):
-        """ Returns lesson score of a particular user. """
+        """Returns lesson score of a particular user."""
         return (
-            user.submission_set
-            .filter(exercise__lesson=self, score__isnull=False, exercise__graded=True)
+            user.submission_set.filter(
+                exercise__lesson=self, score__isnull=False, exercise__graded=True
+            )
             .values("exercise")
             .annotate(max_exercise_score=models.Max("score"))
             .aggregate(total_score=Coalesce(Sum("max_exercise_score"), 0))["total_score"]
@@ -198,25 +199,19 @@ class LectureResource(UUIDModel, TimeStampedModel):
         max_length=100,
         verbose_name=_("Titel"),
     )
-    file = models.FileField(
-        upload_to=get_lecture_rsc_path, storage=OverwriteStorage(), max_length=255
-    )
+    file = models.FileField(upload_to=get_lecture_rsc_path, max_length=255)
 
     class Meta:
         unique_together = ("lecture", "title")
 
 
 class LessonResource(UUIDModel, TimeStampedModel):
-    lesson = models.ForeignKey(
-        Lesson, on_delete=models.CASCADE, related_name="resources"
-    )
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name="resources")
     title = models.CharField(
         max_length=100,
         verbose_name=_("Titel"),
     )
-    file = models.FileField(
-        upload_to=get_lesson_rsc_path, storage=OverwriteStorage(), max_length=255
-    )
+    file = models.FileField(upload_to=get_lesson_rsc_path, max_length=255)
 
     class Meta:
         verbose_name = _("Lesson Resource")
