@@ -1,13 +1,13 @@
 upstream api {
-    server app-web:8000;
+    server web:8000;
 }
 
 upstream admin {
-    server app-web:8000;
+    server web:8000;
 }
 
 upstream django-rq {
-    server app-web:8000;
+    server web:8000;
 }
 
 server {
