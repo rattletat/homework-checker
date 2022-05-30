@@ -24,7 +24,7 @@ FILETYPE_SPECIFICS = {
 class ExerciseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Exercise
-        fields = ["id", "title", "description", "max_score"]
+        fields = ["id", "title", "description", "max_score", "graded"]
         order = ["title"]
 
 
