@@ -21,7 +21,7 @@ function BarChart({ all_scores, user_score, max_score }) {
 
       var scX = d3
         .scaleLinear()
-        .domain([-max_score * 0.03, max_score * 1.03])
+        .domain([-max_score * 0.05, max_score * 1.05])
         .range([0, innerWidth]);
 
       // Axis
@@ -36,7 +36,7 @@ function BarChart({ all_scores, user_score, max_score }) {
       var histogram = d3
         .histogram()
         .domain(scX.domain())
-        .thresholds(scX.ticks(50));
+        .thresholds(Math.round(max_score / 4));
 
       var bins = histogram(all_scores);
       var scY = d3
@@ -141,7 +141,6 @@ function BarChart({ all_scores, user_score, max_score }) {
     <>
       <svg
         ref={ref}
-        viewBox={"0 0 100% 100%"}
         style={{
           height: "100%",
           width: "100%",
