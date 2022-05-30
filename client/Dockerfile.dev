@@ -12,9 +12,5 @@ ENV PATH /home/node/node_modules/.bin:$PATH
 
 # copy files
 COPY --chown=node:node package*.json ./
-RUN npm install
-# RUN npm install --silent
-# RUN npm install react-scripts@3.4.1 -g --silent
+RUN npm install --silent
 COPY --chown=node:node . ./
-# COPY . ./
-# RUN mkdir node_modules/.cache && chmod -R 777 node_modules/.cache
