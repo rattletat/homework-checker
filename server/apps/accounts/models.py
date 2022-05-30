@@ -68,3 +68,4 @@ class CustomUser(AbstractUser):
 
     class Meta:
         ordering = ("identifier",)
+        verbose_name = "student"
