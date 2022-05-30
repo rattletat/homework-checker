@@ -1,6 +1,7 @@
 import React from "react";
 import { Card, ListGroup } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import BarChart from "./BarChart";
 import { getTimeIndicator, toTimeFormat } from "../services/TimeService";
 
 function LectureEntry({ lecture }) {
@@ -29,27 +30,38 @@ function LectureEntry({ lecture }) {
               <strong>Lecture end</strong>: {toTimeFormat(lecture.end)}
             </ListGroup.Item>
           )}
-          {lecture.score !== null && (
+          {lecture.user_score != null && lecture.max_score && (
             <ListGroup.Item>
-              <strong>Score</strong>: {lecture.score}
+              <strong>Score</strong>: {lecture.user_score} / {lecture.max_score}
             </ListGroup.Item>
           )}
-          {lecture.grade && lecture.status === "ACTIVE" && (
+          {lecture.grade != null && lecture.status === "ACTIVE" && (
             <ListGroup.Item>
               <strong>Current grade</strong>: {lecture.grade}
             </ListGroup.Item>
           )}
-          {lecture.grade && lecture.status === "FINISHED" && (
+          {lecture.grade != null && lecture.status === "FINISHED" && (
             <ListGroup.Item>
               <strong>Final Grade</strong>: {lecture.grade}
             </ListGroup.Item>
           )}
-          {lecture.next_deadline !== null && (
+          {lecture.next_deadline != null && (
             <ListGroup.Item>
               <strong>Next deadline</strong>: {lecture.next_deadline.title}{" "}
               {getTimeIndicator(lecture.next_deadline)}
             </ListGroup.Item>
           )}
+          {lecture.all_scores != null &&
+            lecture.user_score != null &&
+            lecture.max_score != null && (
+              <ListGroup.Item>
+                <BarChart
+                  all_scores={lecture.all_scores}
+                  user_score={lecture.user_score}
+                  max_score={lecture.max_score}
+                />
+              </ListGroup.Item>
+            )}
         </ListGroup>
       </Card.Body>
     </Card>

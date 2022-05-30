@@ -121,6 +121,12 @@ class Lecture(UUIDModel, TimeFramedModel):
             .aggregate(total_score=Coalesce(Sum("max_exercise_score"), 0))["total_score"]
         )
 
+    @property
+    def max_score(self):
+        """Returns maximal reachable graded score of lecture."""
+        # TODO: Not performant
+        return sum(map(lambda lesson: lesson.max_score, self.lessons.all()))
+
     class Meta:
         ordering = ["title"]
 
@@ -189,6 +195,13 @@ class Lesson(UUIDModel, TimeFramedModel):
             .annotate(max_exercise_score=models.Max("score"))
             .aggregate(total_score=Coalesce(Sum("max_exercise_score"), 0))["total_score"]
         )
+
+    @property
+    def max_score(self):
+        """Returns maximal reachable graded score of lesson."""
+        return self.exercises.filter(graded=True).aggregate(
+            max=Coalesce(Sum("max_score"), 0)
+        )["max"]
 
     def get_absolute_url(self):
         """Returns lesson URL."""

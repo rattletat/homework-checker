@@ -2,7 +2,7 @@ import os
 from collections import defaultdict
 
 from apps.homework.models import Submission
-from django.db.models import Max, Sum
+from django.db.models import Max
 from django.db.models.functions import Coalesce
 from django.shortcuts import reverse
 from django.utils.timezone import now
@@ -12,20 +12,23 @@ from ..models import Lecture, Lesson
 
 
 class EnrolledLectureListSerializer(serializers.ModelSerializer):
-    score = serializers.SerializerMethodField()
-    score_distribution = serializers.SerializerMethodField()
+    user_score = serializers.SerializerMethodField()
+    max_score = serializers.SerializerMethodField()
+    all_scores = serializers.SerializerMethodField()
     grade = serializers.SerializerMethodField()
     next_deadline = serializers.SerializerMethodField()
 
-    def get_score(self, lecture):
+    def get_max_score(self, lecture):
+        return lecture.max_score
+
+    def get_user_score(self, lecture):
         user = self.context["request"].user
         return lecture.get_score(user)
 
-    def get_score_distribution(self, lecture):
+    def get_all_scores(self, lecture):
         rows = (
             Submission.objects.filter(
                 exercise__lesson__lecture=lecture,
-                score__gt=0,
                 exercise__graded=True,
             )
             .values("exercise", "user")
@@ -62,8 +65,9 @@ class EnrolledLectureListSerializer(serializers.ModelSerializer):
             "start",
             "end",
             "status",
-            "score",
-            "score_distribution",
+            "user_score",
+            "max_score",
+            "all_scores",
             "grade",
             "next_deadline",
         ]
@@ -109,9 +113,7 @@ class LessonListSerializer(serializers.ModelSerializer):
     max_score = serializers.SerializerMethodField()
 
     def get_max_score(self, lesson):
-        return lesson.exercises.filter(graded=True).aggregate(
-            max=Coalesce(Sum("max_score"), 0)
-        )["max"]
+        return lesson.max_score
 
     def get_user_score(self, lesson):
         user = self.context["request"].user
