@@ -30,7 +30,7 @@ function LectureEntry({ lecture }) {
               <strong>Lecture end</strong>: {toTimeFormat(lecture.end)}
             </ListGroup.Item>
           )}
-          {lecture.user_score != null && lecture.max_score && (
+          {lecture.user_score != null && lecture.max_score != null && (
             <ListGroup.Item>
               <strong>Score</strong>: {lecture.user_score} / {lecture.max_score}
             </ListGroup.Item>

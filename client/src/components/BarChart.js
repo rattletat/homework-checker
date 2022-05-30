@@ -136,7 +136,6 @@ function BarChart({ all_scores, user_score, max_score }) {
     },
     [all_scores.length, user_score, max_score]
   );
-
   return (
     <>
       <svg
@@ -144,8 +143,6 @@ function BarChart({ all_scores, user_score, max_score }) {
         style={{
           height: "100%",
           width: "100%",
-          marginRight: "0px",
-          marginLeft: "0px",
         }}
       />
     </>
