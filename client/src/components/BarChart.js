@@ -109,7 +109,7 @@ function BarChart({ all_scores, user_score, max_score }) {
         .attr("text-anchor", "middle")
         .attr("class", "score")
         .style("fill", "#e37222")
-        .text(user_score);
+        .text("Score");
 
       // // Labels
       svg
