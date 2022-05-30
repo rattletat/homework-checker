@@ -20,7 +20,7 @@ services:
         build:
             context: ./client
             dockerfile: Dockerfile.prod
-        environement:
+        environment:
           - NODE_ENV=production
         env_file:
             - .env/production.env
