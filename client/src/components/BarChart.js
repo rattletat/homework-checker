@@ -21,7 +21,7 @@ function BarChart({ all_scores, user_score, max_score }) {
 
       var scX = d3
         .scaleLinear()
-        .domain([-max_score * 0.05, max_score * 1.05])
+        .domain([-max_score * 0.03, max_score * 1.03])
         .range([0, innerWidth]);
 
       // Axis
@@ -75,7 +75,7 @@ function BarChart({ all_scores, user_score, max_score }) {
         .style("fill", "grey")
         .transition()
         .duration(3000)
-        .style("fill", "#0275d8")
+        .style("fill", "#4582EC")
         .attr("height", (d) => innerHeight - scY(d.length))
         .attr(
           "transform",
@@ -94,9 +94,20 @@ function BarChart({ all_scores, user_score, max_score }) {
         .attr("x2", margin.left + scX(user_score))
         .attr("y1", margin.top)
         .attr("y2", margin.top + innerHeight)
-        .attr("stroke", "red")
+        .attr("stroke", "#e37222")
         .attr("stroke-width", 2)
         .attr("stroke-dasharray", 4);
+
+      svg
+        .append("text")
+        .attr("x", margin.left + scX(user_score))
+        .attr("y", (2 * margin.top) / 3)
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "12px")
+        .attr("text-anchor", "middle")
+        .attr("class", "score")
+        .style("fill", "#e37222")
+        .text(user_score);
 
       // // Labels
       svg
@@ -120,17 +131,6 @@ function BarChart({ all_scores, user_score, max_score }) {
         .attr("font-size", "12px")
         .attr("class", "y label")
         .text("Students");
-
-      svg
-        .append("text")
-        .attr("x", margin.left + scX(user_score))
-        .attr("y", margin.top / 2)
-        .attr("font-family", "sans-serif")
-        .attr("font-size", "12px")
-        .attr("text-anchor", "middle")
-        .attr("class", "score")
-        .style("fill", "red")
-        .text(user_score);
     },
     [all_scores.length, user_score, max_score]
   );

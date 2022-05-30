@@ -30,6 +30,7 @@ class EnrolledLectureListSerializer(serializers.ModelSerializer):
             Submission.objects.filter(
                 exercise__lesson__lecture=lecture,
                 exercise__graded=True,
+                user__is_staff=False,
             )
             .values("exercise", "user")
             .annotate(max_score=Max("score"))
