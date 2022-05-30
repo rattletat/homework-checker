@@ -1,7 +1,6 @@
 import csv
 
 from apps.teaching.models import Lecture
-from django.conf.urls import url
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
 from django.contrib.admin.views.decorators import staff_member_required
@@ -22,8 +21,7 @@ class ExerciseLectureFilter(SimpleListFilter):
     def lookups(self, request, model_admin):
 
         lectures = set(
-            exercise.lesson.lecture
-            for exercise in model_admin.model.objects.all()
+            exercise.lesson.lecture for exercise in model_admin.model.objects.all()
         )
         return [(lecture.id, lecture.title) for lecture in lectures]
 
@@ -38,9 +36,7 @@ class ExerciseLessonFilter(SimpleListFilter):
 
     def lookups(self, request, model_admin):
 
-        lessons = set(
-            exercise.lesson for exercise in model_admin.model.objects.all()
-        )
+        lessons = set(exercise.lesson for exercise in model_admin.model.objects.all())
         return [(lesson.id, lesson.title) for lesson in lessons]
 
     def queryset(self, request, queryset):
@@ -135,9 +131,7 @@ class LectureSubmissionFilter(SimpleListFilter):
     parameter_name = "lecture"
 
     def lookups(self, request, model_admin):
-        return [
-            (lecture.id, lecture.title) for lecture in Lecture.objects.all()
-        ]
+        return [(lecture.id, lecture.title) for lecture in Lecture.objects.all()]
 
     def queryset(self, request, queryset):
         if self.value():
@@ -174,29 +168,14 @@ class SubmissionAdmin(admin.ModelAdmin):
     ]
     list_filter = [LectureSubmissionFilter]
 
-    def get_urls(self):
-        urls = super(SubmissionAdmin, self).get_urls()
-        urls += [
-            path(
-                "download-submission/<slug:uuid>",
-                self.download_submission,
-                name="homework_download_submission",
-            ),
-        ]
-        return urls
-
-    def submission_link(self, obj):
-        if obj.file:
-            download_view = "admin:homework_download_submission"
-            download_url = reverse(download_view, args=[obj.pk])
+    def submission_link(self, submission):
+        if submission.file:
+            download_url = reverse(
+                "api:download_submission", args=[submission.exercise, submission]
+            )
             return format_html('<a href="{}">Download</a>', download_url)
         else:
             return "Noch keine Datei hochgeladen!"
-
-    @method_decorator(staff_member_required)
-    def download_submission(self, request, uuid):
-        submission = Submission.objects.get(id=uuid)
-        return sendfile(request, submission.file.path, attachment=True)
 
     @method_decorator(staff_member_required)
     def export_csv(self, request, queryset):
@@ -208,9 +187,7 @@ class SubmissionAdmin(admin.ModelAdmin):
 
         writer.writerow(self.list_display)
         for obj in queryset:
-            row = writer.writerow(
-                [getattr(obj, field) for field in self.list_display]
-            )
+            writer.writerow([getattr(obj, field) for field in self.list_display])
 
         return response
 

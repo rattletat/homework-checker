@@ -25,11 +25,12 @@ services:
       context: ./client
       dockerfile: Dockerfile.dev
     volumes:
-      - ./client/src:/home/node/src
-      - "/home/node/node_modules" # prevents overwriting of node_modules
+      - ./client:/home/node/:cached
+      - "/home/node/node_modules/" # prevents overwriting of node_modules
     ports:
       - 3000:3000
     environment:
       - CHOKIDAR_USEPOLLING=true
+      - NODE_ENV=development
     stdin_open: true
     command: npm start

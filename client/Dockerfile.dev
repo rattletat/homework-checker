@@ -1,10 +1,11 @@
 # official base image
-FROM node:18-alpine
+FROM node:17-alpine
 
+# RUN apk add --no-cache libc6-compat
 USER node
 
 # set work directory
-WORKDIR /home/node
+WORKDIR /home/node/
 
 # set environment variables
 ENV PATH /home/node/node_modules/.bin:$PATH
@@ -12,5 +13,8 @@ ENV PATH /home/node/node_modules/.bin:$PATH
 # copy files
 COPY --chown=node:node package*.json ./
 RUN npm install
+# RUN npm install --silent
+# RUN npm install react-scripts@3.4.1 -g --silent
 COPY --chown=node:node . ./
-RUN mkdir node_modules/.cache && chmod -R 777 node_modules/.cache
+# COPY . ./
+# RUN mkdir node_modules/.cache && chmod -R 777 node_modules/.cache

@@ -18,10 +18,6 @@ urlpatterns = [
         "lectures/<slug:slug>/",
         view=teaching_views.LectureRetrieveView.as_view(),
     ),
-    # path(
-    #     "lectures/<slug:lecture_slug>/statistics/",
-    #     view=homework_views.LectureStatisticsView.as_view(),
-    # ),
     path(
         "lectures/<slug:lecture_slug>/resources/<slug:resource_id>",
         view=teaching_views.LectureResourceDownload.as_view(),

@@ -1,5 +1,5 @@
 # official base image
-FROM node:18-alpine as app-frontend
+FROM node:17-alpine as app-frontend
 
 USER node
 
@@ -14,11 +14,11 @@ ENV PATH $HOME/node_modules/.bin:$PATH
 COPY --chown=node:node package*.json ./
 RUN npm ci --omit=dev --omit=optional
 COPY --chown=node:node . ./
-RUN mkdir node_modules/.cache && chmod -R 777 node_modules/.cache
+# RUN mkdir node_modules/.cache && chmod -R 777 node_modules/.cache
 
 # nginx topping
 RUN npm run build
 
-FROM nginx:latest
+FROM nginx:stable-alpine
 
 COPY --from=app-frontend /home/node/build/ /var/www/frontend

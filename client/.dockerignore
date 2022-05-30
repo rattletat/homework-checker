@@ -5,4 +5,7 @@ README.md
 cypress
 cypress.json
 node_modules
-Dockerfile.*
+Dockerfile
+Dockerfile.dev
+Dockerfile.prod
+build

@@ -1,23 +1,20 @@
 import django_rq
 from apps.teaching.api.mixins import MultipleFieldLookupMixin
 from apps.teaching.api.permissions import IsEnrolled, IsNotWaiting
-from .permissions import isAuthor
-from rest_framework import permissions, response, status
-from rest_framework.exceptions import ParseError
+from rest_framework import exceptions, parsers, response, status
 from rest_framework.generics import ListAPIView, RetrieveAPIView
-from rest_framework.parsers import FileUploadParser
-from rest_framework.response import Response
 from rest_framework.views import APIView
 from sendfile import sendfile
 
 from ..helpers import generate_sha1
 from ..models import Exercise, Submission
 from ..tasks import run_tests
-from .serializers import (ExerciseSerializer, SubmissionListSerializer,
-                          SubmissionSerializer)
-
-# from django.db.models import Max, Sum, Count, F
-# from collections import defaultdict
+from .permissions import isAuthor
+from .serializers import (
+    ExerciseSerializer,
+    SubmissionListSerializer,
+    SubmissionSerializer,
+)
 
 
 class ExerciseListView(ListAPIView):
@@ -34,11 +31,11 @@ class ExerciseListView(ListAPIView):
 
 class ExerciseSubmitView(APIView):
     permission_classes = [IsEnrolled, IsNotWaiting]
-    parser_class = FileUploadParser
+    parser_class = parsers.FileUploadParser
 
     def post(self, request, exercise_id):
         if "file" not in request.data:
-            raise ParseError("Empty content")
+            raise exceptions.ParseError("Empty content")
 
         exercise = Exercise.objects.get(id=exercise_id)
         file = request.FILES["file"]
@@ -84,25 +81,3 @@ class SubmissionDownload(MultipleFieldLookupMixin, RetrieveAPIView):
     def get(self, request, *args, **kwargs):
         submission = self.get_object()
         return sendfile(request, submission.file.path, attachment=True)
-
-
-# Todo
-# class LectureStatisticsView(APIView):
-#     permission_classes = [permissions.AllowAny]
-
-#     def get(self, request, lecture_slug):
-#         """ Returns all non-null scores anonymized. """
-
-#         rows = (
-#             Submission.objects
-#             .values("exercise", "user")
-#             .annotate(max_score=Max("score"))
-#             .values("user", "max_score")
-#         )
-#         scores = defaultdict(int)
-#         for row in rows:
-#             scores[row['user']] += row['max_score']
-
-#         return response.Response(
-#             {"distribution", max_scores}, status=status.HTTP_200_OK
-#         )

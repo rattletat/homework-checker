@@ -1,17 +1,16 @@
+
 from rest_framework import permissions, response, status
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.views import APIView
 from sendfile import sendfile
 
-from ..models import Lecture, LectureResource, Lesson, LessonResource, RegistrationCode
+from ..models import (Lecture, LectureResource, Lesson, LessonResource,
+                      RegistrationCode)
 from .mixins import MultipleFieldLookupMixin
 from .permissions import IsEnrolled, IsNotWaiting
-from .serializers import (
-    EnrolledLectureListSerializer,
-    LectureDetailSerializer,
-    LessonDetailSerializer,
-    LessonScoreSerializer
-)
+from .serializers import (EnrolledLectureListSerializer,
+                          LectureDetailSerializer, LessonDetailSerializer,
+                          LessonScoreSerializer)
 
 
 class EnrolledLectureListView(ListAPIView):

@@ -1,4 +1,5 @@
 import os
+from collections import defaultdict
 
 from apps.homework.models import Submission
 from django.db.models import Max, Sum
@@ -12,12 +13,29 @@ from ..models import Lecture, Lesson
 
 class EnrolledLectureListSerializer(serializers.ModelSerializer):
     score = serializers.SerializerMethodField()
+    score_distribution = serializers.SerializerMethodField()
     grade = serializers.SerializerMethodField()
     next_deadline = serializers.SerializerMethodField()
 
     def get_score(self, lecture):
         user = self.context["request"].user
         return lecture.get_score(user)
+
+    def get_score_distribution(self, lecture):
+        rows = (
+            Submission.objects.filter(
+                exercise__lesson__lecture=lecture,
+                score__gt=0,
+                exercise__graded=True,
+            )
+            .values("exercise", "user")
+            .annotate(max_score=Max("score"))
+            .values("user", "max_score")
+        )
+        scores = defaultdict(int)
+        for row in rows:
+            scores[row["user"]] += row["max_score"]
+        return scores.values()
 
     def get_grade(self, lecture):
         user = self.context["request"].user
@@ -45,6 +63,7 @@ class EnrolledLectureListSerializer(serializers.ModelSerializer):
             "end",
             "status",
             "score",
+            "score_distribution",
             "grade",
             "next_deadline",
         ]
