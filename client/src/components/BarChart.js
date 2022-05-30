@@ -55,37 +55,39 @@ function BarChart({ all_scores, user_score, max_score }) {
         .call(yAxis);
 
       // Bars
-      svg
-        .selectAll("rect")
-        .data(bins)
-        .enter()
-        .append("rect")
-        .attr("x", 1)
-        .attr("y", 0)
-        .attr(
-          "transform",
-          (d) =>
-            "translate(" +
-            (1 + margin.left + scX(d.x0) - (scX(d.x1) - scX(d.x0)) / 2) +
-            "," +
-            (innerHeight + margin.top) +
-            ")"
-        )
-        .attr("width", (d) => scX(d.x1) - scX(d.x0) - 2)
-        .style("fill", "grey")
-        .transition()
-        .duration(3000)
-        .style("fill", "#4582EC")
-        .attr("height", (d) => innerHeight - scY(d.length))
-        .attr(
-          "transform",
-          (d) =>
-            "translate(" +
-            (1 + margin.left + scX(d.x0) - (scX(d.x1) - scX(d.x0)) / 2) +
-            "," +
-            (scY(d.length) + margin.top) +
-            ")"
-        );
+      if (all_scores.length > 0) {
+        svg
+          .selectAll("rect")
+          .data(bins)
+          .enter()
+          .append("rect")
+          .attr("x", 1)
+          .attr("y", 0)
+          .attr(
+            "transform",
+            (d) =>
+              "translate(" +
+              (1 + margin.left + scX(d.x0) - (scX(d.x1) - scX(d.x0)) / 2) +
+              "," +
+              (innerHeight + margin.top) +
+              ")"
+          )
+          .attr("width", (d) => scX(d.x1) - scX(d.x0) - 2)
+          .style("fill", "grey")
+          .transition()
+          .duration(3000)
+          .style("fill", "#4582EC")
+          .attr("height", (d) => innerHeight - scY(d.length))
+          .attr(
+            "transform",
+            (d) =>
+              "translate(" +
+              (1 + margin.left + scX(d.x0) - (scX(d.x1) - scX(d.x0)) / 2) +
+              "," +
+              (scY(d.length) + margin.top) +
+              ")"
+          );
+      }
 
       // Vertical Line
       svg
