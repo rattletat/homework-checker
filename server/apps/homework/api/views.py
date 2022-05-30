@@ -1,7 +1,7 @@
 import django_rq
 from apps.teaching.api.mixins import MultipleFieldLookupMixin
 from apps.teaching.api.permissions import IsEnrolled, IsNotWaiting
-from rest_framework import exceptions, parsers, response, status
+from rest_framework import exceptions, parsers, response, status, permissions
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.views import APIView
 from sendfile import sendfile
@@ -61,6 +61,7 @@ class ExerciseSubmitView(APIView):
 
 
 class SubmissionListView(ListAPIView):
+    permission_classes = [permissions.IsAuthenticated]
     serializer_class = SubmissionListSerializer
 
     def get_queryset(self):
