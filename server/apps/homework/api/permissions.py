@@ -16,4 +16,4 @@ class isAuthor(permissions.BasePermission):
             return True
 
         if isinstance(obj, Submission):
-            return obj.submission.user == user
+            return obj.user == user
