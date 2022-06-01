@@ -171,7 +171,7 @@ class SubmissionAdmin(admin.ModelAdmin):
     def submission_link(self, submission):
         if submission.file:
             download_url = reverse(
-                "api:submission_download", args=[submission.exercise, submission]
+                "api:submission_download", args=[submission.exercise.id, submission.id]
             )
             return format_html('<a href="{}">Download</a>', download_url)
         else:
