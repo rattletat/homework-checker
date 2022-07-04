@@ -10,6 +10,6 @@ admin.site.site_title = 'Homework Checker'
 
 urlpatterns = [
     path("api/", include(api_urls)),
-    path(settings.ADMIN_URL, admin.site.urls),
     path(settings.RQ_URL, include("django_rq.urls")),
+    path(settings.ADMIN_URL, admin.site.urls),
 ]

@@ -70,6 +70,7 @@ class ExerciseAdmin(admin.ModelAdmin):
         "multiplier",
         "description",
         "programming_language",
+        "runtime_environment",
         "tests",
         "tests_link",
         "min_upload_size",

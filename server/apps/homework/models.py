@@ -35,6 +35,7 @@ class Exercise(UUIDModel):
     programming_language = models.CharField(
         max_length=2, choices=ProgrammingLanguages.choices
     )
+    runtime_environment = models.CharField(max_length=100, null=True, blank=True)
     graded = models.BooleanField("Graded", default=False)
 
     def __str__(self):

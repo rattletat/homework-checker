@@ -43,8 +43,10 @@ def run_tests(submission):
     output = ""
     try:
         container = client.containers.run(
-            config["image"],
-            command=f"sleep {exercise.timeout}", # Keep container alive
+            exercise.runtime_environment
+            if exercise.runtime_environment
+            else config["image"],
+            command=f"sleep {exercise.timeout}",  # Keep container alive
             detach=True,
             **DOCKER_SETUP_OPTIONS,
             **DOCKER_SECURITY_OPTIONS,
@@ -62,11 +64,13 @@ def run_tests(submission):
     except Exception as e:
         submission.output = "A problem occured. Please check your program for syntax errors and runtime problems.\n"
         if output:
-            submission.output += "\n" + output
+            submission.output += "\n\n" + output.decode("utf-8")
         print(e)
     else:
         try:
-            submission.score = min(round(get_score(text) * exercise.multiplier), exercise.max_score)
+            submission.score = min(
+                round(get_score(text) * exercise.multiplier), exercise.max_score
+            )
             submission.output = get_first_error(text)
 
         except Exception as e:
