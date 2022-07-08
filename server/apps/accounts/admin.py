@@ -45,7 +45,7 @@ class CustomUserAdmin(UserAdmin):
             },
         ),
     )
-    search_fields = ("email", "name", "identifier")
+    search_fields = ("email", "name", "identifier", "id")
     ordering = ("identifier",)
 
     def get_readonly_fields(self, _, obj=None):
