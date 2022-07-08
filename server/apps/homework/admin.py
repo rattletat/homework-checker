@@ -161,6 +161,7 @@ class SubmissionAdmin(admin.ModelAdmin):
     list_display = ["created", "exercise", "user", "score"]
     ordering = ["-created"]
     search_fields = [
+        "id",
         "user__id",
         "user__name",
         "user__email",
