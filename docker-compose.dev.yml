@@ -7,19 +7,19 @@ services:
     volumes:
       - ./server/:/home/app/web/
     env_file:
-      - .env/development.env
+      - .environment/development.env
     command: python manage.py runserver 0.0.0.0:8000
     ports:
       - 8000:8000
   db:
     env_file:
-      - .env/development.env
+      - .environment/development.env
   rq:
     build:
       context: ./server
       dockerfile: Dockerfile.dev
     env_file:
-      - .env/development.env
+      - .environment/development.env
   client:
     build:
       context: ./client
