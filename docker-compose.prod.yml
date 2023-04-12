@@ -5,17 +5,17 @@ services:
             context: ./server
             dockerfile: Dockerfile.prod
         env_file:
-            - .env/production.env
+            - .environment/production.env
         command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
     db:
         env_file:
-            - .env/production.env
+            - .environment/production.env
     rq:
         build:
             context: ./server
             dockerfile: Dockerfile.dev
         env_file:
-            - .env/production.env
+            - .environment/production.env
     client:
         build:
             context: ./client
@@ -23,7 +23,7 @@ services:
         environment:
           - NODE_ENV=production
         env_file:
-            - .env/production.env
+            - .environment/production.env
         volumes:
             - ./client/node_modules:/app/node_modules
             - volume-static:/var/www/staticfiles:ro
